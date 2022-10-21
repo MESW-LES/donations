@@ -13,4 +13,12 @@ public class ApiReturnMessage {
         this.code = code;
         this.message = message;
     }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public Object getMessage() {
+        return message;
+    }
 }

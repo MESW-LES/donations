@@ -1,4 +1,4 @@
-package les.donations.backendspring.service.demo;
+package les.donations.backendspring.service.category;
 
 import les.donations.backendspring.dto.CategoryDTO;
 import les.donations.backendspring.model.Category;
