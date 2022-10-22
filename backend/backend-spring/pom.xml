@@ -14,7 +14,7 @@
 	<name>backend-spring</name>
 	<description>Spring Boot for Donations App</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>8</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -65,6 +65,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<finalName>backend-spring</finalName>
 	</build>
 
 </project>

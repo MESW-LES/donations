@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  app:
+    image: 'backend-spring:latest'
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend-spring
+    depends_on:
+      - postgresqldb
+    ports:
+      - '8080:8080'
+    environment:
+      - DATABASE_URL=postgresql://postgresqldb:5432/postgres
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=D0nationSAppLES
+  postgresqldb:
+    image: 'postgres:13.1-alpine'
+    container_name: postgresqldb
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=D0nationSAppLES
+      - POSTGRES_DB=postgres
