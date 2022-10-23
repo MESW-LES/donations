@@ -15,11 +15,6 @@ class CategoryTest {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new Category(code, "Name Test", "Description Test"));
     }
 
-    @Test
-    void addWrongTest(){
-        fail();
-    }
-
     @ParameterizedTest
     @NullAndEmptySource
     void setNameWithANullAndEmptyValueTest(String name){
