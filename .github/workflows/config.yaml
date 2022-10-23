@@ -19,4 +19,4 @@ jobs:
         run: mvn -f ./backend/backend-spring/pom.xml --batch-mode -DskipTests package
 
       - name: Test
-        run: mvn -f ./backend/backend-spring/pom.xml --batch-mode -Dmaven.test.failure.ignore=true test
+        run: mvn -f ./backend/backend-spring/pom.xml --batch-mode test
