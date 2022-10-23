@@ -21,11 +21,5 @@ jobs:
       - name: Test
         run: mvn -f ./backend/backend-spring/pom.xml --batch-mode -Dmaven.test.failure.ignore=true test
 
-      - name: Test Reporting
-        uses: phoenix-actions/test-reporting@v8
-        id: test-report               # Set ID reference for step
-        if: success() || failure()    # run this step even if previous step failed
-        with:
-          name: JEST Tests            # Name of the check run which will be created
-          path: reports/jest-*.xml    # Path to test results
-          reporter: jest-junit
+      - name: Test Reporter
+        uses: dorny/test-reporter@v1.6.0
