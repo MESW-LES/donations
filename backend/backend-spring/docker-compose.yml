@@ -18,7 +18,7 @@ services:
     image: 'postgres:13.1-alpine'
     container_name: postgresqldb
     ports:
-      - '5432:5432'
+      - '6543:5432'
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=D0nationSAppLES
