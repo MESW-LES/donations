@@ -1,4 +1,4 @@
-package les.donations.backendspring.application;
+package les.donations.backendspring;
 
 import io.github.cdimascio.dotenv.Dotenv;
 

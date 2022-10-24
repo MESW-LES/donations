@@ -1,4 +1,4 @@
-package les.donations.backendspring.application;
+package les.donations.backendspring;
 
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +19,6 @@ public class DataSourceConfig {
         dataSourceBuilder.url(environment.getEnv(envType + "_DATABASE"));
         dataSourceBuilder.username(environment.getEnv( "USER_DATABASE"));
         dataSourceBuilder.password(environment.getEnv("PWD_DATABASE"));
-
         // deletes the content from the test environment
         DataSource dataSource = dataSourceBuilder.build();
         truncateTablesForTestEnvironment(dataSource, envType);

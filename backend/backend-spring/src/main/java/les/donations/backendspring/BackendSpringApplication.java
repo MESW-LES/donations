@@ -1,4 +1,4 @@
-package les.donations.backendspring.application;
+package les.donations.backendspring;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
