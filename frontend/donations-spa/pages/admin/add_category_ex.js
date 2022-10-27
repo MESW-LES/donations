@@ -1,6 +1,31 @@
 import { useState } from "react";
+import axios from 'axios'
 
 export default function Example() {
+const [code, setCode] = useState("");
+const [name, setName] = useState("");
+const [description, setDescription] = useState("");
+
+  const handleSubmit = async (event)=>{
+event.preventDefault();
+
+const formValues = {code,name,description}
+
+//console.log(formValues);
+
+try {
+  const {response} = await axios({
+    url:"/api/form",
+    method:"POST",
+    data: formValues
+  });
+
+  console.log("Response: ", response);
+} catch (error) {
+  console.log("error:", error);
+}
+
+  }
   return (
       <>
         
@@ -34,6 +59,8 @@ export default function Example() {
                           type="text"
                           name="category_code"
                           id="category_code"
+                          value={code}
+                          onChange={({target})=> setCode(target?.value)}
                           //autoComplete="given-name"
                           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         />
@@ -49,6 +76,8 @@ export default function Example() {
                           type="text"
                           name="category_name"
                           id="category_name"
+                          value={name}
+                          onChange={({target})=> setName(target?.value)}
                           //autoComplete="given-name"
                           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         />
@@ -65,6 +94,8 @@ export default function Example() {
                           type="text"
                           name="category_description"
                           id="category_description"
+                          value={description}
+                          onChange={({target})=> setDescription(target?.value)}
                           //autoComplete="family-name"
                           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         />
@@ -80,6 +111,7 @@ export default function Example() {
                     </button>
                     <button
                       type="submit"
+                      onClick={handleSubmit}
                       className="inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                       Save
