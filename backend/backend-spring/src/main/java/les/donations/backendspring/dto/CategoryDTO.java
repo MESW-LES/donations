@@ -3,7 +3,7 @@ package les.donations.backendspring.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-public class CategoryDTO {
+public class CategoryDTO implements ModelDTO{
     @JsonProperty
     public String code;
 

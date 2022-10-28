@@ -11,5 +11,5 @@ public interface ICategoryService {
      * @return n information about the category if the operation was successful
      * @throws IllegalArgumentException if the data is wrong, code is not unique or name is not unique
      */
-    CategoryDTO addCategory(CategoryDTO categoryDTO) throws IllegalArgumentException;
+    CategoryDTO registerCategory(CategoryDTO categoryDTO) throws IllegalArgumentException;
 }

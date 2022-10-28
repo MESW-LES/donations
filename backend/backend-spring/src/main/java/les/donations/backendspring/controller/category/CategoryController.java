@@ -15,17 +15,17 @@ public class CategoryController implements ICategoryController{
     private ICategoryService categoryService;
 
     @Override
-    public ResponseEntity<ApiReturnMessage> createCategory(CategoryDTO categoryDTO) {
-        Object message;
+    public ResponseEntity<ApiReturnMessage> registerCategory(CategoryDTO categoryDTO) {
+        ApiReturnMessage apiReturnMessage;
         HttpStatus httpStatus;
         try {
-            message = categoryService.addCategory(categoryDTO);
+            categoryDTO = categoryService.registerCategory(categoryDTO);
             httpStatus = HttpStatus.CREATED;
+            apiReturnMessage = new ApiReturnMessage(httpStatus.value(), categoryDTO);
         } catch (IllegalArgumentException ex) {
-            message = ex.getMessage();
             httpStatus = HttpStatus.BAD_REQUEST;
+            apiReturnMessage = new ApiReturnMessage(httpStatus.value(), ex.getMessage());
         }
-        final ApiReturnMessage apiReturnMessage = new ApiReturnMessage(httpStatus.value(), message);
         return new ResponseEntity<>(apiReturnMessage, httpStatus);
     }
 }
