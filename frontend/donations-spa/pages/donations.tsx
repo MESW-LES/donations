@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import AppMenuBar from "./AppMenuBar";
 
-function donations() {
+function Donations() {
   const router = useRouter();
   return (
     <>
@@ -11,4 +11,4 @@ function donations() {
   );
 }
 
-export default donations;
+export default Donations;

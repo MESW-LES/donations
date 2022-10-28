@@ -1,6 +1,6 @@
 import AppMenuBar from "./AppMenuBar";
 
-function ongoingDonations() {
+function OngoingDonations() {
   return (
     <>
       <AppMenuBar />
@@ -9,4 +9,4 @@ function ongoingDonations() {
   );
 }
 
-export default ongoingDonations;
+export default OngoingDonations;

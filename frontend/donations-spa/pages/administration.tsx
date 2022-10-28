@@ -1,6 +1,6 @@
 import AppMenuBar from "./AppMenuBar";
 
-function administration() {
+function Administration() {
   return (
     <>
       <AppMenuBar />
@@ -9,4 +9,4 @@ function administration() {
   );
 }
 
-export default administration;
+export default Administration;

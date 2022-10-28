@@ -1,6 +1,6 @@
 import AppMenuBar from "./AppMenuBar";
 
-function profile() {
+function Profile() {
   return (
     <>
       <AppMenuBar />
@@ -9,4 +9,4 @@ function profile() {
   );
 }
 
-export default profile;
+export default Profile;

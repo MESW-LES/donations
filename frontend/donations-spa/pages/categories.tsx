@@ -1,6 +1,6 @@
 import AppMenuBar from "./AppMenuBar";
 
-function categories() {
+function Categories() {
   return (
     <>
       <AppMenuBar />
@@ -9,4 +9,4 @@ function categories() {
   );
 }
 
-export default categories;
+export default Categories;
