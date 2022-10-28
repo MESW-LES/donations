@@ -29,11 +29,11 @@ public class CompanyService implements ICompanyService {
         }
 
         // checks the company and gets the associated email
-        String email = taxNumberAPI.getEmailByCompanyTaxNumber(companyDTO.taxNumber);
+        //String email = taxNumberAPI.getEmailByCompanyTaxNumber(companyDTO.taxNumber);
 
         // creates the company
         Company company = companyMapper.dtoToModel(companyDTO);
-        company.setEmail(email);
+        //company.setEmail(email);
         return company;
     }
 }

@@ -43,7 +43,7 @@ class CategoryControllerTest {
         // call the controller
         ResponseEntity<ApiReturnMessage> result = categoryController.registerCategory(categoryDTO);
         Assertions.assertEquals(400, result.getStatusCodeValue());
-        Assertions.assertEquals(message, result.getBody().getMessage().toString());
+        Assertions.assertEquals(message, result.getBody().getErrorMessage());
     }
 
     @Test
