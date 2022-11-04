@@ -6,6 +6,7 @@ CREATE TABLE CATEGORIES(CODE VARCHAR(15) primary key,
                         DESCRIPTION VARCHAR(300) not null,
                         ACTIVE BOOLEAN);
 
+-- changeset liquibase:3
 CREATE TABLE COMPANIES(ID BIGINT primary key,
                        NAME VARCHAR(50) NOT NULL,
                        DESCRIPTION VARCHAR(200) NOT NULL,
@@ -18,3 +19,16 @@ CREATE TABLE COMPANIES(ID BIGINT primary key,
 CREATE TABLE DONEES(ID BIGINT primary key,
                     COMPANY_ID BIGINT NOT NULL,
                     FOREIGN KEY (COMPANY_ID) REFERENCES COMPANIES(ID));
+
+-- changeset liquibase:4
+CREATE TABLE PERSONS(ID INT primary key,
+                    FIRST_NAME VARCHAR(50) not null,
+                    LAST_NAME VARCHAR(50) not null,
+                    NIF VARCHAR(20) unique not null,
+                    ADDRESS VARCHAR(150) not null,
+                    EMAIL VARCHAR(100) unique not null,
+                    PASSWORD VARCHAR(50) not null);
+
+CREATE TABLE DONORS(ID BIGINT primary key,
+                    PERSON_ID BIGINT NOT NULL,
+                    FOREIGN KEY (PERSON_ID) REFERENCES PERSONS(ID));
