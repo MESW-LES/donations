@@ -1,15 +1,14 @@
-import type { NextPage } from 'next'
+import type { NextPage } from "next";
+import HomeContent from "./HomeContent";
+import AppMenuBar from "./AppMenuBar";
 
 const Home: NextPage = () => {
+  return (
+    <>
+      <AppMenuBar />
+      <HomeContent />
+    </>
+  );
+};
 
-    let displayAlert = () => {
-        alert('Clicked');
-    }
-
-    return (<>
-                <h1 className="text-3xl font-bold underline">Donations SPA</h1>
-                <button onClick={displayAlert}>Click</button>
-            </>)
-}
-
-export default Home
+export default Home;

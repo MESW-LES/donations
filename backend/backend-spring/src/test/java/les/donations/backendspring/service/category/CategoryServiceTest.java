@@ -41,7 +41,7 @@ class CategoryServiceTest {
         when(categoryMapper.dtoToModel(categoryDTO)).thenThrow(new IllegalArgumentException("The name can't be null or empty"));
 
         try{
-            categoryService.addCategory(categoryDTO);
+            categoryService.registerCategory(categoryDTO);
         }catch (IllegalArgumentException e){
             Assertions.assertEquals("The name can't be null or empty", e.getMessage());
         }
@@ -53,7 +53,7 @@ class CategoryServiceTest {
         when(categoryRepository.findById(categoryDTO.code)).thenReturn(Optional.of(new Category()));
 
         try{
-            categoryService.addCategory(categoryDTO);
+            categoryService.registerCategory(categoryDTO);
         }catch (IllegalArgumentException e){
             Assertions.assertEquals("The code of the category already exists", e.getMessage());
         }
@@ -67,7 +67,7 @@ class CategoryServiceTest {
         when(categoryRepository.saveAndFlush(new Category())).thenThrow(new IllegalArgumentException("The name of the category already exists"));
 
         try{
-            categoryService.addCategory(categoryDTO);
+            categoryService.registerCategory(categoryDTO);
         }catch (IllegalArgumentException e){
             Assertions.assertEquals("The name of the category already exists", e.getMessage());
         }
@@ -80,7 +80,7 @@ class CategoryServiceTest {
         when(categoryMapper.dtoToModel(categoryDTO)).thenReturn(new Category());
         when(categoryRepository.saveAndFlush(new Category())).thenReturn(new Category("CAT-A", "Category A", "123"));
 
-        CategoryDTO returned = categoryService.addCategory(categoryDTO);
+        CategoryDTO returned = categoryService.registerCategory(categoryDTO);
         assertEquals(categoryDTO, returned);
     }
 }

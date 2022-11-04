@@ -17,7 +17,7 @@ public class CategoryService implements ICategoryService{
     private ICategoryMapper categoryMapper;
 
     @Override
-    public CategoryDTO addCategory(CategoryDTO categoryDTO) throws IllegalArgumentException {
+    public CategoryDTO registerCategory(CategoryDTO categoryDTO) throws IllegalArgumentException {
         if (categoryRepository.findById(categoryDTO.code).isPresent()) {
             throw new IllegalArgumentException("The code of the category already exists");
         }

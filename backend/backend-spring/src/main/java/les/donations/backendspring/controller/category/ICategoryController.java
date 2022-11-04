@@ -15,5 +15,5 @@ public interface ICategoryController {
      * @return a response with a code which represents if the operation was successful or not
      */
     @PostMapping(value = "/categories", produces = "application/json", consumes = "application/json")
-    ResponseEntity<ApiReturnMessage> createCategory(@RequestBody CategoryDTO categoryDTO);
+    ResponseEntity<ApiReturnMessage> registerCategory(@RequestBody CategoryDTO categoryDTO);
 }

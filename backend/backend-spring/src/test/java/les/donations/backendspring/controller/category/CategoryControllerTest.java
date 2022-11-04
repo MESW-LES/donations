@@ -39,20 +39,20 @@ class CategoryControllerTest {
     void addCategoryWithIllegalInformation(String message){
         CategoryDTO categoryDTO = new CategoryDTO();
         // mock the service
-        when(categoryService.addCategory(categoryDTO)).thenThrow(new IllegalArgumentException(message));
+        when(categoryService.registerCategory(categoryDTO)).thenThrow(new IllegalArgumentException(message));
         // call the controller
-        ResponseEntity<ApiReturnMessage> result = categoryController.createCategory(categoryDTO);
+        ResponseEntity<ApiReturnMessage> result = categoryController.registerCategory(categoryDTO);
         Assertions.assertEquals(400, result.getStatusCodeValue());
-        Assertions.assertEquals(message, result.getBody().getMessage().toString());
+        Assertions.assertEquals(message, result.getBody().getErrorMessage());
     }
 
     @Test
     void addCategoryWithValidInformation(){
         CategoryDTO categoryDTO = new CategoryDTO().code("CAT-A").name("Category A").description("Category A description");
         // mock the service
-        when(categoryService.addCategory(categoryDTO)).thenReturn(categoryDTO);
+        when(categoryService.registerCategory(categoryDTO)).thenReturn(categoryDTO);
         // call the controller
-        ResponseEntity<ApiReturnMessage> result = categoryController.createCategory(categoryDTO);
+        ResponseEntity<ApiReturnMessage> result = categoryController.registerCategory(categoryDTO);
         Assertions.assertEquals(201, result.getStatusCodeValue());
         Assertions.assertEquals(categoryDTO, result.getBody().getMessage());
     }
