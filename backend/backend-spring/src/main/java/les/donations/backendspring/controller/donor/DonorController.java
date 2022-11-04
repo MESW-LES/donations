@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @RestController
 public class DonorController implements IDonorController {
     @Autowired
@@ -21,16 +23,21 @@ public class DonorController implements IDonorController {
      */
     @Override
     public ResponseEntity<ApiReturnMessage> registerDonor(DonorDTO donorDTO) {
-        Object message;
         HttpStatus httpStatus;
+        ApiReturnMessage apiReturnMessage;
+
         try {
-            message = donorService.addDonor(donorDTO);
+            donorDTO = donorService.registerDonor(donorDTO);
             httpStatus = HttpStatus.CREATED;
+            apiReturnMessage = new ApiReturnMessage(httpStatus.value(), donorDTO);
         } catch (IllegalArgumentException ex) {
-            message = ex.getMessage();
             httpStatus = HttpStatus.BAD_REQUEST;
+            apiReturnMessage = new ApiReturnMessage(httpStatus.value(), ex.getMessage());
+        } catch (IOException ex) {
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            apiReturnMessage = new ApiReturnMessage(httpStatus.value(), ex.getMessage());
         }
-        final ApiReturnMessage apiReturnMessage = new ApiReturnMessage(httpStatus.value(), message);
+
         return new ResponseEntity<>(apiReturnMessage, httpStatus);
     }
 }

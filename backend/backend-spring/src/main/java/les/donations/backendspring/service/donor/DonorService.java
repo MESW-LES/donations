@@ -1,31 +1,39 @@
 package les.donations.backendspring.service.donor;
 
+
 import les.donations.backendspring.dto.DonorDTO;
-import les.donations.backendspring.mapper.donor.IDonorMapper;
+import les.donations.backendspring.dto.PersonDTO;
 import les.donations.backendspring.model.Donor;
+import les.donations.backendspring.model.Person;
 import les.donations.backendspring.repository.donor.IDonorRepository;
+import les.donations.backendspring.repository.person.IPersonRepository;
+import les.donations.backendspring.service.person.IPersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+
 @Service
-public class DonorService implements IDonorService {
+public class DonorService implements IDonorService{
 
     @Autowired
     private IDonorRepository donorRepository;
 
     @Autowired
-    private IDonorMapper donorMapper;
+    private IPersonService personService;
 
     @Override
-    public DonorDTO addDonor(DonorDTO donorDTO) throws IllegalArgumentException {
-        Donor donor = donorMapper.dtoToModel(donorDTO);
-        try {
-            donorRepository.saveAndFlush(donor);
-            donorDTO.id = donor.getId();
-        } catch (Exception ex) {
-            throw new IllegalArgumentException("NIF or email already exists");
-        }
+    public DonorDTO registerDonor(DonorDTO donorDTO) throws IllegalArgumentException, IOException {
+        // creates the person
+        Person person = personService.addPerson(donorDTO.person);
+        // creates the donor
+        Donor donor = new Donor(person);
+        // persists the donor
+        donor = donorRepository.saveAndFlush(donor);
 
-        return donorDTO;
+        // TODO: sends the email
+        String personEmail = donor.getPerson().getEmail();
+
+        return donorDTO.id(donor.getId());
     }
 }
