@@ -16,7 +16,7 @@ public class DataSourceConfig {
         DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.url("jdbc:postgresql://localhost:5432/postgres");
         dataSourceBuilder.username("postgres");
-        dataSourceBuilder.password("postgres");
+        dataSourceBuilder.password("D0nation$AppLES");
         return dataSourceBuilder.build();
     }
 }
