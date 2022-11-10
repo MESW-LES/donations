@@ -1,8 +1,12 @@
 import axios from "axios";
-import { useState } from "react";
+import React ,{ useRef, useState } from "react";
 import AppMenuBar from "./AppMenuBar";
+import { Toast } from 'primereact/toast';
 
 function Categories() {
+
+  const myToast = useRef(null);
+  
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -14,6 +18,7 @@ function Categories() {
 
     //console.log(formValues);
 
+
     try {
       const { data } = await axios({
         url: "/api/form",
@@ -21,16 +26,30 @@ function Categories() {
         data: formValues,
       });
 
-      console.log("Response: ", data);
+      if(data.code != 200 ){
+        showToast('error',"Hey",'oops looks like something went wrong, please try again later.')
+      }else{
+        showToast('success','Success Message','The category was added successfully.');
+        setName("");
+        setCode("");
+        setDescription("");
+      };      
     } catch (error) {
-      console.log("error:", error);
+      showToast('error','Error '+ error.response.status, error.response.data.data);
+      //showToast('error','Error '+ error.response.status,'oops looks like something went wrong, please try again later.');    
     }
   };
+
+  const showToast = (severityValue: string, summaryValue: string, detailValue: string) => {   
+    myToast.current.show({severity: severityValue, summary: summaryValue, detail: detailValue});   
+  };
+
   return (
     <>
       <AppMenuBar />
       <div className="mt-10 sm:mt-0 pt-10">
         <div className="mt-5 md:col-span-2 md:mt-0 ">
+        <Toast ref={myToast} /> 
           <form action="/api/form" method="POST">
             <div className="overflow-hidden shadow sm:rounded-md">
               <div className="bg-white px-4 py-5 sm:p-6">
@@ -101,6 +120,9 @@ function Categories() {
               <div className="bg-gray-50 px-4 py-3 text-end sm:px-6">
                 <button
                   type="button"
+                  onClick={()=>{setName("");
+                  setCode("");
+                  setDescription("");}}
                   className="inline-flex justify-start rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
                   Cancel

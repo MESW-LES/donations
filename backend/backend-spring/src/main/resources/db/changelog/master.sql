@@ -32,3 +32,17 @@ CREATE TABLE PERSONS(ID INT primary key,
 CREATE TABLE DONORS(ID BIGINT primary key,
                     PERSON_ID BIGINT NOT NULL,
                     FOREIGN KEY (PERSON_ID) REFERENCES PERSONS(ID));
+
+-- changeset liquibase:5
+CREATE TABLE DONATIONS(ID INT primary key,
+                    PRODUCT_NAME VARCHAR(100) not null,
+                    PRODUCT_DESCRIPTION VARCHAR(300) not null,
+                    CATEGORY_CODE VARCHAR(15) not null,
+                    );
+
+CREATE TABLE PHOTO(ID BIGINT primary key,
+                    DONATION_ID BIGINT NOT NULL,
+                    PHOTO_NAME VARCHAR(100) not null,
+                    PHOTO_URL VARCHAR(400) not null,
+                    IS_DELETED BOOLEAN,
+                    FOREIGN KEY (DONATION_ID) REFERENCES DONATIONS(ID));
