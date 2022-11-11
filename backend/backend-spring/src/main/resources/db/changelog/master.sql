@@ -34,10 +34,10 @@ CREATE TABLE DONORS(ID BIGINT primary key,
                     FOREIGN KEY (PERSON_ID) REFERENCES PERSONS(ID));
 
 -- changeset liquibase:5
-CREATE TABLE DONATIONS(ID INT primary key,
+CREATE TABLE DONATIONS(ID BIGINT primary key,
                     PRODUCT_NAME VARCHAR(100) not null,
                     PRODUCT_DESCRIPTION VARCHAR(300) not null,
-                    CATEGORY_CODE VARCHAR(15) not null,
+                    CATEGORY_CODE VARCHAR(15) not null
                     );
 
 CREATE TABLE PHOTO(ID BIGINT primary key,
