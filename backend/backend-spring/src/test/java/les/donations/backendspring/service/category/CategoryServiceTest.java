@@ -3,7 +3,7 @@ package les.donations.backendspring.service.category;
 import les.donations.backendspring.dto.CategoryDTO;
 import les.donations.backendspring.mapper.category.ICategoryMapper;
 import les.donations.backendspring.model.Category;
-import les.donations.backendspring.repository.category.ICategoryRepository;
+import les.donations.backendspring.repository.category.CategoryDao;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 class CategoryServiceTest {
 
     @Mock
-    private ICategoryRepository categoryRepository;
+    private CategoryDao categoryRepository;
     @Mock
     private ICategoryMapper categoryMapper;
     @InjectMocks

@@ -1,9 +1,11 @@
 package les.donations.backendspring.model;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.ManyToAny;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Table(name = "DONEES")
@@ -18,15 +20,30 @@ public class Donee {
     @Column(name = "ID")
     private Long id;
 
+    @Column(name = "PASSWORD")
+    private String password;
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "COMPANY_ID", referencedColumnName = Company.PROPERTY_ID)
     private Company company;
+
+    @Column(name = "ACTIVE")
+    private boolean active;
+
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "COMPANIES_CATEGORIES",
+            joinColumns = { @JoinColumn(name = "COMPANY_ID") },
+            inverseJoinColumns = { @JoinColumn(name = "CATEGORY_ID") }
+    )
+    private List<Category> categories;
 
     protected Donee() {
         // for ORM
     }
 
-    public Donee(Company company){
+    public Donee(String password, Company company){
+        this.password = password;
         this.company = company;
     }
 
@@ -38,12 +55,44 @@ public class Donee {
         this.id = id;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public Company getCompany() {
         return company;
     }
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
+    /**
+     * Methods that adds a category to the company categories
+     * @param category the category to add
+     */
+    public void addCategory(Category category){
+        categories.add(category);
     }
 
     @Override
@@ -57,5 +106,13 @@ public class Donee {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Donee{" +
+                "id=" + id +
+                ", company=" + company +
+                '}';
     }
 }

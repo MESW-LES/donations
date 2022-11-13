@@ -1,7 +1,9 @@
 package les.donations.backendspring.controller.donee;
 
 import les.donations.backendspring.api.ApiReturnMessage;
+import les.donations.backendspring.controller.IController;
 import les.donations.backendspring.dto.DoneeDTO;
+import les.donations.backendspring.exceptions.NotFoundEntityException;
 import les.donations.backendspring.service.donee.IDoneeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 
 @RestController
-public class DoneeController implements IDoneeController {
+public class DoneeController extends IController implements IDoneeController {
 
     @Autowired
     private IDoneeService doneeService;
@@ -19,20 +21,15 @@ public class DoneeController implements IDoneeController {
     @Override
     public ResponseEntity<ApiReturnMessage> registerDonee(DoneeDTO doneeDTO) {
 
-        ApiReturnMessage apiReturnMessage;
-        HttpStatus httpStatus;
         try{
             doneeDTO = doneeService.registerDonee(doneeDTO);
-            httpStatus = HttpStatus.CREATED;
-            apiReturnMessage = new ApiReturnMessage(httpStatus.value(), doneeDTO);
+            return created(doneeDTO);
         }catch (IllegalArgumentException e){
-            httpStatus = HttpStatus.BAD_REQUEST;
-            apiReturnMessage = new ApiReturnMessage(httpStatus.value(), e.getMessage());
+            return badRequest(e.getMessage());
         }catch (IOException e){
-            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            apiReturnMessage = new ApiReturnMessage(httpStatus.value(), e.getMessage());
+            return internalServerError(e.getMessage());
+        } catch (NotFoundEntityException e) {
+            return notFound(e.getMessage());
         }
-
-        return new ResponseEntity<>(apiReturnMessage, httpStatus);
     }
 }

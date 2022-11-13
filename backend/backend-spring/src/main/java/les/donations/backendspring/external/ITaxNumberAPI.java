@@ -1,7 +1,6 @@
-package les.donations.backendspring.retrofit;
+package les.donations.backendspring.external;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 public interface ITaxNumberAPI {
 
