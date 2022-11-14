@@ -50,7 +50,7 @@ class CategoryServiceTest {
     @Test
     void addCategoryWithExistingCode(){
         CategoryDTO categoryDTO = new CategoryDTO().code("CAT-A");
-        when(categoryRepository.findById(categoryDTO.code)).thenReturn(Optional.of(new Category()));
+        when(categoryRepository.findById(categoryDTO.code)).thenReturn(Optional.of(new Category("code", "name", "description")));
 
         try{
             categoryService.registerCategory(categoryDTO);
@@ -63,8 +63,8 @@ class CategoryServiceTest {
     void addCategoryWithWExistingName(){
         CategoryDTO categoryDTO = new CategoryDTO().code("CAT-A");
         when(categoryRepository.findById(categoryDTO.code)).thenReturn(Optional.empty());
-        when(categoryMapper.dtoToModel(categoryDTO)).thenReturn(new Category());
-        when(categoryRepository.saveAndFlush(new Category())).thenThrow(new IllegalArgumentException("The name of the category already exists"));
+        when(categoryMapper.dtoToModel(categoryDTO)).thenReturn(new Category("code", "name", "description"));
+        when(categoryRepository.saveAndFlush(new Category("code", "name", "description"))).thenThrow(new IllegalArgumentException("The name of the category already exists"));
 
         try{
             categoryService.registerCategory(categoryDTO);
@@ -77,8 +77,8 @@ class CategoryServiceTest {
     void addCategoryWithValidInformation(){
         CategoryDTO categoryDTO = new CategoryDTO().code("CAT-A");
         when(categoryRepository.findById(categoryDTO.code)).thenReturn(Optional.empty());
-        when(categoryMapper.dtoToModel(categoryDTO)).thenReturn(new Category());
-        when(categoryRepository.saveAndFlush(new Category())).thenReturn(new Category("CAT-A", "Category A", "123"));
+        when(categoryMapper.dtoToModel(categoryDTO)).thenReturn(new Category("code", "name", "description"));
+        when(categoryRepository.saveAndFlush(new Category("code", "name", "description"))).thenReturn(new Category("CAT-A", "Category A", "123"));
 
         CategoryDTO returned = categoryService.registerCategory(categoryDTO);
         assertEquals(categoryDTO, returned);

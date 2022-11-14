@@ -38,4 +38,9 @@ public class DoneeDTO implements ModelDTO{
         this.categoryCodes = categoryCodes;
         return this;
     }
+
+    public DoneeDTO password(String password) {
+        this.password = password;
+        return this;
+    }
 }

@@ -108,7 +108,7 @@ public class Company {
     public void setPhone(Long phone) {
         // checks if the number is null or does not respect the nine character length
         if(phone == null || phone.toString().length() != 9){
-            throw new IllegalArgumentException("The phone can't be null or empty!");
+            throw new IllegalArgumentException("The phone can't be null or has a wrong format!");
         }
         this.phone = phone;
     }
