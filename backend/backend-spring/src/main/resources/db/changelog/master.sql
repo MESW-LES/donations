@@ -32,3 +32,8 @@ CREATE TABLE PERSONS(ID INT primary key,
 CREATE TABLE DONORS(ID BIGINT primary key,
                     PERSON_ID BIGINT NOT NULL,
                     FOREIGN KEY (PERSON_ID) REFERENCES PERSONS(ID));
+
+-- changeset liquibase:5
+CREATE TABLE DONATIONS(ID BIGINT primary key,
+                       NAME VARCHAR(50) not null,
+                       DONOR_ID BIGINT not null);
