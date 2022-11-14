@@ -3,27 +3,23 @@ package les.donations.backendspring.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CompanyDTO {
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty
     public Long id;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty
     public String name;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty
     public String description;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty
     public String taxNumber;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty
     public Long phone;
+    @JsonProperty
+    public List<String> categoryId;
 
     public CompanyDTO id(Long id) {
         this.id = id;
@@ -49,4 +45,9 @@ public class CompanyDTO {
         this.phone = phone;
         return this;
     }
+    public CompanyDTO categoryId(List<String> categoryId) {
+        this.categoryId = categoryId;
+        return this;
+    }
+
 }

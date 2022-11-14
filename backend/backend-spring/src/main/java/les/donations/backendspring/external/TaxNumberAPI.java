@@ -1,6 +1,5 @@
-package les.donations.backendspring.retrofit;
+package les.donations.backendspring.external;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -14,7 +13,7 @@ import java.net.URL;
 @Component
 public class TaxNumberAPI implements ITaxNumberAPI{
 
-    private final static String URL = "http://www.nif.pt/?json=1&q=&key=key";
+    private final static String URL = "http://www.nif.pt/?json=1&q=taxNumber&key=key";
 
     @Override
     public String getEmailByCompanyTaxNumber(String taxNumber) throws IOException {
@@ -29,7 +28,7 @@ public class TaxNumberAPI implements ITaxNumberAPI{
                 connection.setRequestMethod("GET");
                 JSONObject jsonObject = (JSONObject) new JSONParser().parse(new InputStreamReader(connection.getInputStream()));
                 System.out.println(jsonObject.toString());
-                JSONObject companyInfo = ((JSONObject) ((JSONObject) ((JSONArray) jsonObject.get("records")).get(0)).get(taxNumber));
+                JSONObject companyInfo = (JSONObject) ((JSONObject) jsonObject.get("records")).get(taxNumber);
 
                 // if its a not a valid company (does not have CAE)
                 String companyCAE = companyInfo.get("cae") != null ? companyInfo.get("cae").toString() : null;

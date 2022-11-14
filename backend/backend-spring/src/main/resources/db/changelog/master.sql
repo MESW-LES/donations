@@ -34,6 +34,10 @@ CREATE TABLE DONORS(ID BIGINT primary key,
                     FOREIGN KEY (PERSON_ID) REFERENCES PERSONS(ID));
 
 -- changeset liquibase:5
+ALTER TABLE COMPANIES ADD COLUMN PASSWORD VARCHAR(20) NOT NULL;
+ALTER TABLE DONEES ADD COLUMN ACTIVE BOOLEAN NOT NULL;
+
+-- changeset liquibase:6
 CREATE TABLE DONATIONS(ID BIGINT primary key,
                        NAME VARCHAR(50) not null,
                        DONOR_ID BIGINT not null);
