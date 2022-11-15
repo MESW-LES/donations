@@ -9,7 +9,6 @@ import { OrderList } from 'primereact/orderlist';
 import { ProductService } from './api/ProductService';
 import { InputText } from 'primereact/inputtext';
 import getConfig from 'next/config';
-import 'primeflex/primeflex.css';
 
 function MyDonations() {
   
