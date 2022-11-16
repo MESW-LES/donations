@@ -14,10 +14,7 @@ import java.util.Objects;
 public class Donee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "hibernate_sequences")
-    @GenericGenerator(name = "hibernate_sequences", strategy = "org.hibernate.id.enhanced.TableGenerator", parameters = {
-            @Parameter(name = org.hibernate.id.enhanced.TableGenerator.INITIAL_PARAM, value = "100"),
-            @Parameter(name = org.hibernate.id.enhanced.TableGenerator.CONFIG_PREFER_SEGMENT_PER_ENTITY, value = "true")})
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 
@@ -33,9 +30,9 @@ public class Donee {
 
     @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JoinTable(
-            name = "COMPANIES_CATEGORIES",
-            joinColumns = { @JoinColumn(name = "COMPANY_ID") },
-            inverseJoinColumns = { @JoinColumn(name = "CATEGORY_ID") }
+            name = "DONEES_CATEGORIES",
+            joinColumns = { @JoinColumn(name = "DONEE_ID") },
+            inverseJoinColumns = { @JoinColumn(name = "CATEGORY_CODE") }
     )
     private List<Category> categories;
 

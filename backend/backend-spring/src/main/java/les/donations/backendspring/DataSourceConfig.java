@@ -26,7 +26,7 @@ public class DataSourceConfig {
         return sessionFactory;
     }
 
-    @Bean
+    @Bean(name = "transactionManager")
     public PlatformTransactionManager hibernateTransactionManager() {
         HibernateTransactionManager transactionManager
                 = new HibernateTransactionManager();
