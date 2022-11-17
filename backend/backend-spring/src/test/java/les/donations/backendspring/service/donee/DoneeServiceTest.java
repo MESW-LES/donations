@@ -78,7 +78,7 @@ class DoneeServiceTest {
         DoneeDTO doneeDTO = new DoneeDTO().company(companyDTO).password("123").categoryCodes(Collections.singletonList("CAT-A"));
         // mocks the service
         when(companyService.createCompany(companyDTO)).thenReturn(company);
-        when(categoryService.getCategory("CAT-A")).thenThrow(NotFoundEntityException.class);
+        when(categoryService.getCategoryModel("CAT-A")).thenThrow(NotFoundEntityException.class);
         // calls the method
         Assertions.assertThrows(NotFoundEntityException.class, () -> doneeService.registerDonee(doneeDTO));
     }
@@ -103,7 +103,7 @@ class DoneeServiceTest {
         DoneeDTO doneeDTO = new DoneeDTO().company(companyDTO).password("123").categoryCodes(Collections.singletonList("CAT-A"));
         // mocks the service
         when(companyService.createCompany(companyDTO)).thenReturn(company);
-        when(categoryService.getCategory("CAT-A")).thenReturn(category);
+        when(categoryService.getCategoryModel("CAT-A")).thenReturn(category);
         when(doneeDao.saveAndFlush(Mockito.any(Donee.class))).thenReturn(donee);
         // calls the method
         DoneeDTO result = doneeService.registerDonee(doneeDTO);

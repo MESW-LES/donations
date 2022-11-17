@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.websocket.server.PathParam;
+
 public interface ICategoryController {
 
     /**
@@ -24,4 +26,11 @@ public interface ICategoryController {
      */
     @GetMapping(value = "/categories", produces = "application/json")
     ResponseEntity<ApiReturnMessage> getCategories(@RequestParam(value = "onlyActive", required = false) Boolean onlyActive);
+
+    /**
+     * Method that get a specific category
+     * @return a response with a code which represents if the operation was successful or not
+     */
+    @GetMapping(value = "/categories/{categoryCode}", produces = "application/json")
+    ResponseEntity<ApiReturnMessage> getCategory(@PathParam("categoryId") String categoryCode);
 }

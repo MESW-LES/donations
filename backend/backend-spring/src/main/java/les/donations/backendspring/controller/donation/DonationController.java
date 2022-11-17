@@ -33,7 +33,7 @@ public class DonationController extends IController implements IDonationControll
         try{
             // registers the donation
             donationDTO = donationService.registerDonation(donationDTO);
-            return ok(donationDTO);
+            return created(donationDTO);
 
             // if any entity does not exist
         }catch (NotFoundEntityException e){

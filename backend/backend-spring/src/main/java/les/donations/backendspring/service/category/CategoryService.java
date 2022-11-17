@@ -39,7 +39,7 @@ public class CategoryService implements ICategoryService{
     }
 
     @Override
-    public Category getCategory(String code) throws NotFoundEntityException {
+    public Category getCategoryModel(String code) throws NotFoundEntityException {
         // gets the active category
         Category category = categoryDao.getCategoryByCodeAndActive(code, true);
         // if it does not exits
@@ -47,6 +47,14 @@ public class CategoryService implements ICategoryService{
             throw new NotFoundEntityException("The category with the code " + code + " does not exist!");
         }
         return category;
+    }
+
+    @Override
+    public CategoryDTO getCategory(String code) throws NotFoundEntityException {
+        // gets the category
+        Category category = getCategoryModel(code);
+        // converts the category into DTO
+        return categoryMapper.modelToDTO(category);
     }
 
     @Override

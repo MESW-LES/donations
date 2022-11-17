@@ -33,7 +33,7 @@ public class DoneeService implements IDoneeService {
 
         // associates the categories to the donee
         for(String categoryCode : doneeDTO.categoryCodes){
-            donee.addCategory(categoryService.getCategory(categoryCode));
+            donee.addCategory(categoryService.getCategoryModel(categoryCode));
         }
 
         // persists the donee

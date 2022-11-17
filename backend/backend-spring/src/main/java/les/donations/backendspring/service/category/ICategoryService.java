@@ -19,12 +19,20 @@ public interface ICategoryService {
     CategoryDTO registerCategory(CategoryDTO categoryDTO) throws IllegalArgumentException;
 
     /**
-     * Method that gets a category by its code
+     * Method that gets a category model by its code
      * @param code the category code
-     * @return a Category
+     * @return a Category model
      * @throws NotFoundEntityException in case any category has the specified code
      */
-    Category getCategory(String code) throws NotFoundEntityException;
+    Category getCategoryModel(String code) throws NotFoundEntityException;
+
+    /**
+     * Method that gets a category DTO by its code
+     * @param code the category code
+     * @return a Category DTO
+     * @throws NotFoundEntityException in case any category has the specified code
+     */
+    CategoryDTO getCategory(String code) throws NotFoundEntityException;
 
     /**
      * Method that gets all the categories in the system (in Pagination structure)
