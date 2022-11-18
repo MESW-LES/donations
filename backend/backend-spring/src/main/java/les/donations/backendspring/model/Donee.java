@@ -5,6 +5,7 @@ import org.hibernate.annotations.ManyToAny;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,10 +14,7 @@ import java.util.Objects;
 public class Donee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "hibernate_sequences")
-    @GenericGenerator(name = "hibernate_sequences", strategy = "org.hibernate.id.enhanced.TableGenerator", parameters = {
-            @Parameter(name = org.hibernate.id.enhanced.TableGenerator.INITIAL_PARAM, value = "100"),
-            @Parameter(name = org.hibernate.id.enhanced.TableGenerator.CONFIG_PREFER_SEGMENT_PER_ENTITY, value = "true")})
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 
@@ -32,9 +30,9 @@ public class Donee {
 
     @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JoinTable(
-            name = "COMPANIES_CATEGORIES",
-            joinColumns = { @JoinColumn(name = "COMPANY_ID") },
-            inverseJoinColumns = { @JoinColumn(name = "CATEGORY_ID") }
+            name = "DONEES_CATEGORIES",
+            joinColumns = { @JoinColumn(name = "DONEE_ID") },
+            inverseJoinColumns = { @JoinColumn(name = "CATEGORY_CODE") }
     )
     private List<Category> categories;
 
@@ -42,9 +40,10 @@ public class Donee {
         // for ORM
     }
 
-    public Donee(String password, Company company){
-        this.password = password;
+    public Donee(String password, Company company) throws IllegalArgumentException{
+        setPassword(password);
         this.company = company;
+        this.categories =  new ArrayList<>();
     }
 
     public Long getId() {
@@ -59,7 +58,11 @@ public class Donee {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(String password) throws IllegalArgumentException{
+        // checks if the password is null or empty
+        if(password == null || password.isEmpty()){
+            throw new IllegalArgumentException("The password can't be null or empty!");
+        }
         this.password = password;
     }
 
@@ -100,7 +103,7 @@ public class Donee {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Donee donee = (Donee) o;
-        return id.equals(donee.id);
+        return id == null || id.equals(donee.id);
     }
 
     @Override

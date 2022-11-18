@@ -25,7 +25,12 @@ public class Category implements Serializable {
     @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
     private List<Donee> donees;
 
-    public Category() {}
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+    private List<Donation> donations;
+
+    protected Category() {
+        // for ORM
+    }
 
     public Category(String code, String name, String description) throws IllegalArgumentException {
         setCode(code);
@@ -75,6 +80,14 @@ public class Category implements Serializable {
 
     public void setDonees(List<Donee> donees) {
         this.donees = donees;
+    }
+
+    public List<Donation> getDonations() {
+        return donations;
+    }
+
+    public void setDonations(List<Donation> donations) {
+        this.donations = donations;
     }
 
     @Override

@@ -1,16 +1,20 @@
 package les.donations.backendspring.service.donation;
 
-import les.donations.backendspring.dto.CompanyDTO;
 import les.donations.backendspring.dto.DonationDTO;
-import les.donations.backendspring.model.Company;
-import les.donations.backendspring.model.Donation;
+import les.donations.backendspring.exceptions.NotFoundEntityException;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface IDonationService {
 
-    DonationDTO createDonation(DonationDTO donationDTO) throws IllegalArgumentException, IOException;
+    /**
+     * Method that creates a donation and its donation process
+     * @param donationDTO the donation's information
+     * @return the inserted donations's information
+     * @throws IllegalArgumentException in case any error exists in donation's information
+     * @throws NotFoundEntityException in case any entity does not exist (category or address)
+     */
+    DonationDTO registerDonation(DonationDTO donationDTO) throws IllegalArgumentException, NotFoundEntityException;
 
     List<DonationDTO> getDonations(Long id);
 

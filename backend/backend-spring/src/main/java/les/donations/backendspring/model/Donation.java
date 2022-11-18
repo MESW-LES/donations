@@ -1,54 +1,115 @@
 package les.donations.backendspring.model;
 
-import liquibase.pro.packaged.L;
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
+import java.util.List;
+import java.util.Objects;
 
 @Table(name = "DONATIONS")
 @Entity
 public class Donation {
+
+    protected static final String PROPERTY_ID = "ID";
+
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "hibernate_sequences")
-    @GenericGenerator(name = "hibernate_sequences", strategy = "org.hibernate.id.enhanced.TableGenerator", parameters = {
-            @org.hibernate.annotations.Parameter(name = org.hibernate.id.enhanced.TableGenerator.INITIAL_PARAM, value = "100"),
-            @org.hibernate.annotations.Parameter(name = org.hibernate.id.enhanced.TableGenerator.CONFIG_PREFER_SEGMENT_PER_ENTITY, value = "true")})
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "NAME")
-    private String name;
+    @Column(name = "TITLE")
+    private String title;
 
-    @Column(name = "DONOR_ID")
-    private Long donorId;
+    @Column(name = "DESCRIPTION")
+    private String description;
 
-    public Donation() {}
-    public Donation(String name, Long donorId) {
-        this.name = name;
-        this.donorId = donorId;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "DONATIONS_CATEGORIES",
+            joinColumns = { @JoinColumn(name = "DONATION_ID") },
+            inverseJoinColumns = { @JoinColumn(name = "CATEGORY_CODE") }
+    )
+    private List<Category> categories;
+
+    @Column(name = "ACTIVE")
+    private boolean active;
+
+    protected Donation() {
+        // for ORM
+    }
+
+    public Donation(String title, String description) throws IllegalArgumentException{
+        setTitle(title);
+        setDescription(description);
+        active = true;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getTitle() {
+        return title;
     }
 
-    public Long getDonorId() {
-        return donorId;
+    public void setTitle(String title) throws IllegalArgumentException{
+        // if the title is null or empty
+        if(title == null || title.isEmpty()){
+            throw new IllegalArgumentException("The title can't be null or empty!");
+        }
+        this.title = title;
     }
 
-    public void setDonorId(Long donorId) {
-        this.donorId = donorId;
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) throws IllegalArgumentException{
+        // if the description is null or empty
+        if(description == null || description.isEmpty()){
+            throw new IllegalArgumentException("The description can't be null or empty!");
+        }
+        this.description = description;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Donation donation = (Donation) o;
+        return id.equals(donation.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Donation{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", active=" + active +
+                '}';
     }
 }
