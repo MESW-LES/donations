@@ -47,14 +47,13 @@ function Categories() {
   return (
     <>
       <AppMenuBar />
-      <div className="mt-10 sm:mt-0 pt-10">
-        <div className="mt-5 md:col-span-2 md:mt-0 ">
+      <div className="pt-10">
+        <div className="md:col-12">
         <Toast ref={myToast} /> 
           <form action="/api/form" method="POST">
-            <div className="overflow-hidden shadow sm:rounded-md">
-              <div className="bg-white px-4 py-5 sm:p-6">
-                <div className="grid grid-cols-6 gap-6">
-                  <div className="col-span-12">
+            <div className="overflow-auto sm:rounded-md">
+              <div className="bg-white px-6 py-5 ">                
+                  <div className="field col-span-12">
                     <label
                       htmlFor="category_code"
                       className="block text-sm font-medium text-gray-700"
@@ -71,10 +70,10 @@ function Categories() {
                       value={code}
                       onChange={({ target }) => setCode(target?.value)}
                       //autoComplete="given-name"
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      className="block rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                   </div>
-                  <div className="col-span-12">
+                  <div className="field col-span-12">
                     <label
                       htmlFor="category_name"
                       className="block text-sm font-medium text-gray-700"
@@ -95,7 +94,7 @@ function Categories() {
                     />
                   </div>
 
-                  <div className="col-span-12">
+                  <div className="field col-span-12">
                     <label
                       htmlFor="category_description"
                       className="block text-sm font-medium text-gray-700"
@@ -134,8 +133,7 @@ function Categories() {
                 >
                   Save
                 </button>
-              </div>
-            </div>
+              </div>          
           </form>
         </div>
       </div>
