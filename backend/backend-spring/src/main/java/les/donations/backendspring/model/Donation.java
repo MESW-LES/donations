@@ -1,6 +1,7 @@
 package les.donations.backendspring.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,6 +33,9 @@ public class Donation {
     @Column(name = "ACTIVE")
     private boolean active;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "donation", cascade = CascadeType.ALL)
+    private List<DonationImage> donationImages;
+
     protected Donation() {
         // for ORM
     }
@@ -40,6 +44,8 @@ public class Donation {
         setTitle(title);
         setDescription(description);
         active = true;
+        categories = new ArrayList<>();
+        donationImages = new ArrayList<>();
     }
 
     public Long getId() {
@@ -88,6 +94,14 @@ public class Donation {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public void addCategory(Category category){
+        categories.add(category);
+    }
+
+    public void addDonationImage(DonationImage donationImage){
+        donationImages.add(donationImage);
     }
 
     @Override

@@ -1,17 +1,18 @@
 package les.donations.backendspring.service.donation;
 
 import les.donations.backendspring.dto.DonationDTO;
+import les.donations.backendspring.dto.FileDTO;
 import les.donations.backendspring.exceptions.NotFoundEntityException;
 import les.donations.backendspring.mapper.donation.IDonationMapper;
-import les.donations.backendspring.model.Category;
+import les.donations.backendspring.mapper.donationImage.IDonationImageMapper;
 import les.donations.backendspring.model.Donation;
+import les.donations.backendspring.model.DonationImage;
 import les.donations.backendspring.repository.donation.DonationDao;
 import les.donations.backendspring.service.category.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Transactional
@@ -21,22 +22,29 @@ public class DonationService implements IDonationService {
     @Autowired
     private IDonationMapper donationMapper;
     @Autowired
+    private IDonationImageMapper donationImageMapper;
+    @Autowired
     private ICategoryService categoryService;
     @Autowired
     private DonationDao donationDao;
 
     @Override
-    public DonationDTO registerDonation(DonationDTO donationDTO) throws IllegalArgumentException, NotFoundEntityException {
+    public DonationDTO registerDonation(DonationDTO donationDTO, List<FileDTO> filesDTO) throws IllegalArgumentException, NotFoundEntityException {
 
         // converts donation dto to donation model
         Donation donation = donationMapper.dtoToModel(donationDTO);
 
         // gets the associated categories
-        List<Category> categories = new ArrayList<>();
-        for(String categoryCode : donationDTO.categoriesCode){
-            categories.add(categoryService.getCategoryModel(categoryCode));
+        for(String categoryCode : donationDTO.categoriesCode.split(",")){
+            donation.addCategory(categoryService.getCategoryModel(categoryCode.trim()));
         }
-        donation.setCategories(categories);
+
+        // gets the associated donation images
+        for(FileDTO fileDTO : filesDTO){
+            DonationImage donationImage = donationImageMapper.dtoToModel(fileDTO);
+            donationImage.setDonation(donation);
+            donation.addDonationImage(donationImage);
+        }
 
         // persists the donation
         donation = donationDao.saveAndFlush(donation);
