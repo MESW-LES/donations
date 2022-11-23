@@ -3,8 +3,6 @@ package les.donations.backendspring.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.List;
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DonationDTO implements ModelDTO {
 
@@ -18,6 +16,8 @@ public class DonationDTO implements ModelDTO {
     public String categoriesCode;
     @JsonProperty
     public Long addressId;
+    @JsonProperty
+    public String createdDate;
 
     public DonationDTO id(Long id) {
         this.id = id;
@@ -41,6 +41,11 @@ public class DonationDTO implements ModelDTO {
 
     public DonationDTO addressId(Long addressId) {
         this.addressId = addressId;
+        return this;
+    }
+
+    public DonationDTO createdDate(String createdDate) {
+        this.createdDate = createdDate;
         return this;
     }
 

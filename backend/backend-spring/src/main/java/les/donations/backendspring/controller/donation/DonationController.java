@@ -57,15 +57,27 @@ public class DonationController extends IController implements IDonationControll
 
             // if an error occurred while reading the file
         }catch (IOException e){
-            e.printStackTrace();
             return internalServerError("An error occurred while reading the files!");
         }
     }
 
     @Override
-    public ResponseEntity<ApiReturnMessage> updateDonation(Long donationId) {
-        System.out.println("PUT Donation");
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<ApiReturnMessage> updateDonation(Long donationId, DonationDTO donationDTO) {
+
+        try{
+
+            // updates the donation information
+            donationDTO = donationService.updateDonation(donationId, donationDTO);
+            return created(donationDTO);
+
+            // if ayn entity does not exist
+        }catch (NotFoundEntityException e){
+            return notFound(e.getMessage());
+
+            // if the information has any error
+        }catch (IllegalArgumentException e){
+            return badRequest(e.getMessage());
+        }
     }
 
     @Override

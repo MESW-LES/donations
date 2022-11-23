@@ -18,4 +18,14 @@ public interface IDonationService {
      */
     DonationDTO registerDonation(DonationDTO donationDTO, List<FileDTO> filesDTO) throws IllegalArgumentException, NotFoundEntityException;
 
+    /**
+     * Method that updates a donation
+     * @param donationId the donation's identification
+     * @param donationDTO the donation's information
+     * @return the updated donation's information
+     * @throws IllegalArgumentException in case any error exists in donation's information
+     * @throws NotFoundEntityException in case any entity does not exist (donation, category or address)
+     */
+    DonationDTO updateDonation(Long donationId, DonationDTO donationDTO) throws IllegalArgumentException, NotFoundEntityException;
+
 }

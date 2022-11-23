@@ -7,8 +7,10 @@ import les.donations.backendspring.mapper.donation.IDonationMapper;
 import les.donations.backendspring.mapper.donationImage.IDonationImageMapper;
 import les.donations.backendspring.model.Donation;
 import les.donations.backendspring.model.DonationImage;
+import les.donations.backendspring.model.DonationProcess;
 import les.donations.backendspring.repository.donation.DonationDao;
 import les.donations.backendspring.service.category.ICategoryService;
+import les.donations.backendspring.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,9 +48,42 @@ public class DonationService implements IDonationService {
             donation.addDonationImage(donationImage);
         }
 
+        // begins the donation process and associates with the donation
+        DonationProcess donationProcess = new DonationProcess(donation);
+        donation.setDonationProcess(donationProcess);
+
         // persists the donation
         donation = donationDao.saveAndFlush(donation);
 
-        return donationDTO.id(donation.getId());
+        return donationDTO.id(donation.getId()).createdDate(StringUtils.convertDateToString(donation.getCreatedDate()));
+    }
+
+    @Override
+    public DonationDTO updateDonation(Long donationId, DonationDTO donationDTO) throws IllegalArgumentException, NotFoundEntityException {
+
+        // gets the donation by its id
+        Donation donation = donationDao.getReferenceById(donationId);
+        // if the donation does not exist
+        if(!donation.isActive()){
+            throw new NotFoundEntityException("The donation does not exist!");
+        }
+
+        // if the donation is not in a editable status (not in created status)
+        if(!donation.getDonationProcess().getStatus().isCanEditDonation()){
+            throw new IllegalArgumentException("The donation can't be edited!");
+        }
+
+        // removes the previous categories
+        donation.clearCategories();
+        // gets the associated categories
+        for(String categoryCode : donationDTO.categoriesCode.split(",")){
+            donation.addCategory(categoryService.getCategoryModel(categoryCode.trim()));
+        }
+
+        // updates the donation's information
+        donation.setTitle(donationDTO.title);
+        donation.setDescription(donationDTO.description);
+
+        return donationDTO.id(donationId);
     }
 }

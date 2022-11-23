@@ -2,6 +2,7 @@ package les.donations.backendspring.model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,6 +23,9 @@ public class Donation {
     @Column(name = "DESCRIPTION")
     private String description;
 
+    @Column(name = "CREATED_DATE")
+    private Date createdDate;
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "DONATIONS_CATEGORIES",
@@ -36,6 +40,9 @@ public class Donation {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "donation", cascade = CascadeType.ALL)
     private List<DonationImage> donationImages;
 
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "donation", cascade = CascadeType.ALL)
+    private DonationProcess donationProcess;
+
     protected Donation() {
         // for ORM
     }
@@ -43,6 +50,7 @@ public class Donation {
     public Donation(String title, String description) throws IllegalArgumentException{
         setTitle(title);
         setDescription(description);
+        createdDate = new Date();
         active = true;
         categories = new ArrayList<>();
         donationImages = new ArrayList<>();
@@ -96,12 +104,40 @@ public class Donation {
         this.active = active;
     }
 
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public List<DonationImage> getDonationImages() {
+        return donationImages;
+    }
+
+    public void setDonationImages(List<DonationImage> donationImages) {
+        this.donationImages = donationImages;
+    }
+
+    public DonationProcess getDonationProcess() {
+        return donationProcess;
+    }
+
+    public void setDonationProcess(DonationProcess donationProcess) {
+        this.donationProcess = donationProcess;
+    }
+
     public void addCategory(Category category){
         categories.add(category);
     }
 
     public void addDonationImage(DonationImage donationImage){
         donationImages.add(donationImage);
+    }
+
+    public void clearCategories(){
+        categories.clear();
     }
 
     @Override
