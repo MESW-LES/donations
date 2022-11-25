@@ -5,23 +5,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DoneeDTO implements ModelDTO{
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty
     public Long id;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty
+    public String password;
     @JsonProperty
     public CompanyDTO company;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty
     public List<String> geographicAreaIds;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty
-    public List<String> categoryIds;
+    public List<String> categoryCodes;
 
     public DoneeDTO id(Long id) {
         this.id = id;
@@ -38,8 +34,13 @@ public class DoneeDTO implements ModelDTO{
         return this;
     }
 
-    public DoneeDTO categoryIds(List<String> categoryIds) {
-        this.categoryIds = categoryIds;
+    public DoneeDTO categoryCodes(List<String> categoryCodes) {
+        this.categoryCodes = categoryCodes;
+        return this;
+    }
+
+    public DoneeDTO password(String password) {
+        this.password = password;
         return this;
     }
 }

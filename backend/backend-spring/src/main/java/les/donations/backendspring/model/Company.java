@@ -13,10 +13,7 @@ public class Company {
     protected static final String PROPERTY_ID = "ID";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "hibernate_sequences")
-    @GenericGenerator(name = "hibernate_sequences", strategy = "org.hibernate.id.enhanced.TableGenerator", parameters = {
-            @org.hibernate.annotations.Parameter(name = org.hibernate.id.enhanced.TableGenerator.INITIAL_PARAM, value = "100"),
-            @org.hibernate.annotations.Parameter(name = org.hibernate.id.enhanced.TableGenerator.CONFIG_PREFER_SEGMENT_PER_ENTITY, value = "true")})
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 
@@ -108,7 +105,7 @@ public class Company {
     public void setPhone(Long phone) {
         // checks if the number is null or does not respect the nine character length
         if(phone == null || phone.toString().length() != 9){
-            throw new IllegalArgumentException("The phone can't be null or empty!");
+            throw new IllegalArgumentException("The phone can't be null or has a wrong format!");
         }
         this.phone = phone;
     }

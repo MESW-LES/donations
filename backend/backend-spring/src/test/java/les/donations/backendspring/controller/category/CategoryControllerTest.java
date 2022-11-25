@@ -2,6 +2,7 @@ package les.donations.backendspring.controller.category;
 
 import les.donations.backendspring.api.ApiReturnMessage;
 import les.donations.backendspring.dto.CategoryDTO;
+import les.donations.backendspring.dto.PaginationDTO;
 import les.donations.backendspring.service.category.ICategoryService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,7 +37,7 @@ class CategoryControllerTest {
 
     @ParameterizedTest
     @MethodSource("provideMessageExceptions")
-    void addCategoryWithIllegalInformation(String message){
+    void registerCategoryWithIllegalInformationTest(String message){
         CategoryDTO categoryDTO = new CategoryDTO();
         // mock the service
         when(categoryService.registerCategory(categoryDTO)).thenThrow(new IllegalArgumentException(message));
@@ -47,7 +48,7 @@ class CategoryControllerTest {
     }
 
     @Test
-    void addCategoryWithValidInformation(){
+    void registerCategoryWithValidInformationTest(){
         CategoryDTO categoryDTO = new CategoryDTO().code("CAT-A").name("Category A").description("Category A description");
         // mock the service
         when(categoryService.registerCategory(categoryDTO)).thenReturn(categoryDTO);
@@ -55,6 +56,15 @@ class CategoryControllerTest {
         ResponseEntity<ApiReturnMessage> result = categoryController.registerCategory(categoryDTO);
         Assertions.assertEquals(201, result.getStatusCodeValue());
         Assertions.assertEquals(categoryDTO, result.getBody().getMessage());
+    }
+
+    @Test
+    void getCategoriesTest(){
+        // mock the service
+        when(categoryService.getCategories(true)).thenReturn(new PaginationDTO());
+        // call the controller
+        ResponseEntity<ApiReturnMessage> result = categoryController.getCategories(true);
+        Assertions.assertEquals(200, result.getStatusCodeValue());
     }
 
     private static Stream<Arguments> provideMessageExceptions(){
