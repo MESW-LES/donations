@@ -248,7 +248,7 @@ function AddDonation() {
               <h5>New donation</h5>
               <div className="p-fluid formgrid grid">
                 <div className="field col-12">
-                  <label htmlFor="productname">Product name</label>
+                  <label htmlFor="productname">Title</label>
                   <InputText id="productname" type="text" />
                 </div>
                 <div className="field col-12">
