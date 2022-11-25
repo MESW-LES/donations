@@ -16,7 +16,23 @@ public interface IDonationService {
      */
     DonationDTO registerDonation(DonationDTO donationDTO) throws IllegalArgumentException, NotFoundEntityException;
 
+    /**
+     * Method that gets donations by donor id
+     * @param id the donor id
+     * @return the list of donations made by provided donor
+     */
     List<DonationDTO> getDonations(Long id);
 
+    /**
+     * Method that gets a specific donations
+     * @param id the donation id
+     * @return the donation
+     */
     DonationDTO getDonation(Long id);
+
+    /**
+     * Method that removes specific donation
+     * @param id the donation id
+     */
+    void deleteDonation(Long id);
 }
