@@ -8,10 +8,12 @@ import les.donations.backendspring.exceptions.NotFoundEntityException;
 import les.donations.backendspring.service.category.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 public class CategoryController extends IController implements ICategoryController{
 
