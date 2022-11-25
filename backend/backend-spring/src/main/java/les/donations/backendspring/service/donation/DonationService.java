@@ -17,24 +17,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Transactional
-import les.donations.backendspring.mapper.donation.IDonationMapper;
-import les.donations.backendspring.model.Donation;
-import les.donations.backendspring.repository.donation.IDonationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
-import org.springframework.stereotype.Service;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 @Service
 public class DonationService implements IDonationService {
-
-    @Autowired
-    private IDonationRepository donationRepository;
 
     @Autowired
     private IDonationMapper donationMapper;
@@ -64,18 +48,24 @@ public class DonationService implements IDonationService {
 
     @Override
     public List<DonationDTO> getDonations(Long id) {
-        List<Donation> donations = donationRepository.findByDonorId(id);
+        /*List<Donation> donations = donationDao.findByDonorId(id);
         List<DonationDTO> donationDTOS = donations.stream()
                 .map(donation -> donationMapper.modelToDto(donation)).collect(Collectors.toList());
-        return donationDTOS;
+        return donationDTOS;*/
+        return new ArrayList<>();
     }
 
     @Override
     public DonationDTO getDonation(Long id) {
-        Optional<Donation> donation = donationRepository.findById(id);
+        Optional<Donation> donation = donationDao.findById(id);
         if (donation.isPresent()) {
             return donationMapper.modelToDto(donation.get());
         }
         throw new IllegalArgumentException("Donation is not found");
+    }
+
+    @Override
+    public void deleteDonation(Long id) {
+        donationDao.deleteById(id);
     }
 }

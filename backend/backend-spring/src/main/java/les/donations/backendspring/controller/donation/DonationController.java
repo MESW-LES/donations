@@ -5,10 +5,7 @@ import les.donations.backendspring.dto.DonationDTO;
 import les.donations.backendspring.service.donation.IDonationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import les.donations.backendspring.controller.IController;
-import les.donations.backendspring.dto.DonationDTO;
 import les.donations.backendspring.exceptions.NotFoundEntityException;
-import les.donations.backendspring.service.donation.DonationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
-public class DonationController implements IDonationController {
+public class DonationController extends IController implements IDonationController {
 
     @Autowired
     private IDonationService donationService;
@@ -79,7 +76,7 @@ public class DonationController implements IDonationController {
 
     @Override
     public ResponseEntity<ApiReturnMessage> deleteDonation(Long donationId) {
-        System.out.println("DELETE Donation");
-        return new ResponseEntity<>(HttpStatus.OK);
+        donationService.deleteDonation(donationId);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }
