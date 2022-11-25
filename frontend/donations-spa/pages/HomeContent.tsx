@@ -32,7 +32,7 @@ const sortOptions = [
 }, []); 
 
 // Filter option
-const onFilter = (e) => {
+const onFilter = (e: any) => {
     const value = e.target.value;
     setGlobalFilterValue(value);
     if (value.length === 0) {
@@ -128,14 +128,11 @@ const dataviewGridItem = (data) => {
 const itemTemplate = (data, layout) => {
     if (!data) {
         return;
-        console.log("HEY 2");
     }
 
     if (layout === 'list') {
-        console.log("HEY 3");
         return dataviewListItem(data);
     } else if (layout === 'grid') {
-        console.log("HEY 4");
         return dataviewGridItem(data);
     }
 };

@@ -39,7 +39,7 @@ const sortOptions = [
 }, []); 
 
 // Filter option (Search)
-const onFilter = (e) => {
+const onFilter = (e: any) => {
     const value = e.target.value;
     setGlobalFilterValue(value);
     if (value.length === 0) {
