@@ -8,6 +8,7 @@ import les.donations.backendspring.mapper.donationImage.IDonationImageMapper;
 import les.donations.backendspring.model.Donation;
 import les.donations.backendspring.model.DonationImage;
 import les.donations.backendspring.model.DonationProcess;
+import les.donations.backendspring.model.Status;
 import les.donations.backendspring.repository.donation.DonationDao;
 import les.donations.backendspring.service.category.ICategoryService;
 import les.donations.backendspring.util.StringUtils;
@@ -90,17 +91,16 @@ public class DonationService implements IDonationService {
     }
 
     @Override
-    public List<DonationDTO> getDonations(Long id) {
-        /*List<Donation> donations = donationDao.findByDonorId(id);
+    public List<DonationDTO> getDonations() {
+        List<Donation> donations = donationDao.findByActiveIsTrue();
         List<DonationDTO> donationDTOS = donations.stream()
                 .map(donation -> donationMapper.modelToDto(donation)).collect(Collectors.toList());
-        return donationDTOS;*/
-        return new ArrayList<>();
+        return donationDTOS;
     }
 
     @Override
     public DonationDTO getDonation(Long id) {
-        Optional<Donation> donation = donationDao.findById(id);
+        Optional<Donation> donation = donationDao.findByIdAndActiveIsTrue(id);
         if (donation.isPresent()) {
             return donationMapper.modelToDto(donation.get());
         }
@@ -108,7 +108,17 @@ public class DonationService implements IDonationService {
     }
 
     @Override
-    public void deleteDonation(Long id) {
-        donationDao.deleteById(id);
+    public void deleteDonation(Long id) throws NotFoundEntityException {
+        Donation donation = donationDao.getReferenceById(id);
+        // if the donation does not exist
+        if(!donation.isActive()){
+            throw new NotFoundEntityException("The donation does not exist!");
+        }
+
+        if ((donation.getDonationProcess().getStatus().equals(Status.ONGOING)) ||
+            (donation.getDonationProcess().getStatus().equals(Status.FINISHED))) {
+            throw new IllegalArgumentException("The donation can't be deleted!");
+        }
+        donation.setActive(false);
     }
 }

@@ -33,7 +33,7 @@ public interface IDonationService {
      * @param id the donor id
      * @return the list of donations made by provided donor
      */
-    List<DonationDTO> getDonations(Long id);
+    List<DonationDTO> getDonations();
 
     /**
      * Method that gets a specific donations
@@ -46,5 +46,5 @@ public interface IDonationService {
      * Method that removes specific donation
      * @param id the donation id
      */
-    void deleteDonation(Long id);
+    void deleteDonation(Long id) throws NotFoundEntityException;
 }

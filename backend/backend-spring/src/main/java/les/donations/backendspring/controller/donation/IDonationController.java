@@ -9,8 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface IDonationController {
 
-    @GetMapping(value = "/donations/donor/{id}", produces = "application/json")
-    ResponseEntity<ApiReturnMessage> getDonations(@PathVariable("id") Long donorId);
+    @GetMapping(value = "/donations", produces = "application/json")
+    ResponseEntity<ApiReturnMessage> getDonations();
 
     @GetMapping(value = "/donations/{id}", produces = "application/json")
     ResponseEntity<ApiReturnMessage> getDonation(@PathVariable("id") Long donationId);

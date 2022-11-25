@@ -2,6 +2,7 @@ package les.donations.backendspring.controller.donation;
 
 import les.donations.backendspring.api.ApiReturnMessage;
 import les.donations.backendspring.dto.DonationDTO;
+import les.donations.backendspring.dto.FileDTO;
 import les.donations.backendspring.service.donation.IDonationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import les.donations.backendspring.controller.IController;
@@ -31,11 +32,11 @@ public class DonationController extends IController implements IDonationControll
     private IFileManagement fileManagement;
 
     @Override
-    public ResponseEntity getDonations(Long donorId) {
+    public ResponseEntity getDonations() {
         HttpStatus httpStatus;
         List<DonationDTO> donationDTOS;
         try {
-            donationDTOS = donationService.getDonations(donorId);
+            donationDTOS = donationService.getDonations();
             httpStatus = HttpStatus.OK;
             return new ResponseEntity<>(donationDTOS, httpStatus);
         } catch (IllegalArgumentException ex) {
@@ -107,7 +108,14 @@ public class DonationController extends IController implements IDonationControll
 
     @Override
     public ResponseEntity<ApiReturnMessage> deleteDonation(Long donationId) {
-        donationService.deleteDonation(donationId);
+        try{
+            donationService.deleteDonation(donationId);
+        }catch (NotFoundEntityException e){
+            return notFound(e.getMessage());
+        }catch (IllegalArgumentException e){
+            return badRequest(e.getMessage());
+        }
+
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }

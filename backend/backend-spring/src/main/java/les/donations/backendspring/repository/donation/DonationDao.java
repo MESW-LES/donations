@@ -8,8 +8,8 @@ import java.util.Optional;
 
 public interface DonationDao extends JpaRepository<Donation, Long> {
 
-    Optional<Donation> findById(Long id);
+    Optional<Donation> findByIdAndActiveIsTrue(Long id);
 
-    //List<Donation> findByDonorId(Long id);
+    List<Donation> findByActiveIsTrue();
 
 }
