@@ -11,4 +11,9 @@ public class DonationMapper implements IDonationMapper {
     public Donation dtoToModel(DonationDTO donationDTO) throws IllegalArgumentException{
         return new Donation(donationDTO.title, donationDTO.description);
     }
+
+    @Override
+    public DonationDTO modelToDto(Donation donation) throws IllegalArgumentException {
+        return (new DonationDTO().title(donation.getTitle()).description(donation.getDescription()));
+    }
 }

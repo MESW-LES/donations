@@ -1,9 +1,12 @@
 package les.donations.backendspring.controller.donation;
 
 import les.donations.backendspring.api.ApiReturnMessage;
-import les.donations.backendspring.controller.IController;
 import les.donations.backendspring.dto.DonationDTO;
 import les.donations.backendspring.dto.FileDTO;
+import les.donations.backendspring.service.donation.IDonationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import les.donations.backendspring.controller.IController;
+import les.donations.backendspring.dto.DonationDTO;
 import les.donations.backendspring.exceptions.NotFoundEntityException;
 import les.donations.backendspring.file.IFileManagement;
 import les.donations.backendspring.service.donation.DonationService;
@@ -16,10 +19,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.List;
+import java.util.Objects;
 
 @CrossOrigin
 @RestController
-public class DonationController extends IController implements IDonationController{
+public class DonationController extends IController implements IDonationController {
 
     @Autowired
     private DonationService donationService;
@@ -27,15 +32,34 @@ public class DonationController extends IController implements IDonationControll
     private IFileManagement fileManagement;
 
     @Override
-    public ResponseEntity<ApiReturnMessage> getDonations() {
-        System.out.println("GET Donations");
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity getDonations() {
+        HttpStatus httpStatus;
+        List<DonationDTO> donationDTOS;
+        try {
+            donationDTOS = donationService.getDonations();
+            httpStatus = HttpStatus.OK;
+            return new ResponseEntity<>(donationDTOS, httpStatus);
+        } catch (IllegalArgumentException ex) {
+            httpStatus = HttpStatus.BAD_REQUEST;
+            return new ResponseEntity<>(ex.getMessage(), httpStatus);
+        }
+
     }
 
     @Override
     public ResponseEntity<ApiReturnMessage> getDonation(Long donationId) {
-        System.out.println("GET Donation");
-        return new ResponseEntity<>(HttpStatus.OK);
+        ApiReturnMessage apiReturnMessage;
+        HttpStatus httpStatus;
+        DonationDTO donationDTO;
+        try {
+            donationDTO = donationService.getDonation(donationId);
+            httpStatus = HttpStatus.CREATED;
+            apiReturnMessage = new ApiReturnMessage(httpStatus.value(), donationDTO);
+        } catch (IllegalArgumentException ex) {
+            httpStatus = HttpStatus.BAD_REQUEST;
+            apiReturnMessage = new ApiReturnMessage(httpStatus.value(), ex.getMessage());
+        }
+        return new ResponseEntity<>(apiReturnMessage, httpStatus);
     }
 
     @Override
@@ -84,7 +108,14 @@ public class DonationController extends IController implements IDonationControll
 
     @Override
     public ResponseEntity<ApiReturnMessage> deleteDonation(Long donationId) {
-        System.out.println("DELETE Donation");
-        return new ResponseEntity<>(HttpStatus.OK);
+        try{
+            donationService.deleteDonation(donationId);
+        }catch (NotFoundEntityException e){
+            return notFound(e.getMessage());
+        }catch (IllegalArgumentException e){
+            return badRequest(e.getMessage());
+        }
+
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }

@@ -19,12 +19,6 @@ public class PersonService implements IPersonService {
     @Override
     public Person addPerson(PersonDTO personDTO) throws IllegalArgumentException {
         Person person = personMapper.dtoToModel(personDTO);
-        try {
-            personRepository.saveAndFlush(person);
-            personDTO.id = person.getId();
-        } catch (Exception ex) {
-            throw new IllegalArgumentException("NIF or email already exists");
-        }
 
         return person;
     }
