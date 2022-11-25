@@ -98,7 +98,7 @@ class CategoryServiceTest {
     void getCategoryTest() throws NotFoundEntityException {
         Category category = new Category("CAT-A", "Category A", "Description A");
         when(categoryRepository.getCategoryByCodeAndActive("CAT-A", true)).thenReturn(category);
-        assertEquals(category, categoryService.getCategory("CAT-A"));
+        assertEquals(category, categoryService.getCategoryModel("CAT-A"));
     }
 
     @Test

@@ -11,15 +11,15 @@ services:
     ports:
       - '8080:8080'
     environment:
-      - DATABASE_URL=postgresql://postgresqldb:5432/postgres
-      - DATABASE_USER=postgres
-      - DATABASE_PASSWORD=D0nationSAppLES
+      - DATABASE_URL=postgresql://ls-0ebe4ec6094e46c9d0ef27f76446eb59220c668d.cgwgs94a3j9a.eu-west-3.rds.amazonaws.com:5432/postgres
+      - DATABASE_USER=dbmasteruser
+      - DATABASE_PASSWORD=#KMUEZ<ZttO4*X#vXh8$psA]<I8~k~PF
   postgresqldb:
     image: 'postgres:13.1-alpine'
     container_name: postgresqldb
     ports:
       - '6543:5432'
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=D0nationSAppLES
+      - POSTGRES_USER=dbmasteruser
+      - POSTGRES_PASSWORD=#KMUEZ<ZttO4*X#vXh8$psA]<I8~k~PF
       - POSTGRES_DB=postgres
