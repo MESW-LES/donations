@@ -36,6 +36,9 @@ public class Donee {
     )
     private List<Category> categories;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "donee")
+    private List<DonationProcess> donationProcesses;
+
     protected Donee() {
         // for ORM
     }
