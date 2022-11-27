@@ -1,4 +1,4 @@
 FROM openjdk:8-jdk-alpine
-COPY target/backend-spring.jar backend-spring.jar
+COPY backend/backend-spring/target/backend-spring.jar .
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","/backend-spring.jar"]
