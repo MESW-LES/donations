@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface IDonationController {
 
     @GetMapping(value = "/donations", produces = "application/json")
-    ResponseEntity<ApiReturnMessage> getDonations();
+    ResponseEntity<ApiReturnMessage> getDonations(@RequestParam(value = "status", required = false) Integer donationProcessStatus);
 
     @GetMapping(value = "/donations/{id}", produces = "application/json")
     ResponseEntity<ApiReturnMessage> getDonation(@PathVariable("id") Long donationId);
@@ -23,5 +23,8 @@ public interface IDonationController {
 
     @DeleteMapping(value = "/donations/{id}", produces = "application/json")
     ResponseEntity<ApiReturnMessage> deleteDonation(@PathVariable("id") Long donationId);
+
+    @PutMapping(value = "/donations/{id}/request", produces = "application/json")
+    ResponseEntity<ApiReturnMessage> requestDonation(@PathVariable("id") Long donationId);
 
 }

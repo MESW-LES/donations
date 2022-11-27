@@ -1,6 +1,7 @@
 package les.donations.backendspring.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.Objects;
 
 @Table(name = "DONATIONS")
 @Entity
-public class Donation {
+public class Donation implements Serializable {
 
     protected static final String PROPERTY_ID = "ID";
 
@@ -138,6 +139,10 @@ public class Donation {
 
     public void clearCategories(){
         categories.clear();
+    }
+
+    public void deactivate(){
+        active = false;
     }
 
     @Override

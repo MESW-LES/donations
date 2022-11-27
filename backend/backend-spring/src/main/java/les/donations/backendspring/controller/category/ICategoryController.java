@@ -32,5 +32,5 @@ public interface ICategoryController {
      * @return a response with a code which represents if the operation was successful or not
      */
     @GetMapping(value = "/categories/{categoryCode}", produces = "application/json")
-    ResponseEntity<ApiReturnMessage> getCategory(@PathParam("categoryId") String categoryCode);
+    ResponseEntity<ApiReturnMessage> getCategory(@PathParam("categoryCode") String categoryCode);
 }

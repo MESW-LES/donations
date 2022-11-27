@@ -2,13 +2,14 @@ package les.donations.backendspring.service.donation;
 
 import les.donations.backendspring.dto.DonationDTO;
 import les.donations.backendspring.dto.FileDTO;
+import les.donations.backendspring.dto.ModelDTO;
+import les.donations.backendspring.dto.PaginationDTO;
 import les.donations.backendspring.exceptions.NotFoundEntityException;
 import les.donations.backendspring.mapper.donation.IDonationMapper;
 import les.donations.backendspring.mapper.donationImage.IDonationImageMapper;
 import les.donations.backendspring.model.Donation;
 import les.donations.backendspring.model.DonationImage;
 import les.donations.backendspring.model.DonationProcess;
-import les.donations.backendspring.model.Status;
 import les.donations.backendspring.repository.donation.DonationDao;
 import les.donations.backendspring.service.category.ICategoryService;
 import les.donations.backendspring.util.StringUtils;
@@ -65,11 +66,7 @@ public class DonationService implements IDonationService {
     public DonationDTO updateDonation(Long donationId, DonationDTO donationDTO) throws IllegalArgumentException, NotFoundEntityException {
 
         // gets the donation by its id
-        Donation donation = donationDao.getReferenceById(donationId);
-        // if the donation does not exist
-        if(!donation.isActive()){
-            throw new NotFoundEntityException("The donation does not exist!");
-        }
+        Donation donation = getDonationModel(donationId);
 
         // if the donation is not in a editable status (not in created status)
         if(!donation.getDonationProcess().getStatus().isCanEditDonation()){
@@ -91,34 +88,62 @@ public class DonationService implements IDonationService {
     }
 
     @Override
-    public List<DonationDTO> getDonations() {
-        List<Donation> donations = donationDao.findByActiveIsTrue();
-        List<DonationDTO> donationDTOS = donations.stream()
-                .map(donation -> donationMapper.modelToDto(donation)).collect(Collectors.toList());
-        return donationDTOS;
+    public PaginationDTO getDonations(Integer donationProcessStatus) {
+        // gets the active donations with a specific status
+        List<Donation> donations = donationDao.getDonations(donationProcessStatus);
+        // converts them into DTOs
+        List<ModelDTO> donationDTOs = donations.stream().map(donation -> donationMapper.modelToDto(donation)).collect(Collectors.toList());
+
+        return new PaginationDTO().results(donationDTOs).countResults(donations.size());
     }
 
     @Override
-    public DonationDTO getDonation(Long id) {
-        Optional<Donation> donation = donationDao.findByIdAndActiveIsTrue(id);
-        if (donation.isPresent()) {
-            return donationMapper.modelToDto(donation.get());
+    public DonationDTO getDonation(Long donationId) throws NotFoundEntityException {
+        // gets the donation by its id
+        Donation donation = getDonationModel(donationId);
+        return donationMapper.modelToDto(donation);
+    }
+
+    @Override
+    public DonationDTO deleteDonation(Long donationId) throws NotFoundEntityException, IllegalArgumentException {
+        // gets the donation by its id
+        Donation donation = getDonationModel(donationId);
+        // gets the donation process
+        DonationProcess donationProcess = donation.getDonationProcess();
+
+        // if it is not possible to delete the donation
+        if (!donationProcess.getStatus().isCanDeleteDonation()) {
+            throw new IllegalArgumentException("The donation can't be deleted!");
         }
-        throw new IllegalArgumentException("Donation is not found");
+
+        // deactivate the donation
+        donation.deactivate();
+        return donationMapper.modelToDto(donation);
     }
 
     @Override
-    public void deleteDonation(Long id) throws NotFoundEntityException {
-        Donation donation = donationDao.getReferenceById(id);
+    public DonationDTO requestDonation(Long donationId) throws NotFoundEntityException, IllegalArgumentException {
+        // gets the donation by its id
+        Donation donation = getDonationModel(donationId);
+        // gets the donation process
+        DonationProcess donationProcess = donation.getDonationProcess();
+
+        // if the donation is not in created status it cant request the donation
+        if(!donationProcess.getStatus().isCanEditDonation()){
+            throw new IllegalArgumentException("The donation is not in a proper status to be requested!");
+        }
+
+        // change the donation process
+        donationProcess.toRequestedStatus(null);
+        return donationMapper.modelToDto(donation);
+    }
+
+    private Donation getDonationModel(Long donationId) throws NotFoundEntityException{
+        Donation donation = donationDao.getReferenceById(donationId);
         // if the donation does not exist
         if(!donation.isActive()){
             throw new NotFoundEntityException("The donation does not exist!");
         }
-
-        if ((donation.getDonationProcess().getStatus().equals(Status.ONGOING)) ||
-            (donation.getDonationProcess().getStatus().equals(Status.FINISHED))) {
-            throw new IllegalArgumentException("The donation can't be deleted!");
-        }
-        donation.setActive(false);
+        return donation;
     }
 }

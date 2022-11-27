@@ -67,6 +67,22 @@ public class DonationProcess {
         this.donee = donee;
     }
 
+    /**
+     * Method that changes a donation process status from CREATED to REQUESTED
+     * @param donee the donee that requested the donation
+     * @throws IllegalArgumentException if the donation can't change to REQUESTED status
+     */
+    public void toRequestedStatus(Donee donee) throws IllegalArgumentException{
+        // if its not in created status then it cant change to request status
+        if(!status.isCanEditDonation()){
+            throw new IllegalArgumentException("The donation can't change to request status!");
+        }
+        // change to requested
+        status = Status.REQUESTED;
+        // sets the donee that requested the donation
+        this.donee = donee;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -2,6 +2,7 @@ package les.donations.backendspring.service.donation;
 
 import les.donations.backendspring.dto.DonationDTO;
 import les.donations.backendspring.dto.FileDTO;
+import les.donations.backendspring.dto.PaginationDTO;
 import les.donations.backendspring.exceptions.NotFoundEntityException;
 
 import java.util.List;
@@ -29,22 +30,33 @@ public interface IDonationService {
     DonationDTO updateDonation(Long donationId, DonationDTO donationDTO) throws IllegalArgumentException, NotFoundEntityException;
 
     /**
-     * Method that gets donations by donor id
-     * @param id the donor id
-     * @return the list of donations made by provided donor
+     * Method that gets the donations
+     * @param donationProcessStatus the process status of a donation
+     * @return the donations
      */
-    List<DonationDTO> getDonations();
+    PaginationDTO getDonations(Integer donationProcessStatus);
 
     /**
-     * Method that gets a specific donations
-     * @param id the donation id
-     * @return the donation
+     * Method that gets the information of a specific donation
+     * @param donationId the donation identification
+     * @return information about the donation
      */
-    DonationDTO getDonation(Long id);
+    DonationDTO getDonation(Long donationId) throws NotFoundEntityException;
 
     /**
      * Method that removes specific donation
-     * @param id the donation id
+     * @param donationId the donation's identification
+     * @throws NotFoundEntityException if the donation does not exist in the system
+     * @throws IllegalArgumentException if the donation cant be deleted
      */
-    void deleteDonation(Long id) throws NotFoundEntityException;
+    DonationDTO deleteDonation(Long donationId) throws NotFoundEntityException, IllegalArgumentException;
+
+    /**
+     * Method that requests a donation to occur
+     * @param donationId the donation identification
+     * @return the donation in a specific status
+     * @throws NotFoundEntityException if the donation does not exist
+     * @throws IllegalArgumentException if the donation is not in proper status
+     */
+    DonationDTO requestDonation(Long donationId) throws NotFoundEntityException, IllegalArgumentException;
 }
