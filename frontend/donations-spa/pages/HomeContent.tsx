@@ -39,7 +39,7 @@ const onFilter = (e: any) => {
         setFilteredValue(null);
     }
     else {
-        const filtered = dataViewValue.filter((product) => {
+        const filtered = dataViewValue?.filter((product) => {
             return product.name.toLowerCase().includes(value);
         });
         setFilteredValue(filtered);
