@@ -2,6 +2,7 @@ package les.donations.backendspring.controller.donation;
 
 import les.donations.backendspring.api.ApiReturnMessage;
 import les.donations.backendspring.dto.DonationDTO;
+import les.donations.backendspring.dto.DonationDecisionDTO;
 import les.donations.backendspring.dto.FileDTO;
 import les.donations.backendspring.dto.PaginationDTO;
 import les.donations.backendspring.service.donation.IDonationService;
@@ -9,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import les.donations.backendspring.controller.IController;
 import les.donations.backendspring.exceptions.NotFoundEntityException;
 import les.donations.backendspring.file.IFileManagement;
-import les.donations.backendspring.service.donation.DonationService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
@@ -119,6 +118,19 @@ public class DonationController extends IController implements IDonationControll
             // if the donation is not on the proper state
         }catch (IllegalArgumentException e){
             return badRequest(e.getMessage());
+        }
+    }
+
+    @Override
+    public ResponseEntity<ApiReturnMessage> decisionDonation(Long donationId, DonationDecisionDTO donationDecisionDTO) {
+        try {
+            // decide the donation
+            DonationDTO donationDTO = donationService.decisionDonation(donationId, donationDecisionDTO);
+            return ok(donationDTO);
+
+            // if the donation does not exist
+        }catch (NotFoundEntityException e){
+            return notFound(e.getMessage());
         }
     }
 }

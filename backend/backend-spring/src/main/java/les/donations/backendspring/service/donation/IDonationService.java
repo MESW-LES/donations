@@ -1,6 +1,7 @@
 package les.donations.backendspring.service.donation;
 
 import les.donations.backendspring.dto.DonationDTO;
+import les.donations.backendspring.dto.DonationDecisionDTO;
 import les.donations.backendspring.dto.FileDTO;
 import les.donations.backendspring.dto.PaginationDTO;
 import les.donations.backendspring.exceptions.NotFoundEntityException;
@@ -59,4 +60,13 @@ public interface IDonationService {
      * @throws IllegalArgumentException if the donation is not in proper status
      */
     DonationDTO requestDonation(Long donationId) throws NotFoundEntityException, IllegalArgumentException;
+
+    /**
+     * Method that decides if the donation is to proceed to ongoing or back to created status
+     * @param donationId the donation identification
+     * @param donationDecisionDTO the decision
+     * @return the donation in a specific status
+     * @throws NotFoundEntityException if the donation does not exist
+     */
+    DonationDTO decisionDonation(Long donationId, DonationDecisionDTO donationDecisionDTO) throws NotFoundEntityException;
 }

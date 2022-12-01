@@ -27,6 +27,10 @@ public enum Status {
         return canDeleteDonation;
     }
 
+    public String getDesignation() {
+        return designation;
+    }
+
     public static Status getById(Integer id){
         return id == null ? null : Status.values()[id - 1];
     }

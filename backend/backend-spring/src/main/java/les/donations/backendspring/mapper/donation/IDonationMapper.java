@@ -10,7 +10,7 @@ public interface IDonationMapper {
      * @return the donationDTO created
      * @throws IllegalArgumentException if there is an error in donation data
      */
-    DonationDTO modelToDto(Donation donation) throws IllegalArgumentException;
+    DonationDTO modelToDTO(Donation donation) throws IllegalArgumentException;
 
     /**
      * Method that centers the process of instantiating a Donation through is correspondent DTO

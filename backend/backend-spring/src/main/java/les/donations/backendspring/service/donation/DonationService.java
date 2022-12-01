@@ -1,9 +1,6 @@
 package les.donations.backendspring.service.donation;
 
-import les.donations.backendspring.dto.DonationDTO;
-import les.donations.backendspring.dto.FileDTO;
-import les.donations.backendspring.dto.ModelDTO;
-import les.donations.backendspring.dto.PaginationDTO;
+import les.donations.backendspring.dto.*;
 import les.donations.backendspring.exceptions.NotFoundEntityException;
 import les.donations.backendspring.mapper.donation.IDonationMapper;
 import les.donations.backendspring.mapper.donationImage.IDonationImageMapper;
@@ -18,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -59,7 +55,7 @@ public class DonationService implements IDonationService {
         // persists the donation
         donation = donationDao.saveAndFlush(donation);
 
-        return donationDTO.id(donation.getId()).createdDate(StringUtils.convertDateToString(donation.getCreatedDate()));
+        return donationMapper.modelToDTO(donation);
     }
 
     @Override
@@ -92,7 +88,7 @@ public class DonationService implements IDonationService {
         // gets the active donations with a specific status
         List<Donation> donations = donationDao.getDonations(donationProcessStatus);
         // converts them into DTOs
-        List<ModelDTO> donationDTOs = donations.stream().map(donation -> donationMapper.modelToDto(donation)).collect(Collectors.toList());
+        List<ModelDTO> donationDTOs = donations.stream().map(donation -> donationMapper.modelToDTO(donation)).collect(Collectors.toList());
 
         return new PaginationDTO().results(donationDTOs).countResults(donations.size());
     }
@@ -101,7 +97,7 @@ public class DonationService implements IDonationService {
     public DonationDTO getDonation(Long donationId) throws NotFoundEntityException {
         // gets the donation by its id
         Donation donation = getDonationModel(donationId);
-        return donationMapper.modelToDto(donation);
+        return donationMapper.modelToDTO(donation);
     }
 
     @Override
@@ -118,7 +114,7 @@ public class DonationService implements IDonationService {
 
         // deactivate the donation
         donation.deactivate();
-        return donationMapper.modelToDto(donation);
+        return donationMapper.modelToDTO(donation);
     }
 
     @Override
@@ -133,9 +129,18 @@ public class DonationService implements IDonationService {
             throw new IllegalArgumentException("The donation is not in a proper status to be requested!");
         }
 
-        // change the donation process
+        // change the donation process status
         donationProcess.toRequestedStatus(null);
-        return donationMapper.modelToDto(donation);
+        return donationMapper.modelToDTO(donation);
+    }
+
+    @Override
+    public DonationDTO decisionDonation(Long donationId, DonationDecisionDTO donationDecisionDTO) throws NotFoundEntityException {
+        // gets the donation
+        Donation donation = getDonationModel(donationId);
+        // change the donation process status
+        donation.getDonationProcess().decide(donationDecisionDTO.decision);
+        return donationMapper.modelToDTO(donation);
     }
 
     private Donation getDonationModel(Long donationId) throws NotFoundEntityException{

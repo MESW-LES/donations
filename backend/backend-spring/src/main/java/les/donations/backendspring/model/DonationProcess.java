@@ -1,6 +1,7 @@
 package les.donations.backendspring.model;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Objects;
 
 @Table(name = "DONATIONS_PROCESS")
@@ -21,6 +22,9 @@ public class DonationProcess {
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS")
     private Status status;
+
+    @Column(name = "ONGOING_DATE")
+    private Date ongoingDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DONEE_ID")
@@ -59,6 +63,14 @@ public class DonationProcess {
         this.status = status;
     }
 
+    public Date getOngoingDate() {
+        return ongoingDate;
+    }
+
+    public void setOngoingDate(Date ongoingDate) {
+        this.ongoingDate = ongoingDate;
+    }
+
     public Donee getDonee() {
         return donee;
     }
@@ -81,6 +93,22 @@ public class DonationProcess {
         status = Status.REQUESTED;
         // sets the donee that requested the donation
         this.donee = donee;
+    }
+
+    public void decide(Boolean decision) throws IllegalArgumentException{
+        // if its not in requested status then it cant change to ongoing status
+        if(!(status.isCanDeleteDonation() && !status.isCanEditDonation())){
+            throw new IllegalArgumentException("The donation can't change to ongoing status!");
+        }
+        // if the decision is true then changes to ongoing
+        if(decision){
+            status = Status.ONGOING;
+            ongoingDate = new Date();
+            return;
+        }
+        // if the decision is false then changes to created
+        status = Status.CREATED;
+        donee = null;
     }
 
     @Override
