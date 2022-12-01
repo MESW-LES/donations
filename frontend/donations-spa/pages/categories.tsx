@@ -35,13 +35,13 @@ function Categories() {
         setDescription("");
       };      
     } catch (error) {
-      showToast('error','Error '+ error.response.status, error.response.data.data);
+      /* showToast('error','Error '+ error.response.status, error.response.data.data); */
       //showToast('error','Error '+ error.response.status,'oops looks like something went wrong, please try again later.');    
     }
   };
 
   const showToast = (severityValue: string, summaryValue: string, detailValue: string) => {   
-    myToast.current.show({severity: severityValue, summary: summaryValue, detail: detailValue});   
+    /* myToast.current.show({severity: severityValue, summary: summaryValue, detail: detailValue});  */  
   };
 
   return (

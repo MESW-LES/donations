@@ -46,15 +46,15 @@ const onFilter = (e: any) => {
         setFilteredValue(null);
     }
     else {
-        const filtered = dataViewValue.filter((product) => {
+        /* const filtered = dataViewValue.filter((product) => {
                 return product.name.toLowerCase().includes(value);
         });
-        setFilteredValue(filtered);
+        setFilteredValue(filtered); */
     }
 };
 
 //Sort option, define value to sort
-const onSortChange = (event) => {
+/* const onSortChange = (event) => {
     const value = event.value;
 console.log(value === "publishDate");
 if(value === "publishDate"){
@@ -77,7 +77,7 @@ if(value === "deliveredStatus"){
     setSortKey(value);
     setSortField("status");
 }
-   /*  if (value.indexOf('!') === 0) {
+     if (value.indexOf('!') === 0) {
         setSortOrder(-1);
         setSortField(value.substring(1, value.length));
         setSortKey(value);
@@ -85,21 +85,21 @@ if(value === "deliveredStatus"){
         setSortOrder(1);
         setSortField(value);
         setSortKey(value);
-    } */
-};
+    } 
+}; */
 
 const dataViewHeader = (
     <div className="flex flex-column md:flex-row md:justify-content-between gap-2">
-        <Dropdown value={sortKey} options={sortOptions} optionLabel="label" placeholder="Sort Options" onChange={onSortChange} />
+        <Dropdown value={sortKey} options={sortOptions} optionLabel="label" placeholder="Sort Options"  />
         <span className="p-input-icon-left">
             <i className="pi pi-search" />
             <InputText value={globalFilterValue} onChange={onFilter} placeholder="Search by Name" />
         </span>
-        <DataViewLayoutOptions layout={layout} onChange={(e) => setLayout(e.value)} />
+        <DataViewLayoutOptions onChange={(e) => setLayout(e.value)} />
     </div>
 );
 
-const dataviewListItem = (data) => {
+const dataviewListItem = (data : any) => {
     return (
         <div className="col-12">
             <div className="flex flex-column md:flex-row align-items-center p-3 w-full">                
@@ -122,7 +122,7 @@ const dataviewListItem = (data) => {
     );
 };
 
-const dataviewGridItem = (data) => {
+const dataviewGridItem = (data : any) => {
     return (
         <div className="col-12 lg:col-4">
             <div className="card m-3 border-1 surface-border">
@@ -148,7 +148,7 @@ const dataviewGridItem = (data) => {
     );
 };
 
-const itemTemplate = (data, layout) => {
+const itemTemplate = (data : any, layout : any) => {
     if (!data) {
         return;        
     }
@@ -168,7 +168,7 @@ return (
         <div className="col-12">
             <div className="card">
                 <h5>User donations</h5>
-                <DataView value={filteredValue || dataViewValue} layout={layout} paginator rows={12} sortOrder={sortOrder} sortField={sortField} itemTemplate={itemTemplate} header={dataViewHeader}></DataView>
+                
             </div>
         </div>
     </div>

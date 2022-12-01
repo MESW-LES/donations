@@ -35,24 +35,24 @@ function AddDonation() {
   const toast = useRef(null);
   const fileUploadRef = useRef(null);
 
-  const onUpload = () => {
-    toast.current.show({
-      severity: "info",
-      summary: "Success",
-      detail: "File Uploaded",
-    });
-  };
+  /*const onUpload = () => {
+      toast.current.show({
+        severity: "info",
+        summary: "Success",
+        detail: "File Uploaded",
+      });
+  };*/
 
-  const onTemplateSelect = (e) => {
+ /* const onTemplateSelect = (e: any) => {
     let _totalSize = totalSize;
     Array.from(e.files).forEach((file) => {
       _totalSize += file.size;
     });
 
     setTotalSize(_totalSize);
-  };
+  };*/
 
-  const onTemplateUpload = (e) => {
+  /*const onTemplateUpload = (e : any) => {
     let _totalSize = 0;
     e.files.forEach((file) => {
       _totalSize += file.size || 0;
@@ -64,18 +64,18 @@ function AddDonation() {
       summary: "Success",
       detail: "File Uploaded",
     });
-  };
+  };*/
 
-  const onTemplateRemove = (file, callback) => {
+  /*const onTemplateRemove = (file, callback) => {
     setTotalSize(totalSize - file.size);
     callback();
-  };
+  };*/
 
   const onTemplateClear = () => {
     setTotalSize(0);
   };
 
-  const headerTemplate = (options) => {
+ /* const headerTemplate = (options) => {
     const { className, chooseButton, uploadButton, cancelButton } = options;
     const value = totalSize / 10000;
     const formatedValue =
@@ -103,8 +103,8 @@ function AddDonation() {
       </div>
     );
   };
-
-  const itemTemplate = (file, props) => {
+*/
+ /* const itemTemplate = (file, props) => {
     return (
       <div className="flex align-items-center flex-wrap">
         <div className="flex align-items-center" style={{ width: "40%" }}>
@@ -132,7 +132,7 @@ function AddDonation() {
         />
       </div>
     );
-  };
+  };*/
 
   const emptyTemplate = () => {
     return (
@@ -184,32 +184,32 @@ function AddDonation() {
       });
 
       if (data.code != 200) {
-        showToast(
+        /* showToast(
           "error",
           "Hey",
           "oops looks like something went wrong, please try again later."
-        );
+        ); */
       } else {
-        showToast(
+        /* showToast(
           "success",
           "Success Message",
           "The category was added successfully."
-        );
+        ); */
         setName("");
         setCode("");
         setDescription("");
       }
     } catch (error) {
-      showToast(
+      /* showToast(
         "error",
         "Error " + error.response.status,
         error.response.data.data
-      );
+      ); */
       //showToast('error','Error '+ error.response.status,'oops looks like something went wrong, please try again later.');
     }
   };
 
-  const showToast = (
+ /*  const showToast = (
     severityValue: string,
     summaryValue: string,
     detailValue: string
@@ -219,7 +219,7 @@ function AddDonation() {
       summary: summaryValue,
       detail: detailValue,
     });
-  };
+  }; */
 
   return (
     <>
@@ -264,7 +264,7 @@ function AddDonation() {
                 </div>
                 <div className="field col-12">
                   <label htmlFor="description">Description</label>
-                  <InputTextarea id="description" rows="4" />
+                  <InputTextarea id="description"/>
                 </div>        
                 <FileUpload
                   ref={fileUploadRef}
@@ -273,12 +273,12 @@ function AddDonation() {
                   multiple
                   accept="image/*"
                   maxFileSize={1000000}
-                  onUpload={onTemplateUpload}
-                  onSelect={onTemplateSelect}
+                  //onUpload={onTemplateUpload}
+                  //onSelect={onTemplateSelect}
                   onError={onTemplateClear}
                   onClear={onTemplateClear}
-                  headerTemplate={headerTemplate}
-                  itemTemplate={itemTemplate}
+                  //headerTemplate={headerTemplate}
+                  //itemTemplate={itemTemplate}
                   emptyTemplate={emptyTemplate}
                   chooseOptions={chooseOptions}
                   uploadOptions={uploadOptions}
