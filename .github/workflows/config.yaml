@@ -36,7 +36,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  docker:
+  deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -51,6 +51,7 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
@@ -58,3 +59,54 @@ jobs:
           file: backend/backend-spring/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/backend-spring:latest
+
+      - name: prereqs
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: 'eu-west-3'
+        run: |
+          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+          aws configure set default.region $AWS_DEFAULT_REGION
+          aws configure set region $AWS_DEFAULT_REGION
+          cat ~/.aws/credentials
+
+      - name: Install essentials
+        run: |
+          aws --version
+          sudo apt-get update && sudo apt-get -y install curl jq
+          curl https://s3.us-west-2.amazonaws.com/lightsailctl/latest/linux-amd64/lightsailctl -o /usr/local/bin/lightsailctl
+          chmod +x /usr/local/bin/lightsailctl
+
+      - name: Release to Amazon Lightsail
+        run: |
+          echo "Releasing to Amazon Lightsail"
+          echo ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }} | docker login --username=${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+          docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/backend-spring:latest
+          # upload the docker image for this pipeline
+          aws lightsail push-container-image \
+            --service-name backend-spring  \
+            --label backend-spring-latest  \
+            --image ${{ secrets.DOCKER_HUB_USERNAME }}/backend-spring:latest
+          # get uploaded image (its different every time)
+          IMAGE_TAG=$(aws lightsail get-container-images --service backend-spring | jq -r .containerImages[0].image)
+          # create a deployment with uploaded docker image
+          aws lightsail create-container-service-deployment \
+            --service-name backend-spring \
+            --containers "{
+              \"backend-spring\": {
+                \"image\": \"$IMAGE_TAG\",
+                \"ports\": {
+                  \"80\": \"HTTP\"
+                }
+              }
+            }" \
+            --public-endpoint "{
+              \"containerName\": \"backend-spring\",
+              \"containerPort\": 80,
+              \"healthCheck\": {
+                \"path\": \"/\",
+                \"intervalSeconds\": 10
+              }
+            }"
