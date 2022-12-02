@@ -51,11 +51,10 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: .
+          context: backend/backend-spring/
           file: backend/backend-spring/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/backend-spring:latest
