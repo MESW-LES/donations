@@ -12,14 +12,24 @@ export default function handler(req, res) {
       //console.log(!body.description);
       // Guard clause checks for first and last name,
       // and returns early if they are not found
-      if (!body.code || !body.name || !body.description) {
+      if (!body.code) {
         // Sends a HTTP bad request error code
-        return res.status(400).json({ data: 'First or last name not found' })
+        return res.status(401).json({ data: 'Code not found' })
+      }else{
+        if (!body.name) {
+          // Sends a HTTP bad request error code
+          return res.status(402).json({ data: 'Name not found' })
+        }else{
+          if (!body.description) {
+            // Sends a HTTP bad request error code
+            return res.status(403).json({ data: 'Description not found' })
+          }
+        }
       }
     
       // Found the name.
       // Sends a HTTP success code
-      res.status(200).json({ data: `${body.code} ${body.name} ${body.description}` })
+      res.status(200).json({code: 200, data: `${body.code} ${body.name} ${body.description}` })
   
       const requestOptions = {
         method: 'POST',

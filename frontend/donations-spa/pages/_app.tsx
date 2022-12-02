@@ -5,6 +5,9 @@ import Head from "next/head";
 import "primereact/resources/themes/vela-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
+import '../styles/layout/layout.scss';
+import '../styles/demo/Demos.scss'; 
+import 'primeflex/primeflex.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

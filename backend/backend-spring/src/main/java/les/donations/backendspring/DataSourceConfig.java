@@ -37,9 +37,11 @@ public class DataSourceConfig {
     @Bean
     public DataSource getDataSource() {
         DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
+
         dataSourceBuilder.url("jdbc:postgresql://ls-0ebe4ec6094e46c9d0ef27f76446eb59220c668d.cgwgs94a3j9a.eu-west-3.rds.amazonaws.com:5432/postgres");
         dataSourceBuilder.username("dbmasteruser");
         dataSourceBuilder.password("#KMUEZ<ZttO4*X#vXh8$psA]<I8~k~PF");
+
         return dataSourceBuilder.build();
     }
 }
