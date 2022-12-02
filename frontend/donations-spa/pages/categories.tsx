@@ -2,6 +2,8 @@ import axios from "axios";
 import React ,{ useRef, useState } from "react";
 import AppMenuBar from "./AppMenuBar";
 import { Toast } from 'primereact/toast';
+import { InputText } from "primereact/inputtext";
+import { InputTextarea } from "primereact/inputtextarea";
 
 function Categories() {
 
@@ -53,17 +55,17 @@ function Categories() {
       <div className="pt-10">
         <div className="md:col-12">
         <Toast ref={myToast} /> 
+          <div className="col-12">
           <form action="/api/form" method="POST">
             <div className="overflow-auto sm:rounded-md">
-              <div className="bg-white px-6 py-5 ">                
-                  <div className="field col-span-12">
+              <div className="card px-6 py-5 ">                
+                  <div className="field col-12">
                     <label
-                      htmlFor="category_code"
-                      className="block text-sm font-medium text-gray-700"
+                      htmlFor="category_code"                
                     >
                       Category code
                     </label>
-                    <input
+                    <InputText
                       required
                       minLength={1}
                       maxLength={4}
@@ -72,18 +74,17 @@ function Categories() {
                       id="category_code"
                       value={code}
                       onChange={({ target }) => setCode(target?.value)}
-                      //autoComplete="given-name"
-                      className="block rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      //autoComplete="given-name"     
+                      className="col-12"           
                     />
                   </div>
-                  <div className="field col-span-12">
+                  <div className="field col-12">
                     <label
-                      htmlFor="category_name"
-                      className="block text-sm font-medium text-gray-700"
+                      htmlFor="category_name"                    
                     >
                       Category name
                     </label>
-                    <input
+                    <InputText
                       required
                       minLength={1}
                       maxLength={50}
@@ -93,33 +94,32 @@ function Categories() {
                       value={name}
                       onChange={({ target }) => setName(target?.value)}
                       //autoComplete="given-name"
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      className="col-12"
                     />
                   </div>
 
-                  <div className="field col-span-12">
+                  <div className="field col-12">
                     <label
                       htmlFor="category_description"
-                      className="block text-sm font-medium text-gray-700"
+            
                     >
                       Category Description
                     </label>
-                    <input
+                    <InputTextarea
                       required
                       minLength={1}
-                      maxLength={280}
-                      type="text"
+                      maxLength={280}      
                       name="category_description"
                       id="category_description"
                       value={description}
                       onChange={({ target }) => setDescription(target?.value)}
                       //autoComplete="family-name"
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      className="col-12"
                     />
                   </div>
                 </div>
               </div>
-              <div className="bg-gray-50 px-4 py-3 text-end sm:px-6">
+              <div className="card px-4 py-3 text-end sm:px-6">
                 <button
                   type="button"
                   onClick={()=>{setName("");
@@ -138,6 +138,7 @@ function Categories() {
                 </button>
               </div>          
           </form>
+          </div>
         </div>
       </div>
     </>
