@@ -64,7 +64,7 @@ function AppMenuBar() {
           <img
             src="/hand_heart_donate_icon.png"
             alt="image"
-            className="w-12 mr-6"
+            className="w-2 mr-6"
           />
         }
         end={

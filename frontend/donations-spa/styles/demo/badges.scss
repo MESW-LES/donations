@@ -1,0 +1,32 @@
+.customer-badge,
+.product-badge,
+.order-badge {
+    border-radius: var(--border-radius);
+    padding: .25em .5rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+}
+
+.product-badge {
+    &.status-active {
+        background: #C8E6C9;
+        color: #256029;
+    }
+
+    &.status-end {
+        background: #FFCDD2;
+        color: #C63737;
+    }
+
+    &.status-ongoing {
+        background: #FEEDAF;
+        color: #8A5340;
+    }
+    &.status-requested {
+        background: #ECCFFF;
+        color: #694382;
+    }
+}
+

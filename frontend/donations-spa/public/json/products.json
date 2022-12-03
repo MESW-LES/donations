@@ -1,0 +1,10 @@
+
+{
+    "data": [
+        {"id": "1000","code": "f230fh0g3","name": "Camera","publish_date":"2022-01-01","description": "Product Description","image": "camera.png","category": "Electronics","status": "ACTIVE","rating": 5},
+        {"id": "1001","code": "nvklal433","name": "Headphones","publish_date":"2022-02-01","description": "Product Description","image": "headphones.jpg","category": "Electronics","status": "ONGOING","rating": 4},
+        {"id": "1002","code": "zz21cz3c1","name": "Macbook","publish_date":"2022-01-01","description": "Product Description","image": "macbook.jpg","category": "Electronics","status": "ACTIVE","rating": 3},
+        {"id": "1003","code": "244wgerg2","name": "Samsung","publish_date":"2022-01-07","description": "Product Description","image": "samsung.jpg","category": "Phones","status": "END","rating": 5}
+    ]
+}
+    
