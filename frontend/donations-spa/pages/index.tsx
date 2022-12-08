@@ -1,12 +1,10 @@
 import type { NextPage } from "next";
-import HomeContent from "./HomeContent";
-import AppMenuBar from "./AppMenuBar";
+import Login from "./login";
 
 const Home: NextPage = () => {
   return (
     <>
-      <AppMenuBar />
-      <HomeContent />
+      <Login />
     </>
   );
 };
