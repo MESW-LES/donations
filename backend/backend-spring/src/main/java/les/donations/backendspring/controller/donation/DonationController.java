@@ -75,7 +75,7 @@ public class DonationController extends IController implements IDonationControll
         try{
             // updates the donation information
             donationDTO = donationService.updateDonation(donationId, donationDTO);
-            return created(donationDTO);
+            return ok(donationDTO);
 
             // if ayn entity does not exist
         }catch (NotFoundEntityException e){

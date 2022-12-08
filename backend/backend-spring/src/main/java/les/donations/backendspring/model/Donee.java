@@ -47,6 +47,7 @@ public class Donee {
         setPassword(password);
         this.company = company;
         this.categories =  new ArrayList<>();
+        this.active = true;
     }
 
     public Long getId() {
