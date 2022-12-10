@@ -3,8 +3,12 @@ import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { InputText } from "primereact/inputtext";
 import { useState } from "react";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Auth, createUserWithEmailAndPassword, getAuth, UserCredential } from 'firebase/auth';
+import { initFirebase } from '../auth/Firebase';
+import axios from 'axios';
+
 
 const RegisterCompany = () => {
   const [taxnumber, setTaxnumber] = useState("");
@@ -18,6 +22,49 @@ const RegisterCompany = () => {
     { label: 'Cateogry example 1', value: '1' },
     { label: 'Cateogry example 1', value: '2' }
   ];
+
+  // inits the firebase authentication
+  initFirebase();
+  const auth: Auth = getAuth();
+
+  // creates the user in firebase auth
+  const createUserFirebase = async () => {
+    try {
+      // creates the backend donor
+      const formValues = { taxnumber, name, description, phone, email, password };
+
+      try {
+        const { data } = await axios({
+          url: "/api/formregistercompany",
+          method: "POST",
+          data: formValues,
+        });
+  
+        if (data.code != 200) {
+        } else {
+          setName("");
+          setTaxnumber("");
+          setDescription("");
+        };
+      } catch (error) {
+        if (error instanceof Error) {
+        }
+      
+      }
+      // creates the firebase user
+      const user: UserCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      // signs out the user
+      await auth.signOut();
+      toast.success("User registered with success!");
+    } catch (error: any) {
+      toast.error("An error occured while registering the user!");
+    }
+  };
 
   return (
     <>
@@ -139,6 +186,7 @@ const RegisterCompany = () => {
                 className="bg-white p-button-info"
                 label="Register"
                 icon="pi pi-check"
+                onClick={createUserFirebase}
               />
             </div>
             <div className="w-2"></div>
