@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState , useEffect} from "react";
 import AppMenuBar from "./AppMenuBar";
 import { Toast } from "primereact/toast";
 import { InputText } from "primereact/inputtext";
@@ -38,6 +38,30 @@ function AddDonation() {
   const [totalSize, setTotalSize] = useState(0);
   const toast = useRef<any>(null);
   const fileUploadRef = useRef<any>(null);
+  const [dropdownItem, setDropdownItem] = useState(null);
+  //const [dropdownItems, setDropdownItems] = useState<any>(null);
+  const [categoriesData, setCategoriesData] = useState<any>(null);
+
+
+  const myToast = useRef(null);
+
+//Fetch data from the BackEnd
+const fetchCategories = async ()=>{
+  const response = await fetch('/api/CategoryService');
+  const data = await response.json();
+  console.log(data.data.message.results);
+  //console.log(data.code);
+  if(data.code = 200){
+    setCategoriesData(data.data.message.results);
+  }
+  
+}
+
+  // Get the categories
+useEffect(() => {
+  fetchCategories();
+}, []); // eslint-disable-line react-hooks/exhaustive-deps
+
 
   const onUpload = () => {
     if(toast.current !== null && toast.current !== undefined ){
@@ -165,25 +189,19 @@ function AddDonation() {
   };
 
   /*****************************/
-  const [dropdownItem, setDropdownItem] = useState(null);
-  const dropdownItems = [
-    { name: "Electronics", code: "ELT" },
-    { name: "Phones", code: "PHN" },
-  ];
 
-  const myToast = useRef(null);
 
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
 
-    const formValues = { code, name, description };
+    const formValues = { title, category, description };
 
     //console.log(formValues);
 
     try {
       const { data } = await axios({
-        url: "/api/form",
+        url: "/api/donations",
         method: "POST",
         data: formValues,
       });
@@ -200,8 +218,8 @@ function AddDonation() {
           "Success Message",
           "The category was added successfully."
         );
-        setName("");
-        setCode("");
+        setTitle("");
+        setCategory("");
         setDescription("");
       }
     } catch (error) {
@@ -213,7 +231,6 @@ function AddDonation() {
         );
       }
       
-      //showToast('error','Error '+ error.response.status,'oops looks like something went wrong, please try again later.');
     }
   };
 
@@ -254,16 +271,19 @@ function AddDonation() {
               <h5>New donation</h5>
               <div className="p-fluid formgrid grid">
                 <div className="field col-12">
-                  <label htmlFor="productname">Title</label>
-                  <InputText id="productname" type="text" />
+                  <label htmlFor="title">Title</label>
+                  <InputText id="title" type="text" value={title}
+                      onChange={({ target }) => setTitle(target?.value)}/>
                 </div>
                 <div className="field col-12">
                   <label htmlFor="category">Category</label>
                   <Dropdown
                     id="category"
                     value={dropdownItem}
-                    onChange={(e) => setDropdownItem(e.value)}
-                    options={dropdownItems}
+                    onChange={(e)=>{setDropdownItem(e.value);
+                    setCategory(e.value.code);                
+                    }}
+                    options={categoriesData}
                     optionLabel="name"
                     placeholder="Select One"
                   ></Dropdown>

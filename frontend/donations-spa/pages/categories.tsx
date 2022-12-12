@@ -6,7 +6,6 @@ import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { CategoryService } from './api/CategoryService';
 import { Dropdown } from 'primereact/dropdown';
 
 function Categories() {
