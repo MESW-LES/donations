@@ -1,12 +1,95 @@
 import axios from "axios";
-import React ,{ useRef, useState } from "react";
+import React ,{ useRef, useState, useEffect } from "react";
 import AppMenuBar from "./AppMenuBar";
 import { Toast } from 'primereact/toast';
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { CategoryService } from './api/CategoryService';
+import { Dropdown } from 'primereact/dropdown';
 
 function Categories() {
 
+  const [categoriesData, setCategoriesData] = useState<any>(null);
+
+  // HARD CODE for categories
+  
+  const [categoriesLenght, setCategoriesLenght] = useState<number>(0);
+
+  // Update the new Data
+  const onRowEditComplete1 = (e : any) => {
+    let _categoriesData = [...categoriesData];
+    //console.log(e);
+    let { newData, index } = e;
+    _categoriesData[index] = newData;
+
+    //TODO add update to the db
+
+
+    //updates the list of categories
+    setCategoriesData(_categoriesData);
+}
+
+//Fetch data from the BackEnd
+const fetchCategories = async ()=>{
+  const response = await fetch('/api/CategoryService');
+  const data = await response.json();
+  console.log(data.data.message.results);
+  console.log(data.code);
+  if(data.code = 200){
+    setCategoriesLenght(data.data.message.countResults);
+    setCategoriesData(data.data.message.results);
+  }
+  
+}
+
+// Get the categories
+useEffect(() => {
+  fetchCategories();
+}, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+
+const statuses = [
+  { label: 'Active', value: 'true' },
+  { label: 'Inactive', value: 'false' }
+];
+
+//get status label for the list
+const getStatusLabel = (status : String) => {
+  switch (status) {
+      case 'true':
+          return 'Active';
+
+      case 'false':
+          return 'Inactive';
+
+      default:
+          return 'NA';
+  }
+}
+
+// for the state of a categorie (active/inactive)
+const statusBodyTemplate = (rowData : any) => {
+  return getStatusLabel(rowData.inventoryStatus);
+}
+const textEditor = (options:any) => {
+  return <InputText type="text" value={options.value} onChange={(e) => options.editorCallback(e.target.value)} />;
+}
+
+const statusEditor = (options:any) => {
+  return (
+      <Dropdown value={options.value} options={statuses} optionLabel="label" optionValue="value"
+          onChange={(e) => options.editorCallback(e.value)} placeholder="Select a Status"
+          itemTemplate={(option) => {
+              return <span className={`product-badge status-${option.value.toLowerCase()}`}>{option.label}</span>
+          }} />
+  );
+}
+  // *************************
+  
+  
+  
   const myToast = useRef<any>(null);
   
   const [code, setCode] = useState("");
@@ -54,8 +137,7 @@ function Categories() {
       <AppMenuBar />
       <div className="pt-10">
         <div className="md:col-12">
-        <Toast ref={myToast} /> 
-          <div className="col-12">
+        <Toast ref={myToast} />         
           <form action="/api/form" method="POST">
             <div className="overflow-auto sm:rounded-md">
               <div className="card px-6 py-5 ">                
@@ -137,9 +219,19 @@ function Categories() {
                   Save
                 </button>
               </div>          
-          </form>
-          </div>
+          </form>        
         </div>
+        <div className="col-12">
+        <div className="card p-fluid">
+                <h5>Categories List</h5>
+                <DataTable value={categoriesData} editMode="row" dataKey="id" onRowEditComplete={onRowEditComplete1} responsiveLayout="scroll">
+                    <Column field="code" header="Code" editor={(options) => textEditor(options)} style={{ width: '20%' }}></Column>
+                    <Column field="name" header="Name" editor={(options) => textEditor(options)} style={{ width: '20%' }}></Column>
+                    <Column field="ACTIVE" header="Status" body={statusBodyTemplate} editor={(options) => statusEditor(options)} style={{ width: '20%' }}></Column>                    
+                    <Column rowEditor headerStyle={{ width: '10%', minWidth: '8rem' }} bodyStyle={{ textAlign: 'center' }}></Column>
+                </DataTable>
+            </div>
+      </div>
       </div>
     </>
   );

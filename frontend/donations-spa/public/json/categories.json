@@ -1,0 +1,10 @@
+
+{
+    "data": [
+        {"id": "1","CODE": "ELE","NAME": "Electronics","publish_date":"2022-01-01","DESCRIPTION": "Category Description","ACTIVE": "true"},
+        {"id": "2","CODE": "MAD","NAME": "Madeira","publish_date":"2022-02-01","DESCRIPTION": "Category Description","ACTIVE": "true"},
+        {"id": "3","CODE": "MUE","NAME": "Muebles","publish_date":"2022-01-01","DESCRIPTION": "Category Description","ACTIVE": "true"},
+        {"id": "4","CODE": "CAB","NAME": "Cabo","publish_date":"2022-01-07","DESCRIPTION": "Category Description","ACTIVE": "true"}
+    ]
+}
+    
