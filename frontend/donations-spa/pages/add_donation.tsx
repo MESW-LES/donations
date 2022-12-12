@@ -10,7 +10,7 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Dropdown } from "primereact/dropdown";
 import { Tag } from "primereact/tag";
 import { Tooltip } from "primereact/tooltip";
-import { Exception } from "sass";
+//import { Exception } from "sass";
 
 function AddDonation() {
   /***********file upload code**********/
@@ -32,6 +32,9 @@ function AddDonation() {
       "custom-cancel-btn p-button-danger border-round w-1 p-button-outlined",
   };
 
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
+  const [description, setDescription] = useState("");
   const [totalSize, setTotalSize] = useState(0);
   const toast = useRef<any>(null);
   const fileUploadRef = useRef<any>(null);
@@ -170,9 +173,6 @@ function AddDonation() {
 
   const myToast = useRef(null);
 
-  const [code, setCode] = useState("");
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -229,6 +229,9 @@ function AddDonation() {
     });
   };
 
+  // AppMenuBar display the menu with the logo
+  // Tooltip is a brief, informative message that appears when a user interacts with an element.
+  // Toast is for message display
   return (
     <>
       <AppMenuBar />
@@ -236,11 +239,6 @@ function AddDonation() {
         <Tooltip
           target=".custom-choose-btn"
           content="Choose"
-          position="bottom"
-        />
-        <Tooltip
-          target=".custom-upload-btn"
-          content="Upload"
           position="bottom"
         />
         <Tooltip

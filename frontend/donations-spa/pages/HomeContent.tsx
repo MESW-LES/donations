@@ -8,6 +8,7 @@ import { ProductService } from './api/ProductService';
 import { InputText } from 'primereact/inputtext';
 
 function HomeContent() {  
+
 const [dataViewValue, setDataViewValue] = useState<any>(null);
 const [globalFilterValue, setGlobalFilterValue] = useState('');
 const [filteredValue, setFilteredValue] = useState(null); 
