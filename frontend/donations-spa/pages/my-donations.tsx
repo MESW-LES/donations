@@ -5,6 +5,7 @@ import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { ProductService } from './api/ProductService';
 import { InputText } from 'primereact/inputtext';
+import { useRouter } from "next/router";
 
 function MyDonations() {
   
@@ -20,6 +21,17 @@ const [layout, setLayout] = useState<DataViewLayoutType>('grid');
 const [sortKey, setSortKey] = useState(null);
 const [sortOrder, setSortOrder] = useState<any>(null);
 const [sortField, setSortField] = useState<any>(null);
+
+
+const router = useRouter();
+
+const [search, setSearch] = useState("");
+
+const goToPage = (page: string) => {
+  router.push(page);
+};
+
+
 
 //posible options to sort
 const sortOptions = [
@@ -163,7 +175,10 @@ const itemTemplate = (data: any, layout: DataViewLayoutType) => {
 return (
   <>
   <AppMenuBar />
+  <div className="col-12 flex flex-wrap justify-content-between">
   <h1>Hello, <b>UserName</b></h1>
+  <Button className=" flex bg-green-300 border-transparent font-semibold" icon= "pi pi-fw pi-box" label="Add Donation" onClick={() => goToPage("add_donation")}></Button>
+  </div>
     <div className="grid list-demo">
         <div className="col-12">
             <div className="card">
