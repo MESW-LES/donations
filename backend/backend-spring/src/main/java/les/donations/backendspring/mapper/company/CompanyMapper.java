@@ -9,6 +9,6 @@ public class CompanyMapper implements ICompanyMapper {
 
     @Override
     public Company dtoToModel(CompanyDTO companyDTO) throws IllegalArgumentException{
-        return new Company(companyDTO.name, companyDTO.description, companyDTO.taxNumber, companyDTO.phone);
+        return new Company(companyDTO.name, companyDTO.description, companyDTO.taxNumber, companyDTO.phone, companyDTO.email);
     }
 }

@@ -19,7 +19,11 @@ public class PersonService implements IPersonService {
     @Override
     public Person addPerson(PersonDTO personDTO) throws IllegalArgumentException {
         Person person = personMapper.dtoToModel(personDTO);
-
         return person;
+    }
+
+    @Override
+    public boolean existsPersonByEmail(String email) {
+        return personRepository.existsPersonByEmailAndActive(email, true);
     }
 }

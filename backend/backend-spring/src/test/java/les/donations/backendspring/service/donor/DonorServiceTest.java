@@ -50,8 +50,8 @@ class DonorServiceTest {
 
     @Test
     void registerCorrectDonorTest() throws IOException {
-        Person person = new Person(1L, "name", "lastName", "987654321",
-                "address", "joe.doe@gmail.com", "password");
+        Person person = new Person("name", "lastName", "987654321",
+                "address", "joe.doe@gmail.com");
         Donor donor = new Donor();
         donor.setId(1L);
         donor.setPerson(person);

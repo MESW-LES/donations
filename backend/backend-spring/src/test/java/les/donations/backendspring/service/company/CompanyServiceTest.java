@@ -62,7 +62,7 @@ class CompanyServiceTest {
 
     @Test
     void createCompanyTest() throws IOException {
-        Company company = new Company("name", "description", "taxNumber", 912345678L);
+        Company company = new Company("name", "description", "taxNumber", 912345678L, "abc@gmail.com");
         CompanyDTO companyDTO = new CompanyDTO().taxNumber("12345678");
         when(companyDao.existsCompanyByTaxNumber("12345678")).thenReturn(false);
         when(taxNumberAPI.getEmailByCompanyTaxNumber("12345678")).thenReturn("test@gmail.com");

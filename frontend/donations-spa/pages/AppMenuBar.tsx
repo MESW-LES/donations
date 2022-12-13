@@ -2,39 +2,44 @@ import { Menubar } from "primereact/menubar";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { initFirebase } from "../auth/Firebase";
+import { Auth, getAuth } from "firebase/auth";
 
 function AppMenuBar() {
+  const [role, setRole] = useState("");
+
+  useEffect(() => {
+    const role: string | undefined = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("role="))
+      ?.split("=")[1];
+    setRole(role ? role : "");
+  }, []);
+
   const menuItems = [
     {
       label: "Home",
       icon: "pi pi-fw pi-home",
-      command: () => goToPage("/"),
+      command: () => goToPage("/donations"),
     },
     {
       label: "My Donations",
       icon: "pi pi-fw pi-box",
       command: () => goToPage("my-donations"),
-    },
-    {
-      label: "Profile",
-      icon: "pi pi-fw pi-user",
-      command: () => goToPage("profile"),
+      visible: role === "donor" || role === "donne",
     },
     {
       label: "Ongoing Donations",
       icon: "pi pi-fw pi-calendar-times",
       command: () => goToPage("ongoing-donations"),
+      visible: role === "donor" || role === "donne",
     },
     {
       label: "Categories",
       icon: "pi pi-fw pi-tags",
       command: () => goToPage("categories"),
-    },
-    {
-      label: "Administration",
-      icon: "pi pi-fw pi-cog",
-      command: () => goToPage("administration"),
+      visible: role === "admin",
     },
   ];
 

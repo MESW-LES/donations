@@ -10,6 +10,7 @@ import les.donations.backendspring.model.DonationProcess;
 import les.donations.backendspring.repository.donation.DonationDao;
 import les.donations.backendspring.service.category.ICategoryService;
 import les.donations.backendspring.util.StringUtils;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
