@@ -6,6 +6,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { Rating } from 'primereact/rating';
 import { ProductService } from './api/ProductService';
 import { InputText } from 'primereact/inputtext';
+import { useRouter } from "next/router";
 
 function HomeContent() {  
 
@@ -17,6 +18,11 @@ const [sortKey, setSortKey] = useState(null);
 const [sortOrder, setSortOrder] = useState(null);
 const [sortField, setSortField] = useState<any>(null);
 //const contextPath = getConfig().publicRuntimeConfig.contextPath;
+
+const router = useRouter();
+const goToPage = (page: string) => {
+    router.push(page);
+  };
 
 //posible options to sort
 const sortOptions = [
@@ -141,7 +147,7 @@ const dataviewGridItem = (data: any) => {
                 <i className="pi pi-calendar mr-2" />
                     <span className="font-semibold">{data.createdDate.substring(0,10)}</span>
                     </div>
-                    <Button icon="pi pi-shopping-cart" label="Request" disabled={data.inventoryStatus === 'OUTOFSTOCK'} />
+                    <Button icon="pi pi-shopping-cart" label="Request" disabled={data.inventoryStatus === 'OUTOFSTOCK'} onClick={() => goToPage("donation/"+1)} />
                 </div>
             </div>
         </div>
