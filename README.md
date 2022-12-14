@@ -1,4 +1,4 @@
-# LES Project - Donations
+# LES Project - Donations App
 
 This repository contains the frontend and backend for the app.
 
