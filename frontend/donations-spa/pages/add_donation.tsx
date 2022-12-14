@@ -11,10 +11,20 @@ import { Dropdown } from "primereact/dropdown";
 import { Tag } from "primereact/tag";
 import { Tooltip } from "primereact/tooltip";
 import FormData from 'form-data';
-//import { Exception } from "sass";
+import { useRouter } from "next/router";
 
 function AddDonation() {
+  // router constant for change the view
+  const router = useRouter();
+
+  //function to redirect to another view
+  const goToPage = (page: string) => {
+    router.push(page);
+  };
+
   /***********file upload code**********/
+  
+  //buttons for image upload
   const chooseOptions = {
     icon: "pi pi-fw pi-images",
     iconOnly: true,
@@ -28,44 +38,41 @@ function AddDonation() {
       "custom-cancel-btn p-button-danger border-round w-1 p-button-outlined",
   };
 
+  //form information
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [images, setImages] = useState<any>(null);
+  //file size for the bar graph
   const [totalSize, setTotalSize] = useState(0);
+  //for display messages in the view
   const toast = useRef<any>(null);
 
-  //?
+  //? for file upload
   const fileUploadRef = useRef<any>(null);
+  //actual value for the dropdown of categories
   const [dropdownItem, setDropdownItem] = useState(null);
-  //const [dropdownItems, setDropdownItems] = useState<any>(null);
+  //categories list from the server for the dropdown
   const [categoriesData, setCategoriesData] = useState<any>(null);
 
 
+  // POST to the server (Create donation)
   const handleSubmit = async (event: any) => {
     event.preventDefault();
 
     const dataDonation = new FormData();
 
-    //const formValues = { title, category, description, images };
-
-    //console.log(dataDonation);
-
-   // console.log(fileUploadRef.files);
-
-    //console.log("DEBUGGGGG");
-    //console.log(title);
-
-    dataDonation.append('title',title);
-    dataDonation.append('category',category);
-    dataDonation.append('description',description); 
-    dataDonation.append('donationImages',images);
-    
-// Display the key/value pairs
-for (var pair of dataDonation.entries()) {
-  console.log(pair[0]+ ', ' + pair[1]); 
+    dataDonation.append("title", title);
+    dataDonation.append("categoriesCode", category);
+    dataDonation.append("description", description);
+for (const image of images) {
+  dataDonation.append("donationImages", image);
 }
-    console.log(dataDonation);
+    
+// Display the key/value pairs in the console
+/* for (var pair of dataDonation.entries()) {
+  console.log(pair[0]+ ', ' + pair[1]); 
+} */
     
     try {
       const { data } = await axios({
@@ -74,7 +81,7 @@ for (var pair of dataDonation.entries()) {
         data: dataDonation,
       });
 
-      if (data.code != 200) {
+      if (data.code != 200 && data.code != 201 ) {
         showToast(
           "error",
           "Hey",
@@ -89,6 +96,7 @@ for (var pair of dataDonation.entries()) {
         setTitle("");
         setCategory("");
         setDescription("");
+        goToPage("my-donations");
       }
     } catch (error) {
       if(error instanceof Error){
@@ -108,8 +116,6 @@ for (var pair of dataDonation.entries()) {
 const fetchCategories = async ()=>{
   const response = await fetch('/api/CategoryService');
   const data = await response.json();
-  console.log(data.data.message.results);
-  //console.log(data.code);
   if(data.code = 200){
     setCategoriesData(data.data.message.results);
   }
@@ -122,7 +128,7 @@ useEffect(() => {
 }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 
-  const onUpload = () => {
+  /* const onUpload = () => {
     if(toast.current !== null && toast.current !== undefined ){
       toast.current.show({
         severity: "info",
@@ -130,9 +136,9 @@ useEffect(() => {
         detail: "File Uploaded",
       });
     }
-  };
+  }; */
 
-  //when one or more files are selected, update the info regarding the size
+  //when one or more files are selected, update the info regarding the size (images are added to the variable)
   const onTemplateSelect = (e: any) => {
     let _totalSize = totalSize;
     Array.from(e.files).forEach((file : any) => {
@@ -141,21 +147,14 @@ useEffect(() => {
 
     if(!images){
       setImages(Array.from(e.files));
-      console.log("Debug1");
-      console.log(Array.from(e.files));
     }else{
       setImages(images.concat(Array.from(e.files)))
-      console.log("Debug2");
     }
-    
-
-    
-
     setTotalSize(_totalSize);
   };
 
-  // here we have the files that have been uploaded  ??
-  const onTemplateUpload = (e : any) => {
+  // here we have the files that have been uploaded  ?? works if we have a button to upload the images in the header of the component
+/*   const onTemplateUpload = (e : any) => {
     let _totalSize = 0;
     e.files.forEach((file:any) => {
       _totalSize += file.size || 0;
@@ -167,10 +166,10 @@ useEffect(() => {
       summary: "Success",
       detail: "File Uploaded",
     });
-  };
+  }; */
 
 
-  // remove one item from the list
+  // remove one item from the list (remove image from the variable)
   const onTemplateRemove = (file : any, callback : any) => {
     for( var i = 0; i < images.length; i++){ 
     
@@ -182,9 +181,6 @@ useEffect(() => {
       }
   
   }
-
-  //console.log("Debug 2");
-  //console.log(images);
     
     setTotalSize(totalSize - file.size);
     if(callback){
@@ -194,6 +190,9 @@ useEffect(() => {
 
   // for clear the size of the set of images
   const onTemplateClear = () => {
+    if(images && images.length!= 0){
+      images.splice(0, images.length); //validate?
+    }
     setTotalSize(0);
   };
 
@@ -348,7 +347,7 @@ useEffect(() => {
                   name="donationImages"                
                   multiple accept="image/*"
                   maxFileSize={10000000}
-                  onUpload={onTemplateUpload}
+                  //onUpload={onTemplateUpload}
                   onSelect={onTemplateSelect}
                   onError={onTemplateClear}
                   onClear={onTemplateClear}
