@@ -22,7 +22,7 @@ Technologies:
 - Docker
 
 Work made by:
-- Anastacia
-- Kevin 
-- Luís
-- Tamires
+- Anastacia Dunaeva
+- Kevin Merizalde
+- Luís Ferreira
+- Tamires Viegas
