@@ -1,4 +1,6 @@
+import { UserCredential } from "firebase/auth";
+
 export type User = {
-  email: string;
-  role: string;
+  user?: UserCredential;
+  role?: string;
 };

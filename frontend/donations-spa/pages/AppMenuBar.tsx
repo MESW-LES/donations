@@ -2,21 +2,24 @@ import { Menubar } from "primereact/menubar";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { initFirebase } from "../auth/Firebase";
-import { Auth, getAuth } from "firebase/auth";
+import { useContext, useEffect, useState } from "react";
+import { SessionContext } from "../context/SessionContext";
 
 function AppMenuBar() {
-  const [role, setRole] = useState("");
+  const context = useContext(SessionContext);
 
+  // gets the session user
   useEffect(() => {
-    const role: string | undefined = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("role="))
-      ?.split("=")[1];
-    setRole(role ? role : "");
+    // if it does not exist then gets the saved user in local storage and updates the context
+    if (context.sessionUser) {
+      const sessionUserStr: string | null = localStorage.getItem("user");
+      context.setSessionUser(
+        JSON.parse(sessionUserStr == null ? "" : sessionUserStr)
+      );
+    }
   }, []);
 
+  const role: string = context.sessionUser.role;
   const menuItems = [
     {
       label: "Home",

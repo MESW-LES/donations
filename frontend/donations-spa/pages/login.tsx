@@ -8,13 +8,14 @@ import Link from "next/link";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { InputText } from "primereact/inputtext";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { initFirebase } from "../auth/Firebase";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Router from "next/router";
-import doLogin from "../backend/Login";
+import { SessionContext } from "../context/SessionContext";
 import { User } from "../types/User";
+import doLogin from "../backend/Login";
 
 const Login = () => {
   const backImage = `.back-image{
@@ -23,6 +24,7 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const sessionContext = useContext(SessionContext);
 
   // inits the firebase authentication
   initFirebase();
@@ -37,10 +39,14 @@ const Login = () => {
         password
       );
 
+      // gets the user role
       const userRole: User = await doLogin(email);
-      document.cookie = "role=" + userRole.role + "; SameSite=None; Secure";
+      // updates the user context to the logged use
+      const sessionUser: User = { user: user, role: userRole.role };
+      sessionContext.setSessionUser(sessionUser);
+      localStorage.setItem("user", JSON.stringify(sessionUser));
 
-      Router.push("/donations");
+      Router.push("/my-donations");
     } catch (e: any) {
       toast.error("An error occured while logging the user!");
     }

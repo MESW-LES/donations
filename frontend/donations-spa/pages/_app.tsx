@@ -5,9 +5,11 @@ import Head from "next/head";
 import "primereact/resources/themes/vela-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
-import '../styles/layout/layout.scss';
-import '../styles/demo/Demos.scss'; 
-import 'primeflex/primeflex.css';
+import "../styles/layout/layout.scss";
+import "../styles/demo/Demos.scss";
+import "primeflex/primeflex.css";
+import { useState } from "react";
+import { SessionContextProvider } from "../context/SessionContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -19,7 +21,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="theme-color" content="#000000" />
       </Head>
-      <Component {...pageProps} />
+      <SessionContextProvider>
+        <Component {...pageProps} />
+      </SessionContextProvider>
     </>
   );
 }
