@@ -25,6 +25,9 @@ public class DonationDTO implements ModelDTO {
     @JsonProperty
     public List<String> donationImages;
 
+    @JsonProperty
+    public List<CategoryDTO> categories;
+
     public DonationDTO id(Long id) {
         this.id = id;
         return this;
@@ -62,6 +65,11 @@ public class DonationDTO implements ModelDTO {
 
     public DonationDTO donationImages(List<String> donationImages) {
         this.donationImages = donationImages;
+        return this;
+    }
+
+    public DonationDTO categories(List<CategoryDTO> categories) {
+        this.categories = categories;
         return this;
     }
 
@@ -104,4 +112,9 @@ public class DonationDTO implements ModelDTO {
     public void setAddressId(Long addressId) {
         this.addressId = addressId;
     }
+
+    public void addCategory(CategoryDTO categoryDTO) {
+        categories.add(categoryDTO);
+    }
+
 }
