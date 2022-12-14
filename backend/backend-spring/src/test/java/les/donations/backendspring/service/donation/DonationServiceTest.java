@@ -5,6 +5,7 @@ import les.donations.backendspring.exceptions.NotFoundEntityException;
 import les.donations.backendspring.mapper.donation.IDonationMapper;
 import les.donations.backendspring.mapper.donationImage.IDonationImageMapper;
 import les.donations.backendspring.model.*;
+import les.donations.backendspring.repository.category.CategoryDao;
 import les.donations.backendspring.repository.donation.DonationDao;
 import les.donations.backendspring.service.category.CategoryService;
 import org.junit.jupiter.api.Assertions;
@@ -25,6 +26,8 @@ public class DonationServiceTest {
 
     @Mock
     private DonationDao donationDao;
+    @Mock
+    private CategoryDao categoryDao;
     @Mock
     private IDonationMapper donationMapper;
     @Mock
@@ -139,6 +142,7 @@ public class DonationServiceTest {
         DonationDTO donationDTO = new DonationDTO();
         List<ModelDTO> donationDTOs = Collections.singletonList(donationDTO);
         when(donationMapper.modelToDTO(donation)).thenReturn(donationDTO);
+        when(categoryDao.findAll()).thenReturn(new ArrayList<>());
 
         PaginationDTO returned = donationService.getDonations(id);
 

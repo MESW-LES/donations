@@ -8,6 +8,7 @@ import les.donations.backendspring.model.DonationProcess;
 import les.donations.backendspring.util.StringUtils;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @Component
@@ -21,8 +22,9 @@ public class DonationMapper implements IDonationMapper {
     @Override
     public DonationDTO modelToDTO(Donation donation) throws IllegalArgumentException {
         // donation information
-        DonationDTO donationDTO = new DonationDTO().title(donation.getTitle()).description(donation.getDescription())
+        DonationDTO donationDTO = new DonationDTO().id(donation.getId()).title(donation.getTitle()).description(donation.getDescription())
                 .createdDate(StringUtils.convertDateToString(donation.getCreatedDate()))
+                .categories(new ArrayList<>())
                 .donationImages(donation.getDonationImages().stream().map(DonationImage::getFileName).collect(Collectors.toList()));
 
         // gets the donation process
