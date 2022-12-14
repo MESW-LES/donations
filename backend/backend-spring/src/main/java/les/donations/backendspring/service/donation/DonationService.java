@@ -2,11 +2,14 @@ package les.donations.backendspring.service.donation;
 
 import les.donations.backendspring.dto.*;
 import les.donations.backendspring.exceptions.NotFoundEntityException;
+import les.donations.backendspring.mapper.category.ICategoryMapper;
 import les.donations.backendspring.mapper.donation.IDonationMapper;
 import les.donations.backendspring.mapper.donationImage.IDonationImageMapper;
+import les.donations.backendspring.model.Category;
 import les.donations.backendspring.model.Donation;
 import les.donations.backendspring.model.DonationImage;
 import les.donations.backendspring.model.DonationProcess;
+import les.donations.backendspring.repository.category.CategoryDao;
 import les.donations.backendspring.repository.donation.DonationDao;
 import les.donations.backendspring.service.category.ICategoryService;
 import les.donations.backendspring.util.StringUtils;
@@ -23,12 +26,18 @@ public class DonationService implements IDonationService {
 
     @Autowired
     private IDonationMapper donationMapper;
+
+    @Autowired
+    private ICategoryMapper categoryMapper;
     @Autowired
     private IDonationImageMapper donationImageMapper;
     @Autowired
     private ICategoryService categoryService;
     @Autowired
     private DonationDao donationDao;
+
+    @Autowired
+    private CategoryDao categoryDao;
 
     @Override
     public DonationDTO registerDonation(DonationDTO donationDTO, List<FileDTO> filesDTO) throws IllegalArgumentException, NotFoundEntityException {
@@ -88,7 +97,14 @@ public class DonationService implements IDonationService {
         // gets the active donations with a specific status
         List<Donation> donations = donationDao.getDonations(donationProcessStatus);
         // converts them into DTOs
-        List<ModelDTO> donationDTOs = donations.stream().map(donation -> donationMapper.modelToDTO(donation)).collect(Collectors.toList());
+        List<ModelDTO> donationDTOs = donations.stream().map(donation -> donationMapper.modelToDTO(donation)).
+                map(donationDTO -> {
+                    try {
+                        return setCategories(donationDTO);
+                    } catch (NotFoundEntityException e) {
+                        throw new IllegalArgumentException("Categories not found");
+                    }
+                }).collect(Collectors.toList());
 
         return new PaginationDTO().results(donationDTOs).countResults(donations.size());
     }
@@ -148,6 +164,19 @@ public class DonationService implements IDonationService {
         // if the donation does not exist
         if(!donation.isActive()){
             throw new NotFoundEntityException("The donation does not exist!");
+        }
+        return donation;
+    }
+
+    private DonationDTO setCategories(DonationDTO donation) throws NotFoundEntityException {
+        List<Category> categories = categoryDao.findAll();
+        for (Category category: categories) {
+            List<Donation> donations = category.getDonations();
+            for (Donation donation1: donations) {
+                if (donation1.getId().equals(donation1.getId())) {
+                    donation.addCategory(categoryMapper.modelToDTO(category));
+                }
+            }
         }
         return donation;
     }
