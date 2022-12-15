@@ -19,6 +19,8 @@ public class CompanyDTO {
     @JsonProperty
     public Long phone;
     @JsonProperty
+    public String email;
+    @JsonProperty
     public List<String> categoryId;
 
     public CompanyDTO id(Long id) {
@@ -45,6 +47,12 @@ public class CompanyDTO {
         this.phone = phone;
         return this;
     }
+
+    public CompanyDTO email(String email) {
+        this.email = email;
+        return this;
+    }
+
     public CompanyDTO categoryId(List<String> categoryId) {
         this.categoryId = categoryId;
         return this;

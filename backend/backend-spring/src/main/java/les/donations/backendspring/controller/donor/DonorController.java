@@ -15,9 +15,9 @@ import java.io.IOException;
 @CrossOrigin
 @RestController
 public class DonorController implements IDonorController {
+
     @Autowired
     private IDonorService donorService;
-
 
     /**
      * Creates a donor
