@@ -2,39 +2,47 @@ import { Menubar } from "primereact/menubar";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { SessionContext } from "../context/SessionContext";
 
 function AppMenuBar() {
+  const context = useContext(SessionContext);
+
+  // gets the session user
+  useEffect(() => {
+    // if it does not exist then gets the saved user in local storage and updates the context
+    if (context.sessionUser) {
+      const sessionUserStr: string | null = localStorage.getItem("user");
+      context.setSessionUser(
+        JSON.parse(sessionUserStr == null ? "" : sessionUserStr)
+      );
+    }
+  }, []);
+
+  const role: string = context.sessionUser.role;
   const menuItems = [
     {
       label: "Home",
       icon: "pi pi-fw pi-home",
-      command: () => goToPage("/"),
+      command: () => goToPage("/donations"),
     },
     {
       label: "My Donations",
       icon: "pi pi-fw pi-box",
       command: () => goToPage("my-donations"),
-    },
-    {
-      label: "Profile",
-      icon: "pi pi-fw pi-user",
-      command: () => goToPage("profile"),
+      visible: role === "donor" || role === "donne",
     },
     {
       label: "Ongoing Donations",
       icon: "pi pi-fw pi-calendar-times",
       command: () => goToPage("ongoing-donations"),
+      visible: role === "donor" || role === "donne",
     },
     {
       label: "Categories",
       icon: "pi pi-fw pi-tags",
       command: () => goToPage("categories"),
-    },
-    {
-      label: "Administration",
-      icon: "pi pi-fw pi-cog",
-      command: () => goToPage("administration"),
+      visible: role === "admin",
     },
   ];
 

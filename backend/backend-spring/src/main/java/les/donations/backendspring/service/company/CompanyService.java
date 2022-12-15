@@ -41,4 +41,9 @@ public class CompanyService implements ICompanyService {
         company.setEmail(email);
         return company;
     }
+
+    @Override
+    public boolean existsCompanyByEmail(String email) {
+        return companyDao.existsCompanyByEmailAndActive(email, true);
+    }
 }

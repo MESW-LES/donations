@@ -45,7 +45,7 @@ class DoneeServiceTest {
     public void setup() {
         //if we don't call below, we will get NullPointerException
         MockitoAnnotations.openMocks(this);
-        company = new Company("name", "description", "taxNumber", 912345678L);
+        company = new Company("name", "description", "taxNumber", 912345678L, "abc@gmail.com");
         category = new Category("code", "name", "description");
     }
 

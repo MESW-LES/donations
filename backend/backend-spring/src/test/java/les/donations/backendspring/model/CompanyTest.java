@@ -12,29 +12,29 @@ class CompanyTest {
     @ParameterizedTest
     @NullAndEmptySource
     void setNameWithNullAndEmptyValueTest(String name){
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Company(name, "description", "taxNumber", 912345678L));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Company(name, "description", "taxNumber", 912345678L, "abc@gmail.com"));
     }
 
     @ParameterizedTest
     @NullAndEmptySource
     void setDescriptionWithNullAndEmptyValueTest(String description){
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Company("name", description, "taxNumber", 912345678L));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Company("name", description, "taxNumber", 912345678L, "abc@gmail.com"));
     }
 
     @ParameterizedTest
     @NullAndEmptySource
     void setTaxNumberWithNullAndEmptyValueTest(String taxNumber){
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Company("name", "description", taxNumber, 912345678L));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Company("name", "description", taxNumber, 912345678L, "abc@gmail.com"));
     }
 
     @Test
     void setPhoneWithNullValueTest(){
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Company("name", "description", "taxNumber", null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Company("name", "description", "taxNumber", null, "abc@gmail.com"));
     }
 
     @Test
     void setPhoneWithNoNineDigitsValueTest(){
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Company("name", "description", "taxNumber", 123L));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Company("name", "description", "taxNumber", 123L, "abc@gmail.com"));
     }
 
 }

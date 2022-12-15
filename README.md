@@ -1,4 +1,4 @@
-# LES Project - Donations
+# LES Project - Donations App
 
 This repository contains the frontend and backend for the app.
 
@@ -22,7 +22,7 @@ Technologies:
 - Docker
 
 Work made by:
-- Anastacia
-- Kevin 
-- Luís
-- Tamires
+- Anastacia Dunaeva
+- Kevin Merizalde
+- Luís Ferreira
+- Tamires Viegas

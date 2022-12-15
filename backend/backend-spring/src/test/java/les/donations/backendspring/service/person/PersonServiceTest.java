@@ -60,8 +60,8 @@ class PersonServiceTest {
     @Test
     void addPersonWithValidInformation() {
         PersonDTO personDTO = new PersonDTO().id(Long.valueOf("3"));
-        Person person = new Person(Long.valueOf("1"), "Anna",
-                "Smith", "023456789", "address", "person.test@gmail.com", "password");
+        Person person = new Person("Anna",
+                "Smith", "023456789", "address", "person.test@gmail.com");
         when(personMapper.dtoToModel(personDTO)).thenReturn(person);
         when(personRepository.saveAndFlush(person)).thenReturn(person);
 

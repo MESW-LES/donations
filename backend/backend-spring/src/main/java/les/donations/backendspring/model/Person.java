@@ -33,19 +33,21 @@ public class Person {
     @Column(name = "EMAIL")
     private String email;
 
-    @Column(name = "PASSWORD")
-    private String password;
+    @Column(name = "ACTIVE")
+    private Boolean active;
+
+    @OneToOne(mappedBy = "person", fetch = FetchType.LAZY)
+    private Donor donor;
 
     public Person() {}
 
-    public Person(Long id, String firstName, String lastName, String nif, String address, String email, String password) throws IllegalArgumentException {
-        this.id = id;
+    public Person(String firstName, String lastName, String nif, String address, String email) throws IllegalArgumentException {
         setFirstName(firstName);
         setLastName(lastName);
         setNif(nif);
         setAddress(address);
         setEmail(email);
-        setPassword(password);
+        active = true;
     }
 
     public Long getId() { return id; }
@@ -60,7 +62,13 @@ public class Person {
 
     public String getEmail() { return email; }
 
-    public String getPassword() { return password; }
+    public Donor getDonor() {
+        return donor;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
 
     public void setId(Long id) { this.id = id; }
 
@@ -101,9 +109,12 @@ public class Person {
         this.email = email;
     }
 
-    public void setPassword(String password) {
-        if ((password == null) || (password.isEmpty())) throw new IllegalArgumentException("The password can't be null or empty");
-        this.password = password;
+    public void setDonor(Donor donor) {
+        this.donor = donor;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     @Override

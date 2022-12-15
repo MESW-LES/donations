@@ -5,6 +5,8 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Table(name = "COMPANIES")
 @Entity
@@ -29,6 +31,9 @@ public class Company {
     @Column(name = "PHONE")
     private Long phone;
 
+    @Column(name = "EMAIL")
+    private String email;
+
     @Column(name = "ACTIVE")
     private boolean active;
 
@@ -38,14 +43,11 @@ public class Company {
     @Column(name = "REMOVE_DATE")
     private Date removeDate;
 
-    @Transient
-    private String email;
-
     protected Company() {
         // for ORM
     }
 
-    public Company(String name, String description, String taxNumber, Long phone) throws IllegalArgumentException{
+    public Company(String name, String description, String taxNumber, Long phone, String email) throws IllegalArgumentException{
         setName(name);
         setDescription(description);
         setTaxNumber(taxNumber);
@@ -110,6 +112,21 @@ public class Company {
         this.phone = phone;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        if (email == null || email.isEmpty()){
+            throw new IllegalArgumentException("The email can't be null or empty");
+        }
+        Matcher matcher = Pattern.compile("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+" +
+                "(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$").matcher(email);
+        if(!matcher.matches()){
+            throw new IllegalArgumentException("The email has illegal format");
+        }
+    }
+
     public boolean isActive() {
         return active;
     }
@@ -132,14 +149,6 @@ public class Company {
 
     public void setRemoveDate(Date removeDate) {
         this.removeDate = removeDate;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     @Override

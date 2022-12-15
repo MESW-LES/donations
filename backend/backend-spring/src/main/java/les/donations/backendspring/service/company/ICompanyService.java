@@ -9,4 +9,6 @@ public interface ICompanyService {
 
     Company createCompany(CompanyDTO companyDTO) throws IllegalArgumentException, IOException;
 
+    boolean existsCompanyByEmail(String email);
+
 }
