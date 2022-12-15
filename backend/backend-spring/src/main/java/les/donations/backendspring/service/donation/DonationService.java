@@ -114,7 +114,9 @@ public class DonationService implements IDonationService {
     public DonationDTO getDonation(Long donationId) throws NotFoundEntityException {
         // gets the donation by its id
         Donation donation = getDonationModel(donationId);
-        return donationMapper.modelToDTO(donation);
+        DonationDTO donationDTO = donationMapper.modelToDTO(donation);
+        setCategories(donationDTO);
+        return donationDTO;
     }
 
     @Override
@@ -174,7 +176,7 @@ public class DonationService implements IDonationService {
         for (Category category: categories) {
             List<Donation> donations = category.getDonations();
             for (Donation donation1: donations) {
-                if (donation1.getId().equals(donation1.getId())) {
+                if (donation.getId().equals(donation1.getId())) {
                     donation.addCategory(categoryMapper.modelToDTO(category));
                 }
             }
