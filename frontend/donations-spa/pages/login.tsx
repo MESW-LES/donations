@@ -110,7 +110,7 @@ const Login = () => {
             </div>
             <div className="flex justify-center grid-cols-1 pt-10">
               <p className="text-black">
-                If you don't have an account feel free to{" "}
+                If you don&apos;t have an account feel free to{" "}
                 <Link href="/register">register</Link>.
               </p>
             </div>
