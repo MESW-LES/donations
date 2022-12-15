@@ -38,9 +38,14 @@ export async function getStaticProps() {
 } */
  
 function DetailDonation() {
+    const router = useRouter();
+    const id = router.query.id;
+    console.log(router.query.id);
+    const [images, setImages] = useState(null);
     const [donation, setDonation] = useState<any>(null);
-    const router = useRouter()
-    const id = router.query.id
+    
+    
+    
 
     const responsiveOptions = [
         {
@@ -57,11 +62,17 @@ function DetailDonation() {
         }
     ];
 
-    useEffect(() => {
-        fetchDonation();
-    }, []); 
+
+     useEffect(() => {
+        const id = router.query.id;
+        console.log(id)
+        fetchDonation();        
+    }, []);  
     
-    
+    const fetchImages = ()=>{
+        console.log(donation.donationImages)
+        return donation.donationImages;
+    }
     //Fetch data from the BackEnd
     const fetchDonation = async ()=>{
 
@@ -88,10 +99,10 @@ function DetailDonation() {
       <>
         <AppMenuBar />      
         <div className="card">
-        <h1>Detail of: {donation.title}</h1>
+        <h1>Detail of: </h1>
         </div>
         <div>
-        <Galleria value={images} item={itemTemplate} thumbnail={thumbnailTemplate} numVisible={5} responsiveOptions={responsiveOptions}></Galleria>
+        
         </div>
         
         <h1>{id}</h1>
