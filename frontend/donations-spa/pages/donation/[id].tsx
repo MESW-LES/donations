@@ -37,12 +37,12 @@ export async function getStaticProps() {
     
 } */
  
-function DetailDonation() {
+function DetailDonation({donation}: any) {
     const router = useRouter();
     const id = router.query.id;
     console.log(router.query.id);
     const [images, setImages] = useState(null);
-    const [donation, setDonation] = useState<any>(null);
+    //const [donation, setDonation] = useState<any>(null);
     
     
     
@@ -66,7 +66,7 @@ function DetailDonation() {
      useEffect(() => {
         const id = router.query.id;
         console.log(id)
-        fetchDonation();        
+        //fetchDonation();        
     }, []);  
     
     const fetchImages = ()=>{
@@ -74,7 +74,7 @@ function DetailDonation() {
         return donation.donationImages;
     }
     //Fetch data from the BackEnd
-    const fetchDonation = async ()=>{
+  /*   const fetchDonation = async ()=>{
 
         try {
             const requestOptions = {
@@ -93,21 +93,65 @@ function DetailDonation() {
     }
       
         
-      }
+      } */
 
     return (
       <>
         <AppMenuBar />      
         <div className="card">
-        <h1>Detail of: </h1>
+        <h1>Detail of: {donation.title} </h1>
         </div>
         <div>
         
         </div>
         
         <h1>{id}</h1>
+        <h2></h2>
       </>
     );
   }
   
   export default DetailDonation;
+
+  export async function getStaticPaths() {
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    };
+     const response = await fetch(`http://localhost:8080/donations`, requestOptions)
+     const data = await response.json();
+     console.log(data.message.results)
+
+     const newPaths = data.message.results.map(post => {
+        return{
+            params:{
+                id: `${post.id}`
+            }
+        }
+     })
+    return{
+        paths: [{
+            params: {id: '1'}
+        },
+    ],
+    fallback: false
+    }
+  }
+
+  export async function getStaticProps(context : any){
+    const {params} = context
+    console.log(params);
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+    };
+     const response = await fetch(`http://localhost:8080/donations/${params.id}`, requestOptions)
+     const data = await response.json();
+
+     //console.log(data);
+     return {
+        props:{
+            donation: data.message,
+        },
+     }
+  }
