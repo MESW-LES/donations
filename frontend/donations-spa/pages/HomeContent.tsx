@@ -45,8 +45,8 @@ const sortOptions = [
 const fetchDonations = async ()=>{
     const response = await fetch('/api/donations');
     const data = await response.json();
-    console.log(data.data.message.results);
-    console.log(data.code);
+    //console.log(data.data.message.results);
+    //console.log(data.code);
     if(data.code = 200){
         setDataViewValue(data.data.message.results);
     }
@@ -157,14 +157,11 @@ const dataviewGridItem = (data: any) => {
 const itemTemplate = (data : any, layout:any) => {
     if (!data) {
         return;
-        console.log("HEY 2");
     }
 
     if (layout === 'list') {
-        console.log("HEY 3");
         return dataviewListItem(data);
     } else if (layout === 'grid') {
-        console.log("HEY 4");
         return dataviewGridItem(data);
     }
 };

@@ -8,7 +8,7 @@ import { InputText } from 'primereact/inputtext';
 import { useRouter } from "next/router";
 
 function MyDonations() {
-  
+
 // Donations items
 const [dataViewValue, setDataViewValue] = useState<any>(null);
 // String to search on the donation items
@@ -44,9 +44,23 @@ const sortOptions = [
     { label: 'Delivered', value: 'deliveredStatus' }
 ];
 
+//Fetch data from the BackEnd
+const fetchDonations = async ()=>{
+    const response = await fetch('/api/donations');
+    const data = await response.json();
+    //console.log(data.data.message.results);
+    //console.log(data.code);
+    if(data.code = 200){
+        setDataViewValue(data.data.message.results);
+        //console.log(dataViewValue[0].donationImages[0])
+    }
+    
+  }
+
  useEffect(() => {
-    const productService = new ProductService();
-    productService.getProducts().then((data) => setDataViewValue(data));
+    /* const productService = new ProductService();
+    productService.getProducts().then((data) => setDataViewValue(data)); */
+    fetchDonations();
     setGlobalFilterValue('');
 }, []); 
 
@@ -59,7 +73,7 @@ const onFilter = (e : any) => {
     }
     else {
         const filtered = dataViewValue.filter((product:any) => {
-                return product.name.toLowerCase().includes(value);
+                return product.title.toLowerCase().includes(value);
         });
         setFilteredValue(filtered);
     }
@@ -115,7 +129,7 @@ const dataviewListItem = (data: any) => {
     return (
         <div className="col-12">
             <div className="flex flex-column md:flex-row align-items-center p-3 w-full">                
-                <img src={`images/product/${data.image}`} alt={data.name} className="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5" />
+                <img src={`http://localhost:8080/donationsImages/${data.donationImages[0]}.png`} alt={data.title} className="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5" />
                 <div className="flex-1 flex flex-column align-items-center text-center md:text-left">
                     <div className="font-bold text-2xl">{data.name}</div>
                     <div className="mb-2">{data.description}</div>            
@@ -126,8 +140,8 @@ const dataviewListItem = (data: any) => {
                 </div>
                 <div className="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
                     <span className="text-2xl font-semibold mb-2 align-self-center md:align-self-end">{data.publish_date}</span>
-                    <Button icon="pi pi-pencil" label="Edit donation" disabled={data.status === 'END' || data.status === 'ONGOING' || data.status === 'REQUESTED'} className="mb-2 p-button-sm"></Button>
-                    <span className={`product-badge status-${data.status.toLowerCase()}`}>{data.status}</span>
+                    <Button icon="pi pi-pencil" label="Edit donation" disabled={data.donationProcess.status.toUpperCase() === 'END'} className="mb-2 p-button-sm"></Button>
+                    <span className={`product-badge status-${data.donationProcess.status.toLowerCase()}`}>{data.donationProcess.status}</span>
                 </div>
             </div>
         </div>
@@ -141,19 +155,19 @@ const dataviewGridItem = (data: any) => {
                 <div className="flex flex-wrap gap-2 align-items-center justify-content-between mb-2">
                     <div className="flex align-items-center">
                         <i className="pi pi-tag mr-2" />
-                        <span className="font-semibold">{data.category}</span>
+                        <span className="font-semibold">{data.categories[0].name}</span>
                     </div>
-                    <span className={`product-badge status-${data.status.toLowerCase()}`}>{data.status}</span>
+                    <span className={`product-badge status-${data.donationProcess.status.toLowerCase()}`}>{data.donationProcess.status}</span>
                    
                 </div>
                 <div className="flex flex-column align-items-center text-center mb-3">
-                    <img src={`images/product/${data.image}`} alt={data.name} className="h-40 w-8 shadow-2 my-3 mx-0" />
-                    <div className="text-2xl font-bold">{data.name}</div>
+                    <img src={`http://localhost:8080/donationsImages/${data.donationImages[0]}.png`} alt={data.title} className="h-40 w-8 shadow-2 my-3 mx-0" />
+                    <div className="text-2xl font-bold">{data.title}</div>
                     <div className="mb-3">{data.description}</div>                    
                 </div>
                 <div className="flex align-items-center justify-content-between">
                     <span className="text-2xl font-semibold">{data.publish_date}</span>
-                    <Button icon="pi pi-pencil" disabled={data.status === 'END' || data.status === 'ONGOING' || data.status === 'REQUESTED'} />                
+                    <Button icon="pi pi-pencil" disabled={data.donationProcess.status.toUpperCase() === 'END'} />                
                 </div>
             </div>
         </div>
