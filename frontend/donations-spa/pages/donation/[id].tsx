@@ -73,6 +73,8 @@ function DetailDonation({ donation }: any) {
     //return donation.donationImages;
   };
 
+
+
   return (
     <>
       <div>
@@ -108,7 +110,9 @@ function DetailDonation({ donation }: any) {
                 <AccordionTab tabIndex={1} header="Details">
                   <p>Created date: {donation.createdDate}</p>
                   <p>Donation status: {donation.donationProcess.status}</p>
-                  <p>Category: {donation.categories}</p>
+                  <p>Category: {donation.categories.map((data : any)=>{
+                    return data.name
+                  })}</p>
                 </AccordionTab>
               </Accordion>
               <div className="align-items-center justify-content-center pt-3">
