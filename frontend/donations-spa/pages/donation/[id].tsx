@@ -40,7 +40,7 @@ function DetailDonation({ donation }: any) {
             "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png")
         }
         alt={item}
-        style={{ width: "100%" }}
+        style={{ width: "30%" }}
       />
     );
   };
@@ -91,10 +91,10 @@ function DetailDonation({ donation }: any) {
             <Galleria
               value={images}
               item={itemTemplate}
-              thumbnail={thumbnailTemplate}
+              thumbnail={thumbnailTemplate}            
               numVisible={5}
               responsiveOptions={responsiveOptions}
-              style={{ maxWidth: "640px" }}
+              style={{ maxWidth: "600px" }}
             ></Galleria>
           </SplitterPanel>
           <SplitterPanel className="flex align-items-center justify-content-center col-12">

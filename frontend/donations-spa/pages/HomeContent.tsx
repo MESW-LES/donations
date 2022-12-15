@@ -147,7 +147,7 @@ const dataviewGridItem = (data: any) => {
                 <i className="pi pi-calendar mr-2" />
                     <span className="font-semibold">{data.createdDate.substring(0,10)}</span>
                     </div>
-                    <Button icon="pi pi-shopping-cart" label="Request" disabled={data.inventoryStatus === 'OUTOFSTOCK'} onClick={() => goToPage("donation/"+1)} />
+                    <Button icon="pi pi-shopping-cart" label="Request" disabled={data.inventoryStatus === 'OUTOFSTOCK'} onClick={() => goToPage("donation/"+data.id)} />
                 </div>
             </div>
         </div>
