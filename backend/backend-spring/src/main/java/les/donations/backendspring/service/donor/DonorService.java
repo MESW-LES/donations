@@ -36,7 +36,6 @@ public class DonorService implements IDonorService{
         Person person = personService.addPerson(donorDTO.person);
         // creates the donor
         Donor donor = new Donor(person);
-        //Address address = addressMapper.dtoToModel(donorDTO.address);
         Address address = addressService.addAddress(donorDTO.address);
         address.addDonor(donor);
         donor.setAddress(address);
