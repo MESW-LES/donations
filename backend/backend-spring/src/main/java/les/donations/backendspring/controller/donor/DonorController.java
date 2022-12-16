@@ -2,6 +2,7 @@ package les.donations.backendspring.controller.donor;
 
 import les.donations.backendspring.api.ApiReturnMessage;
 import les.donations.backendspring.dto.DonorDTO;
+import les.donations.backendspring.exceptions.NotFoundEntityException;
 import les.donations.backendspring.service.donor.IDonorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,9 @@ public class DonorController implements IDonorController {
             apiReturnMessage = new ApiReturnMessage(httpStatus.value(), ex.getMessage());
         } catch (IOException ex) {
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            apiReturnMessage = new ApiReturnMessage(httpStatus.value(), ex.getMessage());
+        } catch (NotFoundEntityException ex) {
+            httpStatus = HttpStatus.NOT_FOUND;
             apiReturnMessage = new ApiReturnMessage(httpStatus.value(), ex.getMessage());
         }
 

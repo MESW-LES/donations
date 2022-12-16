@@ -3,6 +3,7 @@ package les.donations.backendspring.controller.donor;
 import les.donations.backendspring.api.ApiReturnMessage;
 import les.donations.backendspring.dto.DonorDTO;
 import les.donations.backendspring.dto.PersonDTO;
+import les.donations.backendspring.exceptions.NotFoundEntityException;
 import les.donations.backendspring.service.donor.IDonorService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +39,7 @@ class DonorControllerTest {
 
     @ParameterizedTest
     @MethodSource("provideMessageExceptions")
-    void addDonorWithIllegalInformation(String message) throws IOException {
+    void addDonorWithIllegalInformation(String message) throws IOException, NotFoundEntityException {
         DonorDTO donorDTO = new DonorDTO();
         // mock the service
         when(donorService.registerDonor(donorDTO)).thenThrow(new IllegalArgumentException(message));
@@ -49,7 +50,7 @@ class DonorControllerTest {
     }
 
     @Test
-    void addCategoryWithValidInformation() throws IOException {
+    void addCategoryWithValidInformation() throws IOException, NotFoundEntityException {
         PersonDTO personDTO = new PersonDTO().id(Long.valueOf("1")).firstName("Anna").lastName("Smith")
                 .nif("023456789").address("address").email("person.test@gmail.com").password("password");
         DonorDTO donorDTO = new DonorDTO().id(Long.valueOf("2")).person(personDTO);

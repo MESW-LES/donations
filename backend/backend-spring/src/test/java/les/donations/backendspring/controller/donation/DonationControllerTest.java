@@ -1,4 +1,4 @@
-package les.donations.backendspring.controller.category;
+package les.donations.backendspring.controller.donation;
 
 import les.donations.backendspring.api.ApiReturnMessage;
 import les.donations.backendspring.controller.donation.DonationController;
@@ -162,7 +162,7 @@ class DonationControllerTest {
                 thenReturn(donationDTO);
 
         ResponseEntity<ApiReturnMessage> result = donationController.updateDonation(donationId, donationDTO);
-        Assertions.assertEquals(201, result.getStatusCodeValue());
+        Assertions.assertEquals(200, result.getStatusCodeValue());
         Assertions.assertEquals(donationDTO, result.getBody().getMessage());
     }
 

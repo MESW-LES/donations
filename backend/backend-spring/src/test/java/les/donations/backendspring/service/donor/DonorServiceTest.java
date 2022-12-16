@@ -49,7 +49,7 @@ class DonorServiceTest {
     }
 
     @Test
-    void registerCorrectDonorTest() throws IOException {
+    void registerCorrectDonorTest() throws IOException, NotFoundEntityException {
         Person person = new Person("name", "lastName", "987654321",
                 "address", "joe.doe@gmail.com");
         Donor donor = new Donor();
