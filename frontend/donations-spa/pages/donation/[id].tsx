@@ -7,8 +7,11 @@ import { Divider } from "primereact/divider";
 import { Splitter, SplitterPanel } from "primereact/splitter";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { Button } from "primereact/button";
+import { Toast } from "primereact/toast";
 
 function DetailDonation({ donation }: any) {
+  //for display messages in the view
+const toast = useRef<any>(null);
   const router = useRouter();
   const id = router.query.id;
   console.log(router.query.id);
@@ -60,6 +63,18 @@ function DetailDonation({ donation }: any) {
     },
   ];
 
+  const showToast = (
+    severityValue: string,
+    summaryValue: string,
+    detailValue: string
+  ) => {
+    toast.current.show({
+      severity: severityValue,
+      summary: summaryValue,
+      detail: detailValue,
+    });
+  };
+
   useEffect(() => {
     const id = router.query.id;
     console.log(id);
@@ -73,14 +88,111 @@ function DetailDonation({ donation }: any) {
     //return donation.donationImages;
   };
 
+    //Fetch request donation BackEnd
+const requestDonation = async (id: any)=>{
+  try {
+      const { data } = await axios({
+        url: `http://localhost:8080/donations/${id}/request`,        
+        method: "PUT",
+      });
 
+      if (data.code != 200 && data.code != 201 ) {
+        showToast(
+          "error",
+          "Hey",
+          "oops looks like something went wrong, please try again later."
+        );
+      } else {
+        showToast(
+          "success",
+          "Success Message",
+          "The donation was requested successfully."
+        );
+      }
+    } catch (error) {
+      if(error instanceof Error){
+        showToast(
+          "error",
+          "Error " + error.message,
+          error.message
+        );
+      }
+      
+    }
+}
+
+    //Fetch request donation BackEnd
+    const acceptDonation = async (id: any)=>{
+      try {
+        const accept = {
+          "decision": true
+      }
+          const { data } = await axios.put(`http://localhost:8080/donations/${id}/decision`, accept);
+    
+          if (data.code != 200 && data.code != 201 ) {
+            showToast(
+              "error",
+              "Hey",
+              "oops looks like something went wrong, please try again later."
+            );
+          } else {
+            showToast(
+              "success",
+              "Success Message",
+              "The donation was accepted successfully."
+            );
+          }
+        } catch (error) {
+          if(error instanceof Error){
+            showToast(
+              "error",
+              "Error " + error.message,
+              error.message
+            );
+          }
+          
+        }
+    }
+
+        //Fetch request donation BackEnd
+const rejectDonation = async (id: any)=>{
+  try {
+    const reject = {
+      "decision": false
+  }
+      const { data } = await axios.put(`http://localhost:8080/donations/${id}/decision`, reject);
+
+      if (data.code != 200 && data.code != 201 ) {
+        showToast(
+          "error",
+          "Hey",
+          "oops looks like something went wrong, please try again later."
+        );
+      } else {
+        showToast(
+          "success",
+          "Success Message",
+          "The donation was rejected successfully."
+        );
+      }
+    } catch (error) {
+      if(error instanceof Error){
+        showToast(
+          "error",
+          "Error " + error.message,
+          error.message
+        );
+      }
+      
+    }
+}
 
   return (
     <>
       <div>
         <AppMenuBar />
       </div>
-
+      <Toast ref={toast} />
       <div className="card col-12 pt-10">
         <div className="pb-4">
           <h2>Detail of: {donation.title} </h2>
@@ -121,8 +233,24 @@ function DetailDonation({ donation }: any) {
                   icon="pi pi-shopping-cart"
                   label="Request"
                   disabled={donation.donationProcess.status !== "Created"}
-                  onClick={() => console.log("")}
+                  onClick={() => requestDonation(donation.id)}
                 />
+                <div className="flex align-items-center  pt-3">
+                     <Button
+                  className="col-5 mr-1 bg-green-400 border-green-500"
+                  icon="pi pi-check"
+                  label="Accept"
+                  disabled={donation.donationProcess.status !== "Requested"}
+                  onClick={() => acceptDonation(donation.id)}
+                />
+                  <Button
+                  className="col-5 ml-1 bg-red-400 border-red-500"
+                  icon="pi pi-times"
+                  label="Reject"
+                  disabled={donation.donationProcess.status !== "Requested"}
+                  onClick={() => rejectDonation(donation.id)}
+                />
+                </div>
               </div>
             </div>
           </SplitterPanel>

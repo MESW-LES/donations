@@ -331,7 +331,8 @@ useEffect(() => {
                     id="category"
                     value={dropdownItem}
                     onChange={(e)=>{setDropdownItem(e.value);
-                    setCategory(e.value.code);                
+                    setCategory(e.value.code); 
+                    console.log(category);               
                     }}
                     options={categoriesData}
                     optionLabel="name"
