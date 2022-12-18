@@ -38,9 +38,9 @@ public class DataSourceConfig {
     public DataSource getDataSource() {
         DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
 
-        dataSourceBuilder.url("jdbc:postgresql://localhost:6543/postgres");
-        dataSourceBuilder.username("postgres");
-        dataSourceBuilder.password("D0nationSAppLES");
+        dataSourceBuilder.url("jdbc:postgresql://ls-0ebe4ec6094e46c9d0ef27f76446eb59220c668d.cgwgs94a3j9a.eu-west-3.rds.amazonaws.com:5432/postgres");
+        dataSourceBuilder.username("dbmasteruser");
+        dataSourceBuilder.password("#KMUEZ<ZttO4*X#vXh8$psA]<I8~k~PF");
 
         return dataSourceBuilder.build();
     }
