@@ -11,54 +11,46 @@ public class PersonTest {
     @ParameterizedTest
     @NullAndEmptySource
     void setFirstNameWithANullAndEmptyValueTest(String firstName){
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person(Long.valueOf("1"), firstName,
-                "Smith", "123456789", "address", "person@gmail.com", "password"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person(firstName,
+                "Smith", "123456789", "address", "person@gmail.com"));
     }
 
     @ParameterizedTest
     @NullAndEmptySource
     void setLastNameWithANullAndEmptyValueTest(String lastName){
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person(Long.valueOf("1"), "Anna",
-                lastName, "123456789", "address", "person@gmail.com", "password"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person("Anna",
+                lastName, "123456789", "address", "person@gmail.com"));
     }
 
     @ParameterizedTest
     @NullAndEmptySource
     void setNifWithANullAndEmptyValueTest(String nif){
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person(Long.valueOf("1"), "Anna",
-                "Smith", nif, "address", "person@gmail.com", "password"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person("Anna",
+                "Smith", nif, "address", "person@gmail.com"));
     }
 
     @ParameterizedTest
     @NullAndEmptySource
     void setAddressWithANullAndEmptyValueTest(String address){
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person(Long.valueOf("1"), "Anna",
-                "Smith", "123456789", address, "person@gmail.com", "password"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person("Anna",
+                "Smith", "123456789", address, "person@gmail.com"));
     }
 
     @ParameterizedTest
     @NullAndEmptySource
     void setEmailWithANullAndEmptyValueTest(String email){
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person(Long.valueOf("1"), "Anna",
-                "Smith", "123456789", "address", email, "password"));
-    }
-
-    @ParameterizedTest
-    @NullAndEmptySource
-    void setPasswordWithANullAndEmptyValueTest(String password){
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person(Long.valueOf("1"), "Anna",
-                "Smith", "123456789", "address", "person@gmail.com", password));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person("Anna",
+                "Smith", "123456789", "address", email));
     }
 
     @Test
     void createValidPerson(){
-        Person person = new Person(Long.valueOf("1"), "Anna",
-                "Smith", "123456789", "address", "person@gmail.com", "password");
+        Person person = new Person("Anna",
+                "Smith", "123456789", "address", "person@gmail.com");
         assertEquals("Anna", person.getFirstName());
         assertEquals("Smith", person.getLastName());
         assertEquals("123456789", person.getNif());
         assertEquals("address", person.getAddress());
         assertEquals("person@gmail.com", person.getEmail());
-        assertEquals("password", person.getPassword());
     }
 }

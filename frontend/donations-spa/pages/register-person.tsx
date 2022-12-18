@@ -14,8 +14,13 @@ import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import Router from "next/router";
 
 const RegisterPerson = () => {
+  const backImage = `.back-image{
+    background: url(https://www.owensboroparent.com/wp-content/uploads/2017/01/GiftofGiving.jpg);
+  }`;
+
   // email and password
   const [taxnumber, setTaxnumber] = useState("");
   const [name, setName] = useState("");
@@ -55,10 +60,12 @@ const RegisterPerson = () => {
         email,
         password
       );
-
       // signs out the user
       await auth.signOut();
       toast.success("User registered with success!");
+      setTimeout(() => {
+        Router.push("/");
+      }, 2000);
     } catch (error: any) {
       toast.error("An error occured while registering the user!");
     }
@@ -67,8 +74,15 @@ const RegisterPerson = () => {
   return (
     <>
       <ToastContainer />
-      <div className="flex justify-center pt-10">
-        <Card className="bg-white w-8 h-30">
+      <div
+        className="back-image flex justify-center pt-10"
+        style={{
+          height: "100vh",
+          backgroundRepeat: "no-repeat",
+          overflow: "hidden",
+        }}
+      >
+        <Card className="bg-white w-8 h-96">
           <div className="grid grid-cols-3">
             <div className="w-2"></div>
             <div className="w-8 flex justify-center">
@@ -151,6 +165,7 @@ const RegisterPerson = () => {
             <div className="w-2"></div>
           </div>
         </Card>
+        <style>{backImage}</style>
       </div>
     </>
   );
