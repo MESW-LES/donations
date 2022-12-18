@@ -17,11 +17,20 @@ const RegisterCompany = () => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [category, setcategory] = useState<any>();
 
   const categories = [
-    { label: 'Cateogry example 1', value: '1' },
+    { label: 'Cat-A', value: 'Cat-A' },
     { label: 'Cateogry example 1', value: '2' }
   ];
+
+  const onCategory = (event: any) => {
+    console.log("Entrei Cate")
+    let temp: string[] = []
+    temp.push(event.value)
+    setcategory(temp);
+
+  };
 
   // inits the firebase authentication
   initFirebase();
@@ -31,7 +40,7 @@ const RegisterCompany = () => {
   const createUserFirebase = async () => {
     try {
       // creates the backend donor
-      const formValues = { taxnumber, name, description, phone, email, password };
+      const formValues = { company: { taxnumber, name, description, phone, email }, password, ["categoryCodes"]: category };
 
       try {
         const { data } = await axios({
@@ -39,7 +48,7 @@ const RegisterCompany = () => {
           method: "POST",
           data: formValues,
         });
-  
+
         if (data.code != 200) {
         } else {
           setName("");
@@ -49,7 +58,7 @@ const RegisterCompany = () => {
       } catch (error) {
         if (error instanceof Error) {
         }
-      
+
       }
       // creates the firebase user
       const user: UserCredential = await createUserWithEmailAndPassword(
@@ -185,7 +194,7 @@ const RegisterCompany = () => {
             <div className="w-8">
               <div className="grid grid-cols-2">
                 <p className="w-4 text-black text-xl">Category</p>
-                <Dropdown options={categories} optionLabel="label" placeholder="Categories" />
+                <Dropdown value={category} options={categories} optionLabel="label" placeholder="Categories" onChange={onCategory} />
               </div>
             </div>
             <div className="w-2"></div>
