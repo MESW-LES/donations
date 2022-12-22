@@ -1,7 +1,7 @@
 import AppMenuBar from ".././AppMenuBar";
 import axios from "axios";
 import React, { useRef, useState, useEffect } from "react";
-import { useRouter } from "next/router";
+//import { useRouter } from "next/router";
 import { Galleria } from "primereact/galleria";
 import { Divider } from "primereact/divider";
 import { Splitter, SplitterPanel } from "primereact/splitter";
@@ -12,9 +12,9 @@ import { Toast } from "primereact/toast";
 function DetailDonation({ donation }: any) {
   //for display messages in the view
 const toast = useRef<any>(null);
-  const router = useRouter();
-  const id = router.query.id;
-  console.log(router.query.id);
+  //const router = useRouter();
+  //const id = router.query.id;
+  //console.log(router.query.id);
   const [images, setImages] = useState<any>(null);
   //const [donation, setDonation] = useState<any>(null);
 
@@ -76,8 +76,8 @@ const toast = useRef<any>(null);
   };
 
   useEffect(() => {
-    const id = router.query.id;
-    console.log(id);
+    //const id = router.query.id;
+    //console.log(id);
     fetchImages();
     console.log(images);
   }, []);

@@ -29,19 +29,19 @@ function AppMenuBar() {
     {
       label: "My Donations",
       icon: "pi pi-fw pi-box",
-      command: () => goToPage("my-donations"),
+      command: () => goToPage("/my-donations"),
       visible: role === "donor" || role === "donne",
     },
     {
       label: "Ongoing Donations",
       icon: "pi pi-fw pi-calendar-times",
-      command: () => goToPage("ongoing-donations"),
+      command: () => goToPage("/ongoing-donations"),
       visible: role === "donor" || role === "donne",
     },
     {
       label: "Categories",
       icon: "pi pi-fw pi-tags",
-      command: () => goToPage("categories"),
+      command: () => goToPage("/categories"),
       visible: role === "admin",
     },
   ];
