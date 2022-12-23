@@ -36,20 +36,27 @@ const sortOptions = [
     /* const productService = new ProductService();
     productService.getProducts().then((data) => setDataViewValue(data));
      */
-    fetchDonations();
+    fetchActiveDonations();
     setGlobalFilterValue('');
 }, []); 
 
 
+
 //Fetch data from the BackEnd
-const fetchDonations = async ()=>{
-    const response = await fetch('/api/donations');
-    const data = await response.json();
-    //console.log(data.data.message.results);
-    //console.log(data.code);
-    if(data.code = 200){
-        setDataViewValue(data.data.message.results);
+const fetchActiveDonations = async ()=>{
+    const requestOptions = {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+  };
+   const response = await fetch('http://localhost:8080/donations?status=1', requestOptions);
+   const data = await response.json();
+   if(data.code == 200){
+    if(data.message){
+      setDataViewValue(data.message.results);
     }
+    //console.log(dataViewValue[0].donationImages[0])
+}
+    
     
   }
   
@@ -117,7 +124,7 @@ const dataviewListItem = (data: any) => {
                 <i className="pi pi-calendar mr-2" />
                     <span className="font-semibold mb-2 align-self-center md:align-self-end">{data.createdDate}</span>
                     </div>
-                    <Button icon="pi pi-shopping-cart" label="Add to Cart" disabled={data.inventoryStatus === 'OUTOFSTOCK'} className="mb-2 p-button-sm"></Button>
+                    <Button icon="pi pi-shopping-cart" label="Add to Cart" disabled={data.inventoryStatus === 'OUTOFSTOCK'} className="mb-2 p-button-sm" onClick={() => goToPage("donation/"+data.id)}></Button>
                 
                 </div>
             </div>

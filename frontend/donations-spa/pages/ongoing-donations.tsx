@@ -66,9 +66,10 @@ const fetchOngoingDonations = async ()=>{
   };
    const response = await fetch('http://localhost:8080/donations?status=3', requestOptions);
    const data = await response.json();
-   if(data.code = 200){
-    if(data.data){
-      setDataViewValue(data.data.message.results);
+   if(data.code == 200){
+    if(data.message){
+        console.log(data.message)
+      setDataViewValue(data.message.results);
     }
     //console.log(dataViewValue[0].donationImages[0])
 }
@@ -192,7 +193,7 @@ const dataviewListItem = (data: any) => {
                     </div>
                 </div>
                 <div className="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
-                    <span className="text-2xl font-semibold mb-2 align-self-center md:align-self-end">{data.data.createdDate}</span>                    
+                    <span className="text-2xl font-semibold mb-2 align-self-center md:align-self-end">{data.createdDate}</span>                    
                     <Button onClick={() => goToPage("donation/"+data.id)} icon="pi pi-pencil" label="Edit donation" disabled={data.donationProcess.status.toUpperCase() === 'END'} className="mb-2 p-button-sm"></Button>
                     <span className={`product-badge status-${data.donationProcess.status.toLowerCase()}`}>{data.donationProcess.status}</span>
                 </div>

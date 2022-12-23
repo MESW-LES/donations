@@ -118,6 +118,13 @@ const fetchCategories = async ()=>{
   const data = await response.json();
   if(data.code = 200){
     setCategoriesData(data.data.message.results);
+    if(data.data.message.results){
+      //console.log(data.data.message.results)
+      //console.log(donation)
+      let obj = data.data.message.results.find((object : any) => object.code === donation.categories[0].code);
+      setDropdownItem(obj);
+//console.log(obj);
+    }
   }
   
 }
