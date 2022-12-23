@@ -19,8 +19,8 @@ const toast = useRef<any>(null);
   //const [donation, setDonation] = useState<any>(null);
 
   const itemTemplate = (item: string) => {
-    console.log("DEBUG123");
-    console.log(item);
+    //console.log("DEBUG123");
+    //console.log(item);
     return (
       <img
         src={`http://localhost:8080/donationsImages/${item}.png`}
