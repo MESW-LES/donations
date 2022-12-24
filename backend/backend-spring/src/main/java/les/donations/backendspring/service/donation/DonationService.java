@@ -94,7 +94,7 @@ public class DonationService implements IDonationService {
     }
 
     @Override
-    public PaginationDTO getDonations(Integer donationProcessStatus) {
+    public PaginationDTO getDonations(Integer donationProcessStatus, String categoryCode) {
         // gets the active donations with a specific status
         List<Donation> donations = donationDao.getDonations(donationProcessStatus);
         // converts them into DTOs
@@ -105,9 +105,11 @@ public class DonationService implements IDonationService {
                     } catch (NotFoundEntityException e) {
                         throw new IllegalArgumentException("Categories not found");
                     }
-                }).collect(Collectors.toList());
+                })
+                .filter(donationDTO -> donationDTO.hasCategory(categoryCode))
+                .collect(Collectors.toList());
 
-        return new PaginationDTO().results(donationDTOs).countResults(donations.size());
+        return new PaginationDTO().results(donationDTOs).countResults(donationDTOs.size());
     }
 
     @Override

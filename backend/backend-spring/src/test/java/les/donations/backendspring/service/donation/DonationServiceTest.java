@@ -129,7 +129,7 @@ public class DonationServiceTest {
         when(donationMapper.modelToDTO(donation)).thenThrow(new IllegalArgumentException());
 
         Assertions.assertThrows(IllegalArgumentException.class, () ->
-                donationService.getDonations(id));
+                donationService.getDonations(id, ""));
     }
 
     @Test
@@ -140,11 +140,13 @@ public class DonationServiceTest {
         when(donationDao.getDonations(id)).thenReturn(donations);
 
         DonationDTO donationDTO = new DonationDTO();
+        CategoryDTO categoryDTO = new CategoryDTO().code("A");
+        donationDTO.categories(Collections.singletonList(categoryDTO));
         List<ModelDTO> donationDTOs = Collections.singletonList(donationDTO);
         when(donationMapper.modelToDTO(donation)).thenReturn(donationDTO);
         when(categoryDao.findAll()).thenReturn(new ArrayList<>());
 
-        PaginationDTO returned = donationService.getDonations(id);
+        PaginationDTO returned = donationService.getDonations(id, "A");
 
         assertEquals(donationDTOs, returned.results);
         assertEquals(donations.size(), returned.countResults);

@@ -117,4 +117,13 @@ public class DonationDTO implements ModelDTO {
         categories.add(categoryDTO);
     }
 
+    public boolean hasCategory(String categoryCode) {
+        if (categoryCode == null) return true;
+        if (categories == null) return false;
+        for (CategoryDTO categoryDTO: categories) {
+            if (categoryCode.equals(categoryDTO.code)) return true;
+        }
+        return false;
+    }
+
 }
