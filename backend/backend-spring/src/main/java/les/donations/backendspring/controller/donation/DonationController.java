@@ -28,9 +28,9 @@ public class DonationController extends IController implements IDonationControll
     private IFileManagement fileManagement;
 
     @Override
-    public ResponseEntity<ApiReturnMessage> getDonations(Integer donationProcessStatus) {
+    public ResponseEntity<ApiReturnMessage> getDonations(Integer donationProcessStatus, String categoryCode) {
         // gets the donations in a specific process status or not
-        PaginationDTO donationDTOs = donationService.getDonations(donationProcessStatus);
+        PaginationDTO donationDTOs = donationService.getDonations(donationProcessStatus, categoryCode);
         return ok(donationDTOs);
     }
 

@@ -42,15 +42,15 @@ class DonationControllerTest {
 
     @Test
     void getDonationsIllegalInformationTest() {
-        when(donationService.getDonations(Mockito.any(Integer.class))).
+        when(donationService.getDonations(Mockito.any(Integer.class), Mockito.any(String.class))).
                 thenThrow(new IllegalArgumentException());
-        Assertions.assertThrows(IllegalArgumentException.class, () -> donationController.getDonations(new Integer(1)));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> donationController.getDonations(new Integer(1), ""));
     }
 
     @Test
     void getCorrectDonationsTest() throws IllegalArgumentException {
-        when(donationService.getDonations(Mockito.any(Integer.class))).thenReturn(new PaginationDTO());
-        ResponseEntity<ApiReturnMessage> result = donationController.getDonations(new Integer(1));
+        when(donationService.getDonations(Mockito.any(Integer.class), Mockito.any(String.class))).thenReturn(new PaginationDTO());
+        ResponseEntity<ApiReturnMessage> result = donationController.getDonations(new Integer(1), "");
         Assertions.assertEquals(200, result.getStatusCodeValue());
     }
 

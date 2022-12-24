@@ -11,7 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 public interface IDonationController {
 
     @GetMapping(value = "/donations", produces = "application/json")
-    ResponseEntity<ApiReturnMessage> getDonations(@RequestParam(value = "status", required = false) Integer donationProcessStatus);
+    ResponseEntity<ApiReturnMessage> getDonations(@RequestParam(value = "status", required = false) Integer donationProcessStatus,
+                                                  @RequestParam(value = "category", required = false) String categoryCode);
 
     @GetMapping(value = "/donations/{id}", produces = "application/json")
     ResponseEntity<ApiReturnMessage> getDonation(@PathVariable("id") Long donationId);
