@@ -43,7 +43,7 @@ public class Donee {
     public Donee(Company company) throws IllegalArgumentException{
         this.company = company;
         this.categories =  new ArrayList<>();
-        this.active = true;
+        //this.active = true;
         geographicAreas = new ArrayList<>();
 
     }
