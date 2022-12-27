@@ -18,15 +18,9 @@ public class Donee {
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "PASSWORD")
-    private String password;
-
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "COMPANY_ID", referencedColumnName = Company.PROPERTY_ID)
     private Company company;
-
-    @Column(name = "ACTIVE")
-    private boolean active;
 
     @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JoinTable(
@@ -46,12 +40,12 @@ public class Donee {
         // for ORM
     }
 
-    public Donee(String password, Company company) throws IllegalArgumentException{
-        setPassword(password);
+    public Donee(Company company) throws IllegalArgumentException{
         this.company = company;
         this.categories =  new ArrayList<>();
-        this.active = true;
+        //this.active = true;
         geographicAreas = new ArrayList<>();
+
     }
 
     public Long getId() {
@@ -62,32 +56,12 @@ public class Donee {
         this.id = id;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) throws IllegalArgumentException{
-        // checks if the password is null or empty
-        if(password == null || password.isEmpty()){
-            throw new IllegalArgumentException("The password can't be null or empty!");
-        }
-        this.password = password;
-    }
-
     public Company getCompany() {
         return company;
     }
 
     public void setCompany(Company company) {
         this.company = company;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
     }
 
     public List<Category> getCategories() {

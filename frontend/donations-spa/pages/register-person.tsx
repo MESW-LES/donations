@@ -8,6 +8,7 @@ import {
   UserCredential,
   Auth,
   sendEmailVerification,
+  deleteUser,
 } from "firebase/auth";
 import { useRef, useState } from "react";
 import { toast } from "react-toastify";
@@ -15,6 +16,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import Router from "next/router";
+import doRegister from "../backend/RegisterDonor";
+import { Donor } from "../types/Donor";
 
 const RegisterPerson = () => {
   const backImage = `.back-image{
@@ -31,8 +34,9 @@ const RegisterPerson = () => {
   initFirebase();
   const auth: Auth = getAuth();
 
-  // creates the user in firebase auth
-  const createUserFirebase = async () => {
+  // creates the user
+  const createUser = async () => {
+    let user: UserCredential | undefined = undefined;
     try {
       // creates the backend donor
       const formValues = { taxnumber, name, email, password };
@@ -55,11 +59,21 @@ const RegisterPerson = () => {
 
       }
       // creates the firebase user
-      const user: UserCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      user = await createUserWithEmailAndPassword(auth, email, password);
+
+      // creates the backend donor
+      const donor: Donor = {
+        person: {
+          firstName: "Teste",
+          lastName: "Teste",
+          nif: "123456789",
+          address: "teste",
+          email: email,
+        },
+      };
+      // creates the user in donations app
+      await doRegister(donor);
+
       // signs out the user
       await auth.signOut();
       toast.success("User registered with success!");
@@ -67,6 +81,10 @@ const RegisterPerson = () => {
         Router.push("/");
       }, 2000);
     } catch (error: any) {
+      // deletes user from firebase if some error occurs in donatiosn backend
+      if (user) {
+        deleteUser(user.user);
+      }
       toast.error("An error occured while registering the user!");
     }
   };
@@ -159,7 +177,7 @@ const RegisterPerson = () => {
                 className="bg-white p-button-info"
                 label="Register"
                 icon="pi pi-check"
-                onClick={createUserFirebase}
+                onClick={createUser}
               />
             </div>
             <div className="w-2"></div>
