@@ -187,9 +187,10 @@ const dataviewListItem = (data: any) => {
                     </div>
                 </div>
                 <div className="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
-                    <span className="text-2xl font-semibold mb-2 align-self-center md:align-self-end">{data.data.createdDate}</span>
+                    <span className="text-2xl font-semibold mb-2 align-self-center md:align-self-end">{data.createdDate}</span>
                     <Button onClick={()=>{deleteDonation(data.id)}} icon="pi pi-trash" label="Delete donation" disabled={data.donationProcess.status.toUpperCase() === 'END' || data.donationProcess.status.toUpperCase() === 'ON GOING' || data.donationProcess.status.toUpperCase() === 'REQUESTED'} className="mb-2 bg-red-300 border-red-400 p-button-sm"></Button>
-                    <Button onClick={() => goToPage("donation/"+data.id)} icon="pi pi-pencil" label="Edit donation" disabled={data.donationProcess.status.toUpperCase() === 'END'} className="mb-2 p-button-sm"></Button>
+                    <Button onClick={() => goToPage(`donation/${data.id}/edit`)} icon="pi pi-pencil" label="Edit donation" disabled={data.donationProcess.status.toUpperCase() === 'END' || data.donationProcess.status.toUpperCase() === 'ON GOING' || data.donationProcess.status.toUpperCase() === 'REQUESTED'} className="mb-2 p-button-sm"/>                
+                    <Button onClick={() => goToPage(`donation/${data.id}`)} icon="pi pi-info-circle" label="Donation process" disabled={data.donationProcess.status.toUpperCase() === 'END'} className=" mb-2 p-button-sm bg-orange-300 border-orange-400 " />                
                     <span className={`product-badge status-${data.donationProcess.status.toLowerCase()}`}>{data.donationProcess.status}</span>
                 </div>
             </div>
@@ -218,7 +219,8 @@ const dataviewGridItem = (data: any) => {
                     <span className="text-2xl font-semibold">{data.createdDate.substring(0,10)}</span>
                     <div>
                     <Button onClick={()=>{deleteDonation(data.id)}} icon="pi pi-trash"  disabled={data.donationProcess.status.toUpperCase() === 'END' || data.donationProcess.status.toUpperCase() === 'ON GOING' || data.donationProcess.status.toUpperCase() === 'REQUESTED'} className=" bg-red-300 border-red-400 "></Button>
-                    <Button onClick={() => goToPage("donation/"+data.id)} icon="pi pi-pencil" disabled={data.donationProcess.status.toUpperCase() === 'END'} />                
+                    <Button onClick={() => goToPage(`donation/${data.id}/edit`)} icon="pi pi-pencil" disabled={data.donationProcess.status.toUpperCase() === 'END' || data.donationProcess.status.toUpperCase() === 'ON GOING' || data.donationProcess.status.toUpperCase() === 'REQUESTED'} />                
+                    <Button onClick={() => goToPage(`donation/${data.id}`)} icon="pi pi-info-circle" disabled={data.donationProcess.status.toUpperCase() === 'END'} className=" bg-orange-300 border-orange-400 " />                
                     </div>
                 </div>
             </div>

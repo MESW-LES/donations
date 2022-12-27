@@ -12,6 +12,8 @@ import { Tag } from "primereact/tag";
 import { Tooltip } from "primereact/tooltip";
 import FormData from 'form-data';
 import { useRouter } from "next/router";
+import { Splitter, SplitterPanel } from "primereact/splitter";
+import { Galleria } from "primereact/galleria";
 
 function AddDonation({ donation }: any) {
   // router constant for change the view
@@ -43,18 +45,64 @@ function AddDonation({ donation }: any) {
   const [category, setCategory] = useState(donation.categories.code);
   const [description, setDescription] = useState(donation.description);
   const [images, setImages] = useState<any>(null);
-  //file size for the bar graph
-  const [totalSize, setTotalSize] = useState(0);
   //for display messages in the view
   const toast = useRef<any>(null);
-
-  //? for file upload
-  const fileUploadRef = useRef<any>(null);
   //actual value for the dropdown of categories
   const [dropdownItem, setDropdownItem] = useState();
   //categories list from the server for the dropdown
   const [categoriesData, setCategoriesData] = useState<any>(null);
 
+  /******************* Image Presentation ***********************/
+
+  const fetchImages = () => {
+    console.log(donation.donationImages);
+    setImages(donation.donationImages);
+  };
+
+  const itemTemplate = (item: string) => {
+    return (
+      <img
+        src={`http://localhost:8080/donationsImages/${item}.png`}
+        onError={(e: any) =>
+          (e.target.src =
+            "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png")
+        }
+        alt={item}
+        style={{ width: "100%" }}
+      />
+    );
+  };
+
+  const thumbnailTemplate = (item: string) => {
+    return (
+      <img
+        src={`http://localhost:8080/donationsImages/${item}.png`}
+        onError={(e: any) =>
+          (e.target.src =
+            "https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png")
+        }
+        alt={item}
+        style={{ width: "30%" }}
+      />
+    );
+  };
+
+  const responsiveOptions = [
+    {
+      breakpoint: "1024px",
+      numVisible: 5,
+    },
+    {
+      breakpoint: "768px",
+      numVisible: 3,
+    },
+    {
+      breakpoint: "560px",
+      numVisible: 1,
+    },
+  ];
+
+  /*****************************************/
 
   // POST to the server (Create donation)
   const handleSubmit = async (event: any) => {
@@ -63,21 +111,14 @@ function AddDonation({ donation }: any) {
     const dataDonation = new FormData();
 
     dataDonation.append("title", title);
+    console.log(category);
     dataDonation.append("categoriesCode", category);
     dataDonation.append("description", description);
-for (const image of images) {
-  dataDonation.append("donationImages", image);
-}
-    
-// Display the key/value pairs in the console
-/* for (var pair of dataDonation.entries()) {
-  console.log(pair[0]+ ', ' + pair[1]); 
-} */
     
     try {
       const { data } = await axios({
-        url: "http://localhost:8080/donations",        
-        method: "POST",
+        url: `http://localhost:8080/donations/${donation.id}`,        
+        method: "PUT",
         data: dataDonation,
       });
 
@@ -91,12 +132,12 @@ for (const image of images) {
         showToast(
           "success",
           "Success Message",
-          "The donation was added successfully."
+          "The donation was updated successfully."
         );
         setTitle("");
         setCategory("");
         setDescription("");
-        goToPage("my-donations");
+        goToPage("/my-donations");
       }
     } catch (error) {
       if(error instanceof Error){
@@ -123,6 +164,7 @@ const fetchCategories = async ()=>{
       //console.log(donation)
       let obj = data.data.message.results.find((object : any) => object.code === donation.categories[0].code);
       setDropdownItem(obj);
+      setCategory(obj.code);
 //console.log(obj);
     }
   }
@@ -132,164 +174,8 @@ const fetchCategories = async ()=>{
   // Get the categories
 useEffect(() => {
   fetchCategories();
+  fetchImages();
 }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-
-  /* const onUpload = () => {
-    if(toast.current !== null && toast.current !== undefined ){
-      toast.current.show({
-        severity: "info",
-        summary: "Success",
-        detail: "File Uploaded",
-      });
-    }
-  }; */
-
-  //when one or more files are selected, update the info regarding the size (images are added to the variable)
-  const onTemplateSelect = (e: any) => {
-    let _totalSize = totalSize;
-    Array.from(e.files).forEach((file : any) => {
-      _totalSize += file.size;
-    });
-
-    if(!images){
-      setImages(Array.from(e.files));
-    }else{
-      setImages(images.concat(Array.from(e.files)))
-    }
-    setTotalSize(_totalSize);
-  };
-
-  // here we have the files that have been uploaded  ?? works if we have a button to upload the images in the header of the component
-/*   const onTemplateUpload = (e : any) => {
-    let _totalSize = 0;
-    e.files.forEach((file:any) => {
-      _totalSize += file.size || 0;
-    });
-
-    setTotalSize(_totalSize);
-    toast.current.show({
-      severity: "info",
-      summary: "Success",
-      detail: "File Uploaded",
-    });
-  }; */
-
-
-  // remove one item from the list (remove image from the variable)
-  const onTemplateRemove = (file : any, callback : any) => {
-    for( var i = 0; i < images.length; i++){ 
-    
-      //console.log(images.indexOf(file))
-      if ( i === images.indexOf(file)) { 
-  
-        //console.log("DEBUG 3")
-          images.splice(i, 1); 
-      }
-  
-  }
-    
-    setTotalSize(totalSize - file.size);
-    if(callback){
-      callback();
-    }
-  };
-
-  // for clear the size of the set of images
-  const onTemplateClear = () => {
-    if(images && images.length!= 0){
-      images.splice(0, images.length); //validate?
-    }
-    setTotalSize(0);
-  };
-
-  // menu header template
-  const headerTemplate = (options: any) => {
-    const { className, chooseButton, cancelButton } = options;
-    
-    //for the progress bar
-    const value = totalSize / 10000;
-    const formatedValue = fileUploadRef && fileUploadRef.current
-        ? fileUploadRef.current.formatSize(totalSize)
-        : "0 B";
-
-    return (
-      <div
-        className={className}
-        style={{
-          backgroundColor: "transparent",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        {chooseButton}        
-        {cancelButton}
-        <ProgressBar
-          value={value}
-          displayValueTemplate={() => `${formatedValue} / 1 MB`}
-          style={{ width: "300px", height: "20px", marginLeft: "auto" }}
-        ></ProgressBar>
-      </div>
-    );
-  };
-
-  const itemTemplate = (file:any, props:any) => {
-    return (
-      <div className="flex align-items-center flex-wrap">
-        <div className="flex align-items-center" style={{ width: "40%" }}>
-          <img
-            alt={file.name}
-            role="presentation"
-            src={file.objectURL}
-            width={150}
-          />
-          <span className="flex flex-column text-left ml-3">
-            {file.name}
-            <small>{new Date().toLocaleDateString()}</small>
-          </span>
-        </div>
-        <Tag
-          value={props.formatSize}
-          severity="warning"
-          className="px-3 py-2"
-        />
-        <Button
-          type="button"
-          icon="pi pi-times"
-          className="p-button-outlined p-button-rounded p-button-danger ml-auto"
-          onClick={() => onTemplateRemove(file, props.onRemove)}
-        />
-      </div>
-    );
-  };
-
-  const emptyTemplate = () => {
-    return (
-      <div className="flex align-items-center flex-column">
-        <i
-          className="pi pi-image mt-3 p-5"
-          style={{
-            fontSize: "5em",
-            borderRadius: "50%",
-            backgroundColor: "var(--surface-b)",
-            color: "var(--surface-d)",
-          }}
-        ></i>
-        <span
-          style={{ fontSize: "1.2em", color: "var(--text-color-secondary)" }}
-          className="my-5"
-        >
-          Drag and Drop Image Here
-        </span>
-      </div>
-    );
-  };
-
-  /*****************************/
-
-
-
-
 
   const showToast = (
     severityValue: string,
@@ -325,8 +211,10 @@ useEffect(() => {
           <Toast ref={toast} />
           <div className="col-12">
             <div className="card">
-              <h5>New donation</h5>
-              <div className="p-fluid formgrid grid">
+              <h5>Edit donation</h5>
+              <Splitter className="mb-5" layout="vertical">
+          <SplitterPanel className="flex align-items-center justify-content-center">
+          <div className="p-fluid formgrid grid">
                 <div className="field col-12">
                   <label htmlFor="title">Title</label>
                   <InputText id="title" type="text" value={title}
@@ -353,30 +241,40 @@ useEffect(() => {
                   <label htmlFor="description">Description</label>
                   <InputTextarea id="description" rows= {4} value={description} onChange={({target})=> setDescription(target?.value)}/>
                 </div>        
-                <FileUpload
-                  ref={fileUploadRef}
-                  name="donationImages"                
-                  multiple accept="image/*"
-                  maxFileSize={10000000}
-                  //onUpload={onTemplateUpload}
-                  onSelect={onTemplateSelect}
-                  onError={onTemplateClear}
-                  onClear={onTemplateClear}
-                  headerTemplate={headerTemplate}
-                  itemTemplate={itemTemplate}
-                  emptyTemplate={emptyTemplate}
-                  chooseOptions={chooseOptions}              
-                  cancelOptions={cancelOptions}
-                  className = "field col-12"
-                />
-              </div>
+</div>
+          </SplitterPanel>
+          <SplitterPanel className="flex align-items-center justify-content-center col-12">
+          <Galleria
+              value={images}
+              item={itemTemplate}
+              thumbnail={thumbnailTemplate}            
+              numVisible={5}
+              responsiveOptions={responsiveOptions}
+              style={{ maxWidth: "300px" }}
+            ></Galleria>
+          </SplitterPanel>
+        </Splitter>
+      
+      <div className="flex align-items-center justify-content-end col-12">
+      
+      <button
+                  type="submit"
+                  onClick= {()=>goToPage("/my-donations")}
+                  className=" px-4 py-2 rounded-md border border-transparent bg-red-600   font-medium text-white  hover:bg-red-700 "
+                >
+                  Cancel
+                </button>
+                
+                
               <button
                   type="submit"
                   onClick={handleSubmit}
-                  className="inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  className="px-4 py-2 rounded-md border border-transparent bg-green-600  font-medium text-white  hover:bg-green-700 "
                 >
                   Save
                 </button>
+                
+                </div>
             </div>
           </div>
         </div>
