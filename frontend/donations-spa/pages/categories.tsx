@@ -117,6 +117,7 @@ const statusEditor = (options:any) => {
         setName("");
         setCode("");
         setDescription("");
+        fetchCategories();
       };      
     } catch (error) {
       if(error instanceof Error){
