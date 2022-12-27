@@ -1,6 +1,7 @@
 package les.donations.backendspring.service.donor;
 
 import les.donations.backendspring.dto.DonorDTO;
+import les.donations.backendspring.exceptions.NotFoundEntityException;
 
 import java.io.IOException;
 
@@ -12,5 +13,5 @@ public interface IDonorService {
      * @return an information about the donor if the operation was successful
      * @throws IllegalArgumentException if the data is wrong, fields are not unique
      */
-    DonorDTO registerDonor(DonorDTO donorDTO) throws IllegalArgumentException, IOException;
+    DonorDTO registerDonor(DonorDTO donorDTO) throws IllegalArgumentException, IOException, NotFoundEntityException;
 }

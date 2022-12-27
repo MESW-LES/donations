@@ -15,7 +15,7 @@ public class DoneeDTO implements ModelDTO{
     @JsonProperty
     public CompanyDTO company;
     @JsonProperty
-    public List<String> geographicAreaIds;
+    public List<Long> geographicAreaIds;
     @JsonProperty
     public List<String> categoryCodes;
 
@@ -29,7 +29,7 @@ public class DoneeDTO implements ModelDTO{
         return this;
     }
 
-    public DoneeDTO geographicAreaIds(List<String> geographicAreaIds) {
+    public DoneeDTO geographicAreaIds(List<Long> geographicAreaIds) {
         this.geographicAreaIds = geographicAreaIds;
         return this;
     }

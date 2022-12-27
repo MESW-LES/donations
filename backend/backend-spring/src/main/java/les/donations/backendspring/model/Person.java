@@ -3,13 +3,14 @@ package les.donations.backendspring.model;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Table(name = "PERSONS")
 @Entity
-public class Person {
+public class Person implements Serializable {
 
     protected static final String PROPERTY_ID = "ID";
 
