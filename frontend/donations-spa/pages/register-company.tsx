@@ -1,13 +1,69 @@
+import {
+  Auth,
+  createUserWithEmailAndPassword,
+  deleteUser,
+  getAuth,
+  UserCredential,
+} from "firebase/auth";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { InputText } from "primereact/inputtext";
-import { ToastContainer } from "react-toastify";
+import { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { initFirebase } from "../auth/Firebase";
+import { Donee } from "../types/Donee";
+import Router from "next/router";
+import doRegister from "../backend/RegisterDonee";
 
 const RegisterCompany = () => {
   const backImage = `.back-image{
     background: url(https://www.owensboroparent.com/wp-content/uploads/2017/01/GiftofGiving.jpg);
   }`;
+
+  // email and password
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  // inits the firebase authentication
+  initFirebase();
+  const auth: Auth = getAuth();
+
+  // creates the user
+  const createUser = async () => {
+    let user: UserCredential | undefined = undefined;
+    try {
+      // creates the firebase user
+      user = await createUserWithEmailAndPassword(auth, email, password);
+
+      // creates the backend donee
+      const donee: Donee = {
+        company: {
+          name: "Teste",
+          description: "Teste",
+          taxNumber: "123456789",
+          phone: "911111111",
+          email: email,
+        },
+        categoryCodes: ["CAT-A"],
+      };
+      // creates the user in donations app
+      await doRegister(donee);
+
+      // signs out the user
+      await auth.signOut();
+      toast.success("User registered with success!");
+      setTimeout(() => {
+        Router.push("/");
+      }, 2000);
+    } catch (error: any) {
+      // deletes user from firebase if some error occurs in donatiosn backend
+      if (user) {
+        deleteUser(user.user);
+      }
+      toast.error("An error occured while registering the user!");
+    }
+  };
 
   return (
     <>
@@ -36,6 +92,8 @@ const RegisterCompany = () => {
                 <InputText
                   className="w-8 bg-white"
                   style={{ color: "black" }}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
             </div>
@@ -50,6 +108,8 @@ const RegisterCompany = () => {
                   type={"password"}
                   className="w-8 bg-white"
                   style={{ color: "black" }}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
             </div>
@@ -62,6 +122,7 @@ const RegisterCompany = () => {
                 className="bg-white p-button-info"
                 label="Register"
                 icon="pi pi-check"
+                onClick={createUser}
               />
             </div>
             <div className="w-2"></div>

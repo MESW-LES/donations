@@ -23,23 +23,15 @@ public class CompanyService implements ICompanyService {
     private ICompanyMapper companyMapper;
 
     @Override
-    public Company createCompany(CompanyDTO companyDTO) throws IllegalArgumentException, IOException {
+    public Company createCompany(CompanyDTO companyDTO) throws IllegalArgumentException {
 
         // checks if the company already exists
         if(companyDao.existsCompanyByTaxNumber(companyDTO.taxNumber)){
             throw new IllegalArgumentException("A company with the same tax number already exists!");
         }
 
-        // checks the company and gets the associated email
-        String email = taxNumberAPI.getEmailByCompanyTaxNumber(companyDTO.taxNumber);
-        if(email == null){
-            throw new IllegalArgumentException("The company does not have an associated email or is not valid!");
-        }
-
         // creates the company
-        Company company = companyMapper.dtoToModel(companyDTO);
-        company.setEmail(email);
-        return company;
+        return companyMapper.dtoToModel(companyDTO);
     }
 
     @Override

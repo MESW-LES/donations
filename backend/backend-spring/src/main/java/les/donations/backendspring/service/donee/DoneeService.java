@@ -29,18 +29,13 @@ public class DoneeService implements IDoneeService {
         // creates the company
         Company company = companyService.createCompany(doneeDTO.company);
         // creates the donee
-        Donee donee = new Donee(doneeDTO.password, company);
-
+        Donee donee = new Donee(company);
         // associates the categories to the donee
         for(String categoryCode : doneeDTO.categoryCodes){
             donee.addCategory(categoryService.getCategoryModel(categoryCode));
         }
-
         // persists the donee
         donee = doneeDao.saveAndFlush(donee);
-
-        // sends the email
-        String companyEmail = donee.getCompany().getEmail();
 
         return doneeDTO.id(donee.getId());
     }

@@ -31,9 +31,6 @@ public class DonorService implements IDonorService{
         // persists the donor
         donor = donorRepository.saveAndFlush(donor);
 
-        // TODO: sends the email
-        String personEmail = donor.getPerson().getEmail();
-
         return donorDTO.id(donor.getId());
     }
 }

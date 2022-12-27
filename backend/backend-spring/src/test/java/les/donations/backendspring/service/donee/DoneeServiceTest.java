@@ -97,7 +97,7 @@ class DoneeServiceTest {
     @Test
     void registerDoneeSuccessfullyTest() throws IOException, NotFoundEntityException {
         // prepares the data
-        Donee donee = new Donee("123", company);
+        Donee donee = new Donee(company);
         donee.setId(1L);
         CompanyDTO companyDTO = new CompanyDTO();
         DoneeDTO doneeDTO = new DoneeDTO().company(companyDTO).password("123").categoryCodes(Collections.singletonList("CAT-A"));

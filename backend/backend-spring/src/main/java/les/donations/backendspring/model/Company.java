@@ -52,6 +52,7 @@ public class Company {
         setDescription(description);
         setTaxNumber(taxNumber);
         setPhone(phone);
+        setEmail(email);
         this.active = true;
         this.registerDate = new Date();
     }
@@ -125,6 +126,7 @@ public class Company {
         if(!matcher.matches()){
             throw new IllegalArgumentException("The email has illegal format");
         }
+        this.email = email;
     }
 
     public boolean isActive() {

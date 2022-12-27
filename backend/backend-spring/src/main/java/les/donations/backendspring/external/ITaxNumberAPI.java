@@ -9,5 +9,6 @@ public interface ITaxNumberAPI {
      * @param taxNumber the tax number of the company
      * @return the email of the company
      */
+    @Deprecated
     String getEmailByCompanyTaxNumber(String taxNumber) throws IOException;
 }

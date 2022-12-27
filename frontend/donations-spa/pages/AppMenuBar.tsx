@@ -13,9 +13,11 @@ function AppMenuBar() {
     // if it does not exist then gets the saved user in local storage and updates the context
     if (context.sessionUser) {
       const sessionUserStr: string | null = localStorage.getItem("user");
-      context.setSessionUser(
-        JSON.parse(sessionUserStr == null ? "" : sessionUserStr)
-      );
+      if (sessionUserStr !== null) {
+        context.setSessionUser(JSON.parse(sessionUserStr));
+      } else {
+        router.push("/");
+      }
     }
   }, []);
 
