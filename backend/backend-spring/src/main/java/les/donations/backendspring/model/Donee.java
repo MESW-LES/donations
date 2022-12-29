@@ -33,8 +33,8 @@ public class Donee {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "donee")
     private List<DonationProcess> donationProcesses;
 
-    @ManyToMany(mappedBy = "donees", fetch = FetchType.LAZY)
-    private List<GeographicArea> geographicAreas;
+    //@ManyToMany(mappedBy = "donees", fetch = FetchType.LAZY)
+    //private List<GeographicArea> geographicAreas;
 
     protected Donee() {
         // for ORM
@@ -44,7 +44,7 @@ public class Donee {
         this.company = company;
         this.categories =  new ArrayList<>();
         //this.active = true;
-        geographicAreas = new ArrayList<>();
+        //geographicAreas = new ArrayList<>();
 
     }
 
@@ -80,13 +80,10 @@ public class Donee {
         categories.add(category);
     }
 
-    /**
-     * Methods that adds a geographic area to the company geographic areas
-     * @param geographicArea the geographic area to add
-     */
+    /*
     public void addGeographicArea(GeographicArea geographicArea){
         geographicAreas.add(geographicArea);
-    }
+    }*/
 
     @Override
     public boolean equals(Object o) {

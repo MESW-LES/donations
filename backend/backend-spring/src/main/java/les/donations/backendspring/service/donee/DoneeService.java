@@ -39,11 +39,11 @@ public class DoneeService implements IDoneeService {
             donee.addCategory(categoryService.getCategoryModel(categoryCode));
         }
         //add geographic area
-        for (Long areaId : doneeDTO.geographicAreaIds) {
+        /*for (Long areaId : doneeDTO.geographicAreaIds) {
             GeographicArea geographicArea = geographicAreaService.getGeographicAreaModel(areaId);
             donee.addGeographicArea(geographicArea);
             geographicArea.addDonee(donee);
-        }
+        }*/
 
         // persists the donee
         donee = doneeDao.saveAndFlush(donee);
