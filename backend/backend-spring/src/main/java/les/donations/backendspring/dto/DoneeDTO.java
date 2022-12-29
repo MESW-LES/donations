@@ -14,8 +14,8 @@ public class DoneeDTO implements ModelDTO{
     public String password;
     @JsonProperty
     public CompanyDTO company;
-    @JsonProperty
-    public List<Long> geographicAreaIds;
+    /*@JsonProperty
+    public List<Long> geographicAreaIds;*/
     @JsonProperty
     public List<String> categoryCodes;
 
@@ -29,10 +29,10 @@ public class DoneeDTO implements ModelDTO{
         return this;
     }
 
-    public DoneeDTO geographicAreaIds(List<Long> geographicAreaIds) {
+    /*public DoneeDTO geographicAreaIds(List<Long> geographicAreaIds) {
         this.geographicAreaIds = geographicAreaIds;
         return this;
-    }
+    }*/
 
     public DoneeDTO categoryCodes(List<String> categoryCodes) {
         this.categoryCodes = categoryCodes;
