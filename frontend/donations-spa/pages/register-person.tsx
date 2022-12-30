@@ -14,6 +14,7 @@ import { useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 import Router from "next/router";
 import doRegister from "../backend/RegisterDonor";
 import { Donor } from "../types/Donor";
@@ -24,6 +25,8 @@ const RegisterPerson = () => {
   }`;
 
   // email and password
+  const [taxnumber, setTaxnumber] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -35,6 +38,26 @@ const RegisterPerson = () => {
   const createUser = async () => {
     let user: UserCredential | undefined = undefined;
     try {
+      // creates the backend donor
+      const formValues = { taxnumber, name, email, password };
+
+      try {
+        const { data } = await axios({
+          url: "/api/formregisterperson",
+          method: "POST",
+          data: formValues,
+        });
+
+        if (data.code != 200) {
+        } else {
+          setName("");
+          setTaxnumber("");
+        };
+      } catch (error) {
+        if (error instanceof Error) {
+        }
+
+      }
       // creates the firebase user
       user = await createUserWithEmailAndPassword(auth, email, password);
 
@@ -82,6 +105,37 @@ const RegisterPerson = () => {
             <div className="w-2"></div>
             <div className="w-8 flex justify-center">
               <h2 className="text-black">Register Person</h2>
+            </div>
+            <div className="w-2"></div>
+          </div>
+          <div className="grid grid-cols-3 pt-10">
+            <div className="w-2"></div>
+            <div className="w-8">
+              <div className="grid grid-cols-2">
+                <p className="w-4 text-black text-xl">NIF</p>
+                <InputText
+                  required
+                  className="w-8 bg-white"
+                  style={{ color: "black" }}
+                  value={taxnumber}
+                  onChange={({ target }) => setTaxnumber(target?.value)}
+                />
+              </div>
+            </div>
+            <div className="w-2"></div>
+          </div>
+          <div className="grid grid-cols-3 pt-10">
+            <div className="w-2"></div>
+            <div className="w-8">
+              <div className="grid grid-cols-2">
+                <p className="w-4 text-black text-xl">Name</p>
+                <InputText
+                  className="w-8 bg-white"
+                  style={{ color: "black" }}
+                  value={name}
+                  onChange={({ target }) => setName(target?.value)}
+                />
+              </div>
             </div>
             <div className="w-2"></div>
           </div>

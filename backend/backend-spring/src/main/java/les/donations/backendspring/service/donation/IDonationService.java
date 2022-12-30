@@ -35,7 +35,7 @@ public interface IDonationService {
      * @param donationProcessStatus the process status of a donation
      * @return the donations
      */
-    PaginationDTO getDonations(Integer donationProcessStatus);
+    PaginationDTO getDonations(Integer donationProcessStatus, String categoryCode);
 
     /**
      * Method that gets the information of a specific donation

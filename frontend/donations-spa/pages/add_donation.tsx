@@ -75,7 +75,7 @@ function AddDonation() {
 
     try {
       const { data } = await axios({
-        url: "http://localhost:8080/donations",
+        url: "http://localhost:8080/donations?status=1",        
         method: "POST",
         data: dataDonation,
       });

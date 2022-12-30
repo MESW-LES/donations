@@ -1,4 +1,4 @@
-package les.donations.backendspring.controller.category;
+package les.donations.backendspring.controller.donation;
 
 import les.donations.backendspring.api.ApiReturnMessage;
 import les.donations.backendspring.controller.donation.DonationController;
@@ -42,15 +42,15 @@ class DonationControllerTest {
 
     @Test
     void getDonationsIllegalInformationTest() {
-        when(donationService.getDonations(Mockito.any(Integer.class))).
+        when(donationService.getDonations(Mockito.any(Integer.class), Mockito.any(String.class))).
                 thenThrow(new IllegalArgumentException());
-        Assertions.assertThrows(IllegalArgumentException.class, () -> donationController.getDonations(new Integer(1)));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> donationController.getDonations(new Integer(1), ""));
     }
 
     @Test
     void getCorrectDonationsTest() throws IllegalArgumentException {
-        when(donationService.getDonations(Mockito.any(Integer.class))).thenReturn(new PaginationDTO());
-        ResponseEntity<ApiReturnMessage> result = donationController.getDonations(new Integer(1));
+        when(donationService.getDonations(Mockito.any(Integer.class), Mockito.any(String.class))).thenReturn(new PaginationDTO());
+        ResponseEntity<ApiReturnMessage> result = donationController.getDonations(new Integer(1), "");
         Assertions.assertEquals(200, result.getStatusCodeValue());
     }
 
@@ -162,7 +162,7 @@ class DonationControllerTest {
                 thenReturn(donationDTO);
 
         ResponseEntity<ApiReturnMessage> result = donationController.updateDonation(donationId, donationDTO);
-        Assertions.assertEquals(201, result.getStatusCodeValue());
+        Assertions.assertEquals(200, result.getStatusCodeValue());
         Assertions.assertEquals(donationDTO, result.getBody().getMessage());
     }
 
