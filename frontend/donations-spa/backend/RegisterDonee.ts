@@ -20,7 +20,6 @@ export default async function doRegister(donee: Donee): Promise<Donee> {
 
     return data.message;
   } catch (error: any) {
-    console.log(error);
     throw new Error(error.message);
   }
 }

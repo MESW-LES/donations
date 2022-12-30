@@ -13,6 +13,7 @@ public class CategoryMapper implements ICategoryMapper {
 
     @Override
     public CategoryDTO modelToDTO(final Category category){
-        return new CategoryDTO().code(category.getCode()).name(category.getName()).description(category.getDescription());
+        return new CategoryDTO().code(category.getCode()).name(category.getName())
+                .description(category.getDescription()).active(category.isActive());
     }
 }

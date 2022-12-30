@@ -40,4 +40,6 @@ public interface ICategoryService {
      * @return information about the categories
      */
     PaginationDTO getCategories(Boolean onlyActive);
+
+    CategoryDTO updateCategory(String code, CategoryDTO categoryDTO) throws IllegalArgumentException;
 }

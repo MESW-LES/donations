@@ -1,4 +1,4 @@
-import AppMenuBar from ".././AppMenuBar";
+import AppMenuBar from "../../components/AppMenuBar";
 import axios from "axios";
 import React, { useRef, useState, useEffect } from "react";
 //import { useRouter } from "next/router";
@@ -11,7 +11,7 @@ import { Toast } from "primereact/toast";
 
 function DetailDonation({ donation }: any) {
   //for display messages in the view
-const toast = useRef<any>(null);
+  const toast = useRef<any>(null);
   //const router = useRouter();
   //const id = router.query.id;
   //console.log(router.query.id);
@@ -88,15 +88,15 @@ const toast = useRef<any>(null);
     //return donation.donationImages;
   };
 
-    //Fetch request donation BackEnd
-const requestDonation = async (id: any)=>{
-  try {
+  //Fetch request donation BackEnd
+  const requestDonation = async (id: any) => {
+    try {
       const { data } = await axios({
-        url: `http://localhost:8080/donations/${id}/request`,        
+        url: `http://localhost:8080/donations/${id}/request`,
         method: "PUT",
       });
 
-      if (data.code != 200 && data.code != 201 ) {
+      if (data.code != 200 && data.code != 201) {
         showToast(
           "error",
           "Hey",
@@ -110,59 +110,55 @@ const requestDonation = async (id: any)=>{
         );
       }
     } catch (error) {
-      if(error instanceof Error){
+      if (error instanceof Error) {
+        showToast("error", "Error " + error.message, error.message);
+      }
+    }
+  };
+
+  //Fetch request donation BackEnd
+  const acceptDonation = async (id: any) => {
+    try {
+      const accept = {
+        decision: true,
+      };
+      const { data } = await axios.put(
+        `http://localhost:8080/donations/${id}/decision`,
+        accept
+      );
+
+      if (data.code != 200 && data.code != 201) {
         showToast(
           "error",
-          "Error " + error.message,
-          error.message
+          "Hey",
+          "oops looks like something went wrong, please try again later."
+        );
+      } else {
+        showToast(
+          "success",
+          "Success Message",
+          "The donation was accepted successfully."
         );
       }
-      
-    }
-}
-
-    //Fetch request donation BackEnd
-    const acceptDonation = async (id: any)=>{
-      try {
-        const accept = {
-          "decision": true
+    } catch (error) {
+      if (error instanceof Error) {
+        showToast("error", "Error " + error.message, error.message);
       }
-          const { data } = await axios.put(`http://localhost:8080/donations/${id}/decision`, accept);
-    
-          if (data.code != 200 && data.code != 201 ) {
-            showToast(
-              "error",
-              "Hey",
-              "oops looks like something went wrong, please try again later."
-            );
-          } else {
-            showToast(
-              "success",
-              "Success Message",
-              "The donation was accepted successfully."
-            );
-          }
-        } catch (error) {
-          if(error instanceof Error){
-            showToast(
-              "error",
-              "Error " + error.message,
-              error.message
-            );
-          }
-          
-        }
     }
+  };
 
-        //Fetch request donation BackEnd
-const rejectDonation = async (id: any)=>{
-  try {
-    const reject = {
-      "decision": false
-  }
-      const { data } = await axios.put(`http://localhost:8080/donations/${id}/decision`, reject);
+  //Fetch request donation BackEnd
+  const rejectDonation = async (id: any) => {
+    try {
+      const reject = {
+        decision: false,
+      };
+      const { data } = await axios.put(
+        `http://localhost:8080/donations/${id}/decision`,
+        reject
+      );
 
-      if (data.code != 200 && data.code != 201 ) {
+      if (data.code != 200 && data.code != 201) {
         showToast(
           "error",
           "Hey",
@@ -176,16 +172,11 @@ const rejectDonation = async (id: any)=>{
         );
       }
     } catch (error) {
-      if(error instanceof Error){
-        showToast(
-          "error",
-          "Error " + error.message,
-          error.message
-        );
+      if (error instanceof Error) {
+        showToast("error", "Error " + error.message, error.message);
       }
-      
     }
-}
+  };
 
   return (
     <>
@@ -203,7 +194,7 @@ const rejectDonation = async (id: any)=>{
             <Galleria
               value={images}
               item={itemTemplate}
-              thumbnail={thumbnailTemplate}            
+              thumbnail={thumbnailTemplate}
               numVisible={5}
               responsiveOptions={responsiveOptions}
               style={{ maxWidth: "600px" }}
@@ -222,9 +213,12 @@ const rejectDonation = async (id: any)=>{
                 <AccordionTab tabIndex={1} header="Details">
                   <p>Created date: {donation.createdDate}</p>
                   <p>Donation status: {donation.donationProcess.status}</p>
-                  <p>Category: {donation.categories.map((data : any)=>{
-                    return data.name
-                  })}</p>
+                  <p>
+                    Category:{" "}
+                    {donation.categories.map((data: any) => {
+                      return data.name;
+                    })}
+                  </p>
                 </AccordionTab>
               </Accordion>
               <div className="align-items-center justify-content-center pt-3">
@@ -236,20 +230,20 @@ const rejectDonation = async (id: any)=>{
                   onClick={() => requestDonation(donation.id)}
                 />
                 <div className="flex align-items-center  pt-3">
-                     <Button
-                  className="col-5 mr-1 bg-green-400 border-green-500"
-                  icon="pi pi-check"
-                  label="Accept"
-                  disabled={donation.donationProcess.status !== "Requested"}
-                  onClick={() => acceptDonation(donation.id)}
-                />
                   <Button
-                  className="col-5 ml-1 bg-red-400 border-red-500"
-                  icon="pi pi-times"
-                  label="Reject"
-                  disabled={donation.donationProcess.status !== "Requested"}
-                  onClick={() => rejectDonation(donation.id)}
-                />
+                    className="col-5 mr-1 bg-green-400 border-green-500"
+                    icon="pi pi-check"
+                    label="Accept"
+                    disabled={donation.donationProcess.status !== "Requested"}
+                    onClick={() => acceptDonation(donation.id)}
+                  />
+                  <Button
+                    className="col-5 ml-1 bg-red-400 border-red-500"
+                    icon="pi pi-times"
+                    label="Reject"
+                    disabled={donation.donationProcess.status !== "Requested"}
+                    onClick={() => rejectDonation(donation.id)}
+                  />
                 </div>
               </div>
             </div>

@@ -48,4 +48,17 @@ public class CategoryController extends IController implements ICategoryControll
             return notFound(e.getMessage());
         }
     }
+
+    @Override
+    public ResponseEntity<ApiReturnMessage> updateCategory(String categoryCode, CategoryDTO categoryDTO) {
+        try{
+            // updates the category
+            categoryDTO = categoryService.updateCategory(categoryCode, categoryDTO);
+            return ok(categoryDTO);
+
+            // if the category info has errors
+        }catch (IllegalArgumentException e){
+            return badRequest(e.getMessage());
+        }
+    }
 }

@@ -46,7 +46,7 @@ const Login = () => {
       sessionContext.setSessionUser(sessionUser);
       localStorage.setItem("user", JSON.stringify(sessionUser));
 
-      Router.push("/my-donations");
+      Router.push("/home");
     } catch (e: any) {
       toast.error("An error occured while logging the user!");
     }
@@ -102,7 +102,7 @@ const Login = () => {
             </div>
             <div className="flex justify-center grid-cols-1 pt-10">
               <Button
-                className="bg-white p-button-info"
+                className="p-button-info"
                 label="Login"
                 icon="pi pi-sign-in"
                 onClick={login}

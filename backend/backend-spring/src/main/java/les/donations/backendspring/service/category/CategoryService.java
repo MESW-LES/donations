@@ -65,4 +65,17 @@ public class CategoryService implements ICategoryService{
         List<ModelDTO> categoriesDTO = categories.stream().map(category -> categoryMapper.modelToDTO(category)).collect(Collectors.toList());
         return new PaginationDTO().results(categoriesDTO).countResults(categories.size());
     }
+
+    @Override
+    public CategoryDTO updateCategory(String code, CategoryDTO categoryDTO) throws IllegalArgumentException {
+        // gets the category
+        Category category = categoryDao.getReferenceById(code);
+
+        // updates the category
+        category.setName(categoryDTO.name);
+        category.setDescription(categoryDTO.description);
+        category.setActive(categoryDTO.active);
+
+        return categoryDTO;
+    }
 }

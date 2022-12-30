@@ -119,7 +119,7 @@ const RegisterCompany = () => {
             <div className="w-2"></div>
             <div className="w-8 flex justify-end ml-2">
               <Button
-                className="bg-white p-button-info"
+                className="p-button-info"
                 label="Register"
                 icon="pi pi-check"
                 onClick={createUser}
