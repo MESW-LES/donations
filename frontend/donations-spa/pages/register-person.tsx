@@ -24,9 +24,10 @@ const RegisterPerson = () => {
     background: url(https://www.owensboroparent.com/wp-content/uploads/2017/01/GiftofGiving.jpg);
   }`;
 
-  // email and password
+  // person data
   const [taxnumber, setTaxnumber] = useState("");
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -38,36 +39,16 @@ const RegisterPerson = () => {
   const createUser = async () => {
     let user: UserCredential | undefined = undefined;
     try {
-      // creates the backend donor
-      const formValues = { taxnumber, name, email, password };
-
-      try {
-        const { data } = await axios({
-          url: "/api/formregisterperson",
-          method: "POST",
-          data: formValues,
-        });
-
-        if (data.code != 200) {
-        } else {
-          setName("");
-          setTaxnumber("");
-        };
-      } catch (error) {
-        if (error instanceof Error) {
-        }
-
-      }
       // creates the firebase user
       user = await createUserWithEmailAndPassword(auth, email, password);
 
       // creates the backend donor
       const donor: Donor = {
         person: {
-          firstName: "Teste",
-          lastName: "Teste",
-          nif: "123456789",
-          address: "teste",
+          firstName: firstName,
+          lastName: lastName,
+          nif: taxnumber,
+          address: "address",
           email: email,
         },
       };
@@ -100,7 +81,7 @@ const RegisterPerson = () => {
           overflow: "hidden",
         }}
       >
-        <Card className="bg-white w-8 h-96">
+        <Card className="bg-white w-8 h-5/6">
           <div className="grid grid-cols-3">
             <div className="w-2"></div>
             <div className="w-8 flex justify-center">
@@ -112,13 +93,11 @@ const RegisterPerson = () => {
             <div className="w-2"></div>
             <div className="w-8">
               <div className="grid grid-cols-2">
-                <p className="w-4 text-black text-xl">NIF</p>
+                <p className="w-4 text-black text-xl">First Name</p>
                 <InputText
-                  required
                   className="w-8 bg-white"
                   style={{ color: "black" }}
-                  value={taxnumber}
-                  onChange={({ target }) => setTaxnumber(target?.value)}
+                  onChange={({ target }) => setFirstName(target?.value)}
                 />
               </div>
             </div>
@@ -128,12 +107,27 @@ const RegisterPerson = () => {
             <div className="w-2"></div>
             <div className="w-8">
               <div className="grid grid-cols-2">
-                <p className="w-4 text-black text-xl">Name</p>
+                <p className="w-4 text-black text-xl">Last Name</p>
                 <InputText
                   className="w-8 bg-white"
                   style={{ color: "black" }}
-                  value={name}
-                  onChange={({ target }) => setName(target?.value)}
+                  onChange={({ target }) => setLastName(target?.value)}
+                />
+              </div>
+            </div>
+            <div className="w-2"></div>
+          </div>
+          <div className="grid grid-cols-3 pt-10">
+            <div className="w-2"></div>
+            <div className="w-8">
+              <div className="grid grid-cols-2">
+                <p className="w-4 text-black text-xl">Tax Number</p>
+                <InputText
+                  required
+                  className="w-8 bg-white"
+                  style={{ color: "black" }}
+                  value={taxnumber}
+                  onChange={({ target }) => setTaxnumber(target?.value)}
                 />
               </div>
             </div>
@@ -174,7 +168,7 @@ const RegisterPerson = () => {
             <div className="w-2"></div>
             <div className="w-8 flex justify-end ml-2">
               <Button
-                className="bg-white p-button-info"
+                className="p-button-info"
                 label="Register"
                 icon="pi pi-check"
                 onClick={createUser}

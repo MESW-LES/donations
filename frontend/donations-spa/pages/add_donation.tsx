@@ -1,6 +1,6 @@
 import axios from "axios";
-import React, { useRef, useState , useEffect} from "react";
-import AppMenuBar from "./AppMenuBar";
+import React, { useRef, useState, useEffect } from "react";
+import AppMenuBar from "../components/AppMenuBar";
 import { Toast } from "primereact/toast";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
@@ -10,7 +10,7 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Dropdown } from "primereact/dropdown";
 import { Tag } from "primereact/tag";
 import { Tooltip } from "primereact/tooltip";
-import FormData from 'form-data';
+import FormData from "form-data";
 import { useRouter } from "next/router";
 
 function AddDonation() {
@@ -23,7 +23,7 @@ function AddDonation() {
   };
 
   /***********file upload code**********/
-  
+
   //buttons for image upload
   const chooseOptions = {
     icon: "pi pi-fw pi-images",
@@ -55,7 +55,6 @@ function AddDonation() {
   //categories list from the server for the dropdown
   const [categoriesData, setCategoriesData] = useState<any>(null);
 
-
   // POST to the server (Create donation)
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -65,15 +64,15 @@ function AddDonation() {
     dataDonation.append("title", title);
     dataDonation.append("categoriesCode", category);
     dataDonation.append("description", description);
-for (const image of images) {
-  dataDonation.append("donationImages", image);
-}
-    
-// Display the key/value pairs in the console
-/* for (var pair of dataDonation.entries()) {
+    for (const image of images) {
+      dataDonation.append("donationImages", image);
+    }
+
+    // Display the key/value pairs in the console
+    /* for (var pair of dataDonation.entries()) {
   console.log(pair[0]+ ', ' + pair[1]); 
 } */
-    
+
     try {
       const { data } = await axios({
         url: "http://localhost:8080/donations?status=1",        
@@ -81,7 +80,7 @@ for (const image of images) {
         data: dataDonation,
       });
 
-      if (data.code != 200 && data.code != 201 ) {
+      if (data.code != 200 && data.code != 201) {
         showToast(
           "error",
           "Hey",
@@ -99,34 +98,25 @@ for (const image of images) {
         goToPage("my-donations");
       }
     } catch (error) {
-      if(error instanceof Error){
-        showToast(
-          "error",
-          "Error " + error.message,
-          error.message
-        );
+      if (error instanceof Error) {
+        showToast("error", "Error " + error.message, error.message);
       }
-      
     }
   };
 
-
-
-//Fetch data from the BackEnd
-const fetchCategories = async ()=>{
-  const response = await fetch('/api/CategoryService');
-  const data = await response.json();
-  if(data.code = 200){
-    setCategoriesData(data.data.message.results);
-  }
-  
-}
+  //Fetch data from the BackEnd
+  const fetchCategories = async () => {
+    const response = await fetch("/api/CategoryService");
+    const data = await response.json();
+    if ((data.code = 200)) {
+      setCategoriesData(data.data.message.results);
+    }
+  };
 
   // Get the categories
-useEffect(() => {
-  fetchCategories();
-}, []); // eslint-disable-line react-hooks/exhaustive-deps
-
+  useEffect(() => {
+    fetchCategories();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* const onUpload = () => {
     if(toast.current !== null && toast.current !== undefined ){
@@ -141,20 +131,20 @@ useEffect(() => {
   //when one or more files are selected, update the info regarding the size (images are added to the variable)
   const onTemplateSelect = (e: any) => {
     let _totalSize = totalSize;
-    Array.from(e.files).forEach((file : any) => {
+    Array.from(e.files).forEach((file: any) => {
       _totalSize += file.size;
     });
 
-    if(!images){
+    if (!images) {
       setImages(Array.from(e.files));
-    }else{
-      setImages(images.concat(Array.from(e.files)))
+    } else {
+      setImages(images.concat(Array.from(e.files)));
     }
     setTotalSize(_totalSize);
   };
 
   // here we have the files that have been uploaded  ?? works if we have a button to upload the images in the header of the component
-/*   const onTemplateUpload = (e : any) => {
+  /*   const onTemplateUpload = (e : any) => {
     let _totalSize = 0;
     e.files.forEach((file:any) => {
       _totalSize += file.size || 0;
@@ -168,29 +158,25 @@ useEffect(() => {
     });
   }; */
 
-
   // remove one item from the list (remove image from the variable)
-  const onTemplateRemove = (file : any, callback : any) => {
-    for( var i = 0; i < images.length; i++){ 
-    
+  const onTemplateRemove = (file: any, callback: any) => {
+    for (var i = 0; i < images.length; i++) {
       //console.log(images.indexOf(file))
-      if ( i === images.indexOf(file)) { 
-  
+      if (i === images.indexOf(file)) {
         //console.log("DEBUG 3")
-          images.splice(i, 1); 
+        images.splice(i, 1);
       }
-  
-  }
-    
+    }
+
     setTotalSize(totalSize - file.size);
-    if(callback){
+    if (callback) {
       callback();
     }
   };
 
   // for clear the size of the set of images
   const onTemplateClear = () => {
-    if(images && images.length!= 0){
+    if (images && images.length != 0) {
       images.splice(0, images.length); //validate?
     }
     setTotalSize(0);
@@ -199,10 +185,11 @@ useEffect(() => {
   // menu header template
   const headerTemplate = (options: any) => {
     const { className, chooseButton, cancelButton } = options;
-    
+
     //for the progress bar
     const value = totalSize / 10000;
-    const formatedValue = fileUploadRef && fileUploadRef.current
+    const formatedValue =
+      fileUploadRef && fileUploadRef.current
         ? fileUploadRef.current.formatSize(totalSize)
         : "0 B";
 
@@ -215,7 +202,7 @@ useEffect(() => {
           alignItems: "center",
         }}
       >
-        {chooseButton}        
+        {chooseButton}
         {cancelButton}
         <ProgressBar
           value={value}
@@ -226,7 +213,7 @@ useEffect(() => {
     );
   };
 
-  const itemTemplate = (file:any, props:any) => {
+  const itemTemplate = (file: any, props: any) => {
     return (
       <div className="flex align-items-center flex-wrap">
         <div className="flex align-items-center" style={{ width: "40%" }}>
@@ -280,10 +267,6 @@ useEffect(() => {
 
   /*****************************/
 
-
-
-
-
   const showToast = (
     severityValue: string,
     summaryValue: string,
@@ -322,17 +305,22 @@ useEffect(() => {
               <div className="p-fluid formgrid grid">
                 <div className="field col-12">
                   <label htmlFor="title">Title</label>
-                  <InputText id="title" type="text" value={title}
-                      onChange={({ target }) => setTitle(target?.value)}/>
+                  <InputText
+                    id="title"
+                    type="text"
+                    value={title}
+                    onChange={({ target }) => setTitle(target?.value)}
+                  />
                 </div>
                 <div className="field col-12">
                   <label htmlFor="category">Category</label>
                   <Dropdown
                     id="category"
                     value={dropdownItem}
-                    onChange={(e)=>{setDropdownItem(e.value);
-                    setCategory(e.value.code); 
-                    console.log(category);               
+                    onChange={(e) => {
+                      setDropdownItem(e.value);
+                      setCategory(e.value.code);
+                      console.log(category);
                     }}
                     options={categoriesData}
                     optionLabel="name"
@@ -341,12 +329,18 @@ useEffect(() => {
                 </div>
                 <div className="field col-12">
                   <label htmlFor="description">Description</label>
-                  <InputTextarea id="description" rows= {4} value={description} onChange={({target})=> setDescription(target?.value)}/>
-                </div>        
+                  <InputTextarea
+                    id="description"
+                    rows={4}
+                    value={description}
+                    onChange={({ target }) => setDescription(target?.value)}
+                  />
+                </div>
                 <FileUpload
                   ref={fileUploadRef}
-                  name="donationImages"                
-                  multiple accept="image/*"
+                  name="donationImages"
+                  multiple
+                  accept="image/*"
                   maxFileSize={10000000}
                   //onUpload={onTemplateUpload}
                   onSelect={onTemplateSelect}
@@ -355,18 +349,18 @@ useEffect(() => {
                   headerTemplate={headerTemplate}
                   itemTemplate={itemTemplate}
                   emptyTemplate={emptyTemplate}
-                  chooseOptions={chooseOptions}              
+                  chooseOptions={chooseOptions}
                   cancelOptions={cancelOptions}
-                  className = "field col-12"
+                  className="field col-12"
                 />
               </div>
               <button
-                  type="submit"
-                  onClick={handleSubmit}
-                  className="inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                  Save
-                </button>
+                type="submit"
+                onClick={handleSubmit}
+                className="inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                Save
+              </button>
             </div>
           </div>
         </div>

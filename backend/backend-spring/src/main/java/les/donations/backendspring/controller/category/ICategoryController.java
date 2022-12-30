@@ -3,12 +3,7 @@ package les.donations.backendspring.controller.category;
 import les.donations.backendspring.api.ApiReturnMessage;
 import les.donations.backendspring.dto.CategoryDTO;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.websocket.server.PathParam;
+import org.springframework.web.bind.annotation.*;
 
 public interface ICategoryController {
 
@@ -32,5 +27,12 @@ public interface ICategoryController {
      * @return a response with a code which represents if the operation was successful or not
      */
     @GetMapping(value = "/categories/{categoryCode}", produces = "application/json")
-    ResponseEntity<ApiReturnMessage> getCategory(@PathParam("categoryCode") String categoryCode);
+    ResponseEntity<ApiReturnMessage> getCategory(@PathVariable("categoryCode") String categoryCode);
+
+    /**
+     * Method that updates a specific category
+     * @return a response with a code which represents if the operation was successful or not
+     */
+    @PutMapping(value = "/categories/{categoryCode}", produces = "application/json", consumes = "application/json")
+    ResponseEntity<ApiReturnMessage> updateCategory(@PathVariable("categoryCode") String categoryCode, @RequestBody CategoryDTO categoryDTO);
 }

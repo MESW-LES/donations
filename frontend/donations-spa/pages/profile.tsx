@@ -1,4 +1,4 @@
-import AppMenuBar from "./AppMenuBar";
+import AppMenuBar from "../components/AppMenuBar";
 
 function Profile() {
   return (

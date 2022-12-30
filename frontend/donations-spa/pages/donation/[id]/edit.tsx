@@ -1,6 +1,6 @@
 import axios from "axios";
-import React, { useRef, useState , useEffect} from "react";
-import AppMenuBar from "../../AppMenuBar";
+import React, { useRef, useState, useEffect } from "react";
+import AppMenuBar from "../../../components/AppMenuBar";
 import { Toast } from "primereact/toast";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
@@ -10,7 +10,7 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Dropdown } from "primereact/dropdown";
 import { Tag } from "primereact/tag";
 import { Tooltip } from "primereact/tooltip";
-import FormData from 'form-data';
+import FormData from "form-data";
 import { useRouter } from "next/router";
 import { Splitter, SplitterPanel } from "primereact/splitter";
 import { Galleria } from "primereact/galleria";
@@ -25,7 +25,7 @@ function AddDonation({ donation }: any) {
   };
 
   /***********file upload code**********/
-  
+
   //buttons for image upload
   const chooseOptions = {
     icon: "pi pi-fw pi-images",
@@ -122,7 +122,7 @@ function AddDonation({ donation }: any) {
         data: dataDonation,
       });
 
-      if (data.code != 200 && data.code != 201 ) {
+      if (data.code != 200 && data.code != 201) {
         showToast(
           "error",
           "Hey",
@@ -140,14 +140,9 @@ function AddDonation({ donation }: any) {
         goToPage("/my-donations");
       }
     } catch (error) {
-      if(error instanceof Error){
-        showToast(
-          "error",
-          "Error " + error.message,
-          error.message
-        );
+      if (error instanceof Error) {
+        showToast("error", "Error " + error.message, error.message);
       }
-      
     }
   };
 
@@ -167,9 +162,7 @@ const fetchCategories = async ()=>{
       setCategory(obj.code);
 //console.log(obj);
     }
-  }
-  
-}
+  };
 
   // Get the categories
 useEffect(() => {
@@ -217,20 +210,24 @@ useEffect(() => {
           <div className="p-fluid formgrid grid">
                 <div className="field col-12">
                   <label htmlFor="title">Title</label>
-                  <InputText id="title" type="text" value={title}
-                      onChange={({ target }) => setTitle(target?.value)}/>
+                  <InputText
+                    id="title"
+                    type="text"
+                    value={title}
+                    onChange={({ target }) => setTitle(target?.value)}
+                  />
                 </div>
                 <div className="field col-12">
                   <label htmlFor="category">Category</label>
                   <Dropdown
                     id="category"
                     value={dropdownItem}
-                    onChange={(e)=>{
-                        console.log(donation.categories);
-                        console.log(e.value);
-                        setDropdownItem(e.value);
-                    setCategory(e.value.code); 
-                    console.log(category);               
+                    onChange={(e) => {
+                      console.log(donation.categories);
+                      console.log(e.value);
+                      setDropdownItem(e.value);
+                      setCategory(e.value.code);
+                      console.log(category);
                     }}
                     options={categoriesData}
                     optionLabel="name"
@@ -286,48 +283,47 @@ useEffect(() => {
 export default AddDonation;
 
 export async function getStaticPaths() {
-    const requestOptions = {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    };
-    const response = await fetch(
-      `http://localhost:8080/donations`,
-      requestOptions
-    );
-    const data = await response.json();
-    console.log(data.message.results);
-  
-    const newPaths = data.message.results.map((post: any) => {
-      return {
-        params: {
-          id: `${post.id}`,
-        },
-      };
-    });
+  const requestOptions = {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  };
+  const response = await fetch(
+    `http://localhost:8080/donations`,
+    requestOptions
+  );
+  const data = await response.json();
+  console.log(data.message.results);
+
+  const newPaths = data.message.results.map((post: any) => {
     return {
-      paths: newPaths,
-      fallback: false,
-    };
-  }
-  
-  export async function getStaticProps(context: any) {
-    const { params } = context;
-    console.log(params);
-    const requestOptions = {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    };
-    const response = await fetch(
-      `http://localhost:8080/donations/${params.id}`,
-      requestOptions
-    );
-    const data = await response.json();
-  
-    //console.log(data);
-    return {
-      props: {
-        donation: data.message,
+      params: {
+        id: `${post.id}`,
       },
     };
-  }
-  
+  });
+  return {
+    paths: newPaths,
+    fallback: false,
+  };
+}
+
+export async function getStaticProps(context: any) {
+  const { params } = context;
+  console.log(params);
+  const requestOptions = {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  };
+  const response = await fetch(
+    `http://localhost:8080/donations/${params.id}`,
+    requestOptions
+  );
+  const data = await response.json();
+
+  //console.log(data);
+  return {
+    props: {
+      donation: data.message,
+    },
+  };
+}
