@@ -99,8 +99,20 @@ const fetchCategories = async ()=>{
   //Fetch data from the BackEnd
 const fetchCategoryDonations = async (code:any)=>{
     const requestOptions = {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    };
+    const response = await fetch(
+      "http://localhost:8080/donations?status=1",
+      requestOptions
+    );
+    const data = await response.json();
+    if (data.code == 200) {
+      if (data.message) {
+        setDataViewValue(data.message.results);
+      }
+      //console.log(dataViewValue[0].donationImages[0])
+    }
   };
    const response = await fetch(`http://localhost:8080/donations?status=1&category=${code}`, requestOptions);
    const data = await response.json();
