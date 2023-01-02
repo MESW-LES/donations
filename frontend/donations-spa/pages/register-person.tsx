@@ -26,7 +26,8 @@ const RegisterPerson = () => {
 
   // email and password
   const [taxnumber, setTaxnumber] = useState("");
-  const [name, setName] = useState("");
+  const [firstName, setName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -39,9 +40,9 @@ const RegisterPerson = () => {
     let user: UserCredential | undefined = undefined;
     try {
       // creates the backend donor
-      const formValues = { taxnumber, name, email, password };
+      const formValues = { taxnumber, firstName, email, password };
 
-      try {
+      /*try {
         const { data } = await axios({
           url: "/api/formregisterperson",
           method: "POST",
@@ -57,17 +58,17 @@ const RegisterPerson = () => {
         if (error instanceof Error) {
         }
 
-      }
+      }*/
       // creates the firebase user
-      user = await createUserWithEmailAndPassword(auth, email, password);
+      //user = await createUserWithEmailAndPassword(auth, email, password);
 
       // creates the backend donor
       const donor: Donor = {
         person: {
-          firstName: "Teste",
-          lastName: "Teste",
-          nif: "123456789",
-          address: "teste",
+          firstName: firstName,
+          lastName: lastName,
+          nif: taxnumber,
+          //address: "teste",
           email: email,
         },
       };
@@ -82,9 +83,9 @@ const RegisterPerson = () => {
       }, 2000);
     } catch (error: any) {
       // deletes user from firebase if some error occurs in donatiosn backend
-      if (user) {
-        deleteUser(user.user);
-      }
+      //if (user) {
+      //  deleteUser(user.user);
+      //}
       toast.error("An error occured while registering the user!");
     }
   };
@@ -100,7 +101,7 @@ const RegisterPerson = () => {
           overflow: "hidden",
         }}
       >
-        <Card className="bg-white w-8 h-96">
+        <Card className="bg-white w-8 h-100">
           <div className="grid grid-cols-3">
             <div className="w-2"></div>
             <div className="w-8 flex justify-center">
@@ -128,12 +129,27 @@ const RegisterPerson = () => {
             <div className="w-2"></div>
             <div className="w-8">
               <div className="grid grid-cols-2">
-                <p className="w-4 text-black text-xl">Name</p>
+                <p className="w-4 text-black text-xl">First Name</p>
                 <InputText
                   className="w-8 bg-white"
                   style={{ color: "black" }}
-                  value={name}
+                  value={firstName}
                   onChange={({ target }) => setName(target?.value)}
+                />
+              </div>
+            </div>
+            <div className="w-2"></div>
+          </div>
+          <div className="grid grid-cols-3 pt-10">
+            <div className="w-2"></div>
+            <div className="w-8">
+              <div className="grid grid-cols-2">
+                <p className="w-4 text-black text-xl">Last Name</p>
+                <InputText
+                  className="w-8 bg-white"
+                  style={{ color: "black" }}
+                  value={lastName}
+                  onChange={({ target }) => setLastName(target?.value)}
                 />
               </div>
             </div>

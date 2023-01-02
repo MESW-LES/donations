@@ -5,6 +5,7 @@ import { Donor } from "../types/Donor";
 
 export default async function doRegister(donee: Donee): Promise<Donee> {
   try {
+    console.log(donee)
     const { data, status } = await axios.post<BackResponse>(
       "http://localhost:8080/donees",
       {

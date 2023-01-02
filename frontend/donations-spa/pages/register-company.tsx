@@ -10,15 +10,13 @@ import { Dropdown } from 'primereact/dropdown';
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { InputText } from "primereact/inputtext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { initFirebase } from "../auth/Firebase";
 import { Donee } from "../types/Donee";
 import Router from "next/router";
 import doRegister from "../backend/RegisterDonee";
-import { Auth, createUserWithEmailAndPassword, getAuth, UserCredential } from 'firebase/auth';
-import { initFirebase } from '../auth/Firebase';
 import axios from 'axios';
 
 
@@ -29,9 +27,12 @@ const RegisterCompany = () => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [category, setcategory] = useState<any>();
+  //onst [category, setcategory] = useState<any>();
+  const [category, setCategory] = useState("");
+  const [dropdownItem, setDropdownItem] = useState(null);
+  const [categoriesData, setCategoriesData] = useState<any>(null);
 
-  const categories = [
+  /*const categories = [
     { label: 'Cat-A', value: 'Cat-A' },
     { label: 'Cateogry example 1', value: '2' }
   ];
@@ -42,16 +43,18 @@ const RegisterCompany = () => {
     temp.push(event.value)
     setcategory(temp);
 
-  };
+  };*/
   // inits the firebase authentication
-  initFirebase();
-  const auth: Auth = getAuth();
+  //initFirebase();
+  //const auth: Auth = getAuth();
 
   // creates the user in firebase auth
-  const createUserFirebase = async () => {
+  /*const createUserFirebase = async () => {
     try {
       // creates the backend donor
-      const formValues = { company: { taxnumber, name, description, phone, email }, password, ["categoryCodes"]: category };
+      const formValues = { company: { taxnumber, name, description, phone, email }, ["categoryCodes"]: category };
+
+      console.log(formValues)
 
       try {
         const { data } = await axios({
@@ -59,7 +62,7 @@ const RegisterCompany = () => {
           method: "POST",
           data: formValues,
         });
-  
+
         if (data.code != 200) {
         } else {
           setName("");
@@ -69,7 +72,7 @@ const RegisterCompany = () => {
       } catch (error) {
         if (error instanceof Error) {
         }
-      
+
       }
       // creates the firebase user
       const user: UserCredential = await createUserWithEmailAndPassword(
@@ -85,15 +88,33 @@ const RegisterCompany = () => {
       toast.error("An error occured while registering the user!");
     }
   };
+ */
+
+  // email and password
+  //const [email, setEmail] = useState("");
+  //const [password, setPassword] = useState("");
+
+  // inits the firebase authentication
+
+  //Fetch data from the BackEnd
+  const fetchCategories = async () => {
+    const response = await fetch('/api/CategoryService');
+    const data = await response.json();
+    if (data.code = 200) {
+      setCategoriesData(data.data.message.results);
+    }
+
+  }
+
+  // Get the categories
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
   const backImage = `.back-image{
     background: url(https://www.owensboroparent.com/wp-content/uploads/2017/01/GiftofGiving.jpg);
   }`;
 
-  // email and password
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  // inits the firebase authentication
   initFirebase();
   const auth: Auth = getAuth();
 
@@ -104,18 +125,21 @@ const RegisterCompany = () => {
       // creates the firebase user
       user = await createUserWithEmailAndPassword(auth, email, password);
 
+
+      console.log("passei o user")
       // creates the backend donee
       const donee: Donee = {
         company: {
-          name: "Teste",
-          description: "Teste",
-          taxNumber: "123456789",
-          phone: "911111111",
+          name: name,
+          description: description,
+          taxNumber: taxnumber,
+          phone: phone,
           email: email,
         },
-        categoryCodes: ["CAT-A"],
+        categoryCodes: [category],
       };
       // creates the user in donations app
+      console.log(donee)
       await doRegister(donee);
 
       // signs out the user
@@ -144,7 +168,7 @@ const RegisterCompany = () => {
           overflow: "hidden",
         }}
       >
-        <Card className="bg-white w-8 h-96">
+        <Card className="bg-white w-8 h-960">
           <div className="grid grid-cols-3">
             <div className="w-2"></div>
             <div className="w-8 flex justify-center">
@@ -249,7 +273,19 @@ const RegisterCompany = () => {
             <div className="w-8">
               <div className="grid grid-cols-2">
                 <p className="w-4 text-black text-xl">Category</p>
-                <Dropdown options={categories} optionLabel="label" placeholder="Categories" />
+                {/*<Dropdown value={category} options={categories} optionLabel="label" placeholder="Categories" onChange={onCategory} />*/}
+                <Dropdown
+                  id="category"
+                  value={dropdownItem}
+                  onChange={(e) => {
+                    setDropdownItem(e.value);
+                    setCategory(e.value.code);
+                    console.log(category);
+                  }}
+                  options={categoriesData}
+                  optionLabel="name"
+                  placeholder="Select One"
+                ></Dropdown>
               </div>
             </div>
             <div className="w-2"></div>
@@ -261,7 +297,7 @@ const RegisterCompany = () => {
                 className="bg-white p-button-info"
                 label="Register"
                 icon="pi pi-check"
-                onClick={createUserFirebase}
+                onClick={createUser}
               />
             </div>
             <div className="w-2"></div>
