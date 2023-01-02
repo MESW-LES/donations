@@ -25,9 +25,10 @@ const RegisterPerson = () => {
   }`;
 
   // email and password
-  const [taxnumber, setTaxnumber] = useState("");
+  const [nif, setNif] = useState("");
   const [firstName, setName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -39,26 +40,7 @@ const RegisterPerson = () => {
   const createUser = async () => {
     let user: UserCredential | undefined = undefined;
     try {
-      // creates the backend donor
-      const formValues = { taxnumber, firstName, email, password };
-
-      /*try {
-        const { data } = await axios({
-          url: "/api/formregisterperson",
-          method: "POST",
-          data: formValues,
-        });
-
-        if (data.code != 200) {
-        } else {
-          setName("");
-          setTaxnumber("");
-        };
-      } catch (error) {
-        if (error instanceof Error) {
-        }
-
-      }*/
+      
       // creates the firebase user
       //user = await createUserWithEmailAndPassword(auth, email, password);
 
@@ -67,8 +49,8 @@ const RegisterPerson = () => {
         person: {
           firstName: firstName,
           lastName: lastName,
-          nif: taxnumber,
-          //address: "teste",
+          nif: nif,
+          address: address,
           email: email,
         },
       };
@@ -118,8 +100,8 @@ const RegisterPerson = () => {
                   required
                   className="w-8 bg-white"
                   style={{ color: "black" }}
-                  value={taxnumber}
-                  onChange={({ target }) => setTaxnumber(target?.value)}
+                  value={nif}
+                  onChange={({ target }) => setNif(target?.value)}
                 />
               </div>
             </div>
@@ -150,6 +132,21 @@ const RegisterPerson = () => {
                   style={{ color: "black" }}
                   value={lastName}
                   onChange={({ target }) => setLastName(target?.value)}
+                />
+              </div>
+            </div>
+            <div className="w-2"></div>
+          </div>
+          <div className="grid grid-cols-3 pt-10">
+            <div className="w-2"></div>
+            <div className="w-8">
+              <div className="grid grid-cols-2">
+                <p className="w-4 text-black text-xl">Address</p>
+                <InputText
+                  className="w-8 bg-white"
+                  style={{ color: "black" }}
+                  value={address}
+                  onChange={({ target }) => setAddress(target?.value)}
                 />
               </div>
             </div>

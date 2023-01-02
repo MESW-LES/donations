@@ -27,74 +27,10 @@ const RegisterCompany = () => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  //onst [category, setcategory] = useState<any>();
   const [category, setCategory] = useState("");
   const [dropdownItem, setDropdownItem] = useState(null);
   const [categoriesData, setCategoriesData] = useState<any>(null);
 
-  /*const categories = [
-    { label: 'Cat-A', value: 'Cat-A' },
-    { label: 'Cateogry example 1', value: '2' }
-  ];
-
-  const onCategory = (event: any) => {
-    console.log("Entrei Cate")
-    let temp: string[] = []
-    temp.push(event.value)
-    setcategory(temp);
-
-  };*/
-  // inits the firebase authentication
-  //initFirebase();
-  //const auth: Auth = getAuth();
-
-  // creates the user in firebase auth
-  /*const createUserFirebase = async () => {
-    try {
-      // creates the backend donor
-      const formValues = { company: { taxnumber, name, description, phone, email }, ["categoryCodes"]: category };
-
-      console.log(formValues)
-
-      try {
-        const { data } = await axios({
-          url: "/api/formregistercompany",
-          method: "POST",
-          data: formValues,
-        });
-
-        if (data.code != 200) {
-        } else {
-          setName("");
-          setTaxnumber("");
-          setDescription("");
-        };
-      } catch (error) {
-        if (error instanceof Error) {
-        }
-
-      }
-      // creates the firebase user
-      const user: UserCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
-      // signs out the user
-      await auth.signOut();
-      toast.success("User registered with success!");
-    } catch (error: any) {
-      toast.error("An error occured while registering the user!");
-    }
-  };
- */
-
-  // email and password
-  //const [email, setEmail] = useState("");
-  //const [password, setPassword] = useState("");
-
-  // inits the firebase authentication
 
   //Fetch data from the BackEnd
   const fetchCategories = async () => {
