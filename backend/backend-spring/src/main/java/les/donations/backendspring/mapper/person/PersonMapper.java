@@ -11,12 +11,12 @@ public class PersonMapper implements IPersonMapper{
 
     @Override
     public Person dtoToModel(final PersonDTO personDTO) throws IllegalArgumentException{
-        return new Person(personDTO.firstName, personDTO.lastName, personDTO.nif, personDTO.address, personDTO.email);
+        return new Person(personDTO.firstName, personDTO.lastName, personDTO.nif, personDTO.email);
     }
 
     @Override
     public PersonDTO modelToDTO(final Person person){
         return (new PersonDTO().id(person.getId()).firstName(person.getFirstName()).lastName(person.getLastName())
-                .nif(person.getNif()).address(person.getAddress()).email(person.getEmail()));
+                .nif(person.getNif()).email(person.getEmail()));
     }
 }

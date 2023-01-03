@@ -24,9 +24,9 @@ const RegisterPerson = () => {
     background: url(https://www.owensboroparent.com/wp-content/uploads/2017/01/GiftofGiving.jpg);
   }`;
 
-  // person data
-  const [taxnumber, setTaxnumber] = useState("");
-  const [firstName, setFirstName] = useState("");
+  // email and password
+  const [nif, setNif] = useState("");
+  const [firstName, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -47,8 +47,7 @@ const RegisterPerson = () => {
         person: {
           firstName: firstName,
           lastName: lastName,
-          nif: taxnumber,
-          address: "address",
+          nif: nif,
           email: email,
         },
       };
@@ -81,7 +80,7 @@ const RegisterPerson = () => {
           overflow: "hidden",
         }}
       >
-        <Card className="bg-white w-8 h-5/6">
+        <Card className="bg-white w-8 h-fit">
           <div className="grid grid-cols-3">
             <div className="w-2"></div>
             <div className="w-8 flex justify-center">
@@ -97,7 +96,8 @@ const RegisterPerson = () => {
                 <InputText
                   className="w-8 bg-white"
                   style={{ color: "black" }}
-                  onChange={({ target }) => setFirstName(target?.value)}
+                  value={firstName}
+                  onChange={({ target }) => setName(target?.value)}
                 />
               </div>
             </div>
@@ -111,6 +111,7 @@ const RegisterPerson = () => {
                 <InputText
                   className="w-8 bg-white"
                   style={{ color: "black" }}
+                  value={lastName}
                   onChange={({ target }) => setLastName(target?.value)}
                 />
               </div>
@@ -123,11 +124,10 @@ const RegisterPerson = () => {
               <div className="grid grid-cols-2">
                 <p className="w-4 text-black text-xl">Tax Number</p>
                 <InputText
-                  required
                   className="w-8 bg-white"
                   style={{ color: "black" }}
-                  value={taxnumber}
-                  onChange={({ target }) => setTaxnumber(target?.value)}
+                  value={nif}
+                  onChange={({ target }) => setNif(target?.value)}
                 />
               </div>
             </div>

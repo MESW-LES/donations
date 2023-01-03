@@ -25,9 +25,6 @@ public class Address implements Serializable {
     @Column(name = "POSTAL_CODE")
     private String postalCode;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "address", cascade = CascadeType.ALL)
-    private List<Donor> donors;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "GEOGRAPHIC_AREA_ID")
     private GeographicArea geographicArea;
@@ -40,7 +37,6 @@ public class Address implements Serializable {
         setStreet(street);
         setHouseNumber(houseNumber);
         setPostalCode(postalCode);
-        donors = new ArrayList<>();
     }
 
     public Long getId() {
@@ -82,18 +78,6 @@ public class Address implements Serializable {
             throw new IllegalArgumentException("The postal code can't be null or empty!");
         }
         this.postalCode = postalCode;
-    }
-
-    public List<Donor> getDonors() {
-        return donors;
-    }
-
-    public void setDonors(List<Donor> donors) {
-        this.donors = donors;
-    }
-
-    public void addDonor(Donor donor) {
-        donors.add(donor);
     }
 
     public GeographicArea getGeographicArea() {

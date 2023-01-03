@@ -23,10 +23,6 @@ public class PersonDTO {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty
-    public String address;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty
     public String email;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -50,11 +46,6 @@ public class PersonDTO {
 
     public PersonDTO nif(String nif) {
         this.nif = nif;
-        return this;
-    }
-
-    public PersonDTO address(String address) {
-        this.address = address;
         return this;
     }
 

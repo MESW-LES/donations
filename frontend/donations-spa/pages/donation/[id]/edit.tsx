@@ -123,17 +123,17 @@ function AddDonation({ donation }: any) {
       });
 
       if (data.code != 200 && data.code != 201) {
-        showToast(
-          "error",
-          "Hey",
-          "oops looks like something went wrong, please try again later."
-        );
+        //showToast(
+        //  "error",
+        //  "Hey",
+        //  "oops looks like something went wrong, please try again later."
+        //);
       } else {
-        showToast(
-          "success",
-          "Success Message",
-          "The donation was updated successfully."
-        );
+        //showToast(
+        //  "success",
+        //  "Success Message",
+        //  "The donation was updated successfully."
+        //);
         setTitle("");
         setCategory("");
         setDescription("");
@@ -141,7 +141,7 @@ function AddDonation({ donation }: any) {
       }
     } catch (error) {
       if (error instanceof Error) {
-        showToast("error", "Error " + error.message, error.message);
+        //showToast("error", "Error " + error.message, error.message);
       }
     }
   };
@@ -304,26 +304,5 @@ export async function getStaticPaths() {
   return {
     paths: newPaths,
     fallback: false,
-  };
-}
-
-export async function getStaticProps(context: any) {
-  const { params } = context;
-  console.log(params);
-  const requestOptions = {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  };
-  const response = await fetch(
-    `http://localhost:8080/donations/${params.id}`,
-    requestOptions
-  );
-  const data = await response.json();
-
-  //console.log(data);
-  return {
-    props: {
-      donation: data.message,
-    },
   };
 }

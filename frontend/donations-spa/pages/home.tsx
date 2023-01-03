@@ -18,7 +18,7 @@ const imagesMap: Map<string, string[]> = new Map([
 
 const onClickMenuMap: Map<string, string[]> = new Map([
   ["donor", ["/my-donations", "/ongoing-donations", "/profile"]],
-  ["donne", ["/donations", "/ongoing-donations", "/profile"]],
+  ["donne", ["/finished-donations", "/ongoing-donations", "/profile"]],
   ["admin", ["/categories", "/geographic-ares", "/donations"]],
 ]);
 

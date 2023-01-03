@@ -1,50 +1,33 @@
-import AppMenuBar from "../components/AppMenuBar";
-import React, { useState, useEffect, useRef } from "react";
+import { AppContext } from "next/app";
+import router from "next/router";
+import { Button } from "primereact/button";
 import {
   DataView,
   DataViewLayoutOptions,
   DataViewLayoutType,
 } from "primereact/dataview";
-import { Button } from "primereact/button";
-import { Dropdown } from "primereact/dropdown";
-import { ProductService } from "./api/ProductService";
-import { InputText } from "primereact/inputtext";
-import { useRouter } from "next/router";
-import axios from "axios";
 import { Toast } from "primereact/toast";
-import { getOngoingDonations, getPendingDonations } from "../backend/Donation";
+import { useEffect, useRef, useState } from "react";
+import { getFinishedDonations } from "../backend/Donation";
+import AppMenuBar from "../components/AppMenuBar";
 import { Pagination } from "../types/Pagination";
 
-function OngoingDonations() {
-  // Ongoing Donations items
-  const [ongoingDataViewValue, setOngoingDataViewValue] = useState<any>(null);
-  // Pending Donations items
-  const [pendingDataViewValue, setPendingDataViewValue] = useState<any>(null);
+const FinishedDonations = (props: any) => {
+  // Finished Donations items
+  const [finishedDataViewValue, setFinishedDataViewValue] = useState<any>(null);
   // If is a grid or a list
   const [layout, setLayout] = useState<DataViewLayoutType>("grid");
   //for display messages in the view
   const toast = useRef<any>(null);
 
-  const router = useRouter();
+  // load the donations from the backend
+  useEffect(() => {
+    setFinishedDataViewValue(props.donations);
+  });
 
   const goToPage = (page: string) => {
     router.push(page);
   };
-
-  //Fetch data from the BackEnd
-  const fetchOngoingDonations = async () => {
-    const data: Pagination = await getOngoingDonations();
-    setOngoingDataViewValue(data.results);
-  };
-  const fetchPendingDonations = async () => {
-    const data: Pagination = await getPendingDonations();
-    setPendingDataViewValue(data.results);
-  };
-
-  useEffect(() => {
-    fetchOngoingDonations();
-    fetchPendingDonations();
-  }, []);
 
   const dataViewHeader = (
     <div className="flex flex-column md:flex-row md:justify-content-between gap-2">
@@ -147,25 +130,9 @@ function OngoingDonations() {
       <div className="grid list-demo">
         <div className="col-12 p-4">
           <div className="card">
-            <h3 className="text-orange-500">Ongoing Donations</h3>
+            <h3 className="text-red-600">Finished Donations</h3>
             <DataView
-              value={ongoingDataViewValue}
-              layout={layout}
-              paginator
-              rows={12}
-              itemTemplate={itemTemplate}
-              header={dataViewHeader}
-            ></DataView>
-          </div>
-        </div>
-      </div>
-
-      <div className="grid list-demo">
-        <div className="col-12 p-4">
-          <div className="card">
-            <h3 className="text-violet-500">Pending Donations</h3>
-            <DataView
-              value={pendingDataViewValue}
+              value={finishedDataViewValue}
               layout={layout}
               paginator
               rows={12}
@@ -177,6 +144,14 @@ function OngoingDonations() {
       </div>
     </>
   );
+};
+
+export async function getServerSideProps(context: AppContext) {
+  const pagination: Pagination = await getFinishedDonations();
+
+  return {
+    props: { donations: pagination.results },
+  };
 }
 
-export default OngoingDonations;
+export default FinishedDonations;

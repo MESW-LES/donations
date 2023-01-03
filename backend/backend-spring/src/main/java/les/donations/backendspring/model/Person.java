@@ -28,9 +28,6 @@ public class Person implements Serializable {
     @Column(name = "NIF")
     private String nif;
 
-    @Column(name = "ADDRESS")
-    private String address;
-
     @Column(name = "EMAIL")
     private String email;
 
@@ -42,11 +39,10 @@ public class Person implements Serializable {
 
     public Person() {}
 
-    public Person(String firstName, String lastName, String nif, String address, String email) throws IllegalArgumentException {
+    public Person(String firstName, String lastName, String nif, String email) throws IllegalArgumentException {
         setFirstName(firstName);
         setLastName(lastName);
         setNif(nif);
-        setAddress(address);
         setEmail(email);
         active = true;
     }
@@ -58,8 +54,6 @@ public class Person implements Serializable {
     public String getLastName() { return lastName; }
 
     public String getNif() { return nif; }
-
-    public String getAddress() { return address; }
 
     public String getEmail() { return email; }
 
@@ -92,11 +86,6 @@ public class Person implements Serializable {
             throw new IllegalArgumentException("The NIF has illegal format. NIF must contain 9 digits");
         }
         this.nif = nif;
-    }
-
-    public void setAddress(String address) {
-        if ((address == null) || (address.isEmpty())) throw new IllegalArgumentException("The address can't be null or empty");
-        this.address = address;
     }
 
     public void setEmail(String email) {

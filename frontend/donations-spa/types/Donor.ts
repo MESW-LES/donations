@@ -5,7 +5,6 @@ export type Donor = {
     firstName: string;
     lastName: string;
     nif: string;
-    address: string;
     email: string;
   };
 };

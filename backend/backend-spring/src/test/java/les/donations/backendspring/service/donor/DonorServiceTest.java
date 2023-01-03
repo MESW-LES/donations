@@ -1,4 +1,4 @@
-package les.donations.backendspring.service.donee;
+package les.donations.backendspring.service.donor;
 
 import les.donations.backendspring.dto.DonorDTO;
 import les.donations.backendspring.dto.PersonDTO;
@@ -51,8 +51,7 @@ class DonorServiceTest {
 
     @Ignore
     void registerCorrectDonorTest() throws IOException, NotFoundEntityException {
-        Person person = new Person("name", "lastName", "987654321",
-                "address", "joe.doe@gmail.com");
+        Person person = new Person("name", "lastName", "987654321", "joe.doe@gmail.com");
         Donor donor = new Donor();
         donor.setId(1L);
         donor.setPerson(person);

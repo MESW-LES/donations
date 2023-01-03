@@ -52,7 +52,7 @@ class DonorControllerTest {
     @Test
     void addCategoryWithValidInformation() throws IOException, NotFoundEntityException {
         PersonDTO personDTO = new PersonDTO().id(Long.valueOf("1")).firstName("Anna").lastName("Smith")
-                .nif("023456789").address("address").email("person.test@gmail.com").password("password");
+                .nif("023456789").email("person.test@gmail.com").password("password");
         DonorDTO donorDTO = new DonorDTO().id(Long.valueOf("2")).person(personDTO);
         // mock the service
         when(donorService.registerDonor(donorDTO)).thenReturn(donorDTO);

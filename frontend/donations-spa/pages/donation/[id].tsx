@@ -1,6 +1,6 @@
 import AppMenuBar from "../../components/AppMenuBar";
 import axios from "axios";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 //import { useRouter } from "next/router";
 import { Galleria } from "primereact/galleria";
 import { Divider } from "primereact/divider";
@@ -8,19 +8,18 @@ import { Splitter, SplitterPanel } from "primereact/splitter";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
+import { SessionContext } from "../../context/SessionContext";
 
 function DetailDonation({ donation }: any) {
+  // gets the user role in session
+  const context = useContext(SessionContext);
+  const role: string = context.sessionUser.role;
+
   //for display messages in the view
   const toast = useRef<any>(null);
-  //const router = useRouter();
-  //const id = router.query.id;
-  //console.log(router.query.id);
   const [images, setImages] = useState<any>(null);
-  //const [donation, setDonation] = useState<any>(null);
 
   const itemTemplate = (item: string) => {
-    //console.log("DEBUG123");
-    //console.log(item);
     return (
       <img
         src={`http://localhost:8080/donationsImages/${item}.png`}
@@ -76,16 +75,11 @@ function DetailDonation({ donation }: any) {
   };
 
   useEffect(() => {
-    //const id = router.query.id;
-    //console.log(id);
     fetchImages();
-    console.log(images);
   }, []);
 
   const fetchImages = () => {
-    console.log(donation.donationImages);
     setImages(donation.donationImages);
-    //return donation.donationImages;
   };
 
   //Fetch request donation BackEnd
@@ -185,10 +179,6 @@ function DetailDonation({ donation }: any) {
       </div>
       <Toast ref={toast} />
       <div className="card col-12 pt-10">
-        <div className="pb-4">
-          <h2>Detail of: {donation.title} </h2>
-          <Divider type="solid" />
-        </div>
         <Splitter className="mb-5">
           <SplitterPanel className="flex align-items-center justify-content-center">
             <Galleria
@@ -223,25 +213,39 @@ function DetailDonation({ donation }: any) {
               </Accordion>
               <div className="align-items-center justify-content-center pt-3">
                 <Button
-                  className="col-10"
+                  className={`col-10 ${
+                    role === "donne" &&
+                    donation.donationProcess.status.toUpperCase() === "CREATED"
+                      ? "visible"
+                      : "invisible"
+                  }`}
                   icon="pi pi-shopping-cart"
                   label="Request"
-                  disabled={donation.donationProcess.status !== "Created"}
                   onClick={() => requestDonation(donation.id)}
                 />
-                <div className="flex align-items-center  pt-3">
+                <div className="flex align-items-center pt-3">
                   <Button
-                    className="col-5 mr-1 bg-green-400 border-green-500"
+                    className={`col-5 mr-1 bg-green-400 border-green-500 ${
+                      role === "donor" &&
+                      donation.donationProcess.status.toUpperCase() ===
+                        "REQUESTED"
+                        ? "visible"
+                        : "invisible"
+                    }`}
                     icon="pi pi-check"
                     label="Accept"
-                    disabled={donation.donationProcess.status !== "Requested"}
                     onClick={() => acceptDonation(donation.id)}
                   />
                   <Button
-                    className="col-5 ml-1 bg-red-400 border-red-500"
+                    className={`col-5 ml-1 bg-red-400 border-red-500 ${
+                      role === "donor" &&
+                      donation.donationProcess.status.toUpperCase() ===
+                        "REQUESTED"
+                        ? "visible"
+                        : "invisible"
+                    }`}
                     icon="pi pi-times"
                     label="Reject"
-                    disabled={donation.donationProcess.status !== "Requested"}
                     onClick={() => rejectDonation(donation.id)}
                   />
                 </div>
