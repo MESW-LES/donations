@@ -80,7 +80,7 @@ function AppMenuBar() {
   const goToDonations = () => {
     router.push(
       {
-        pathname: "donations",
+        pathname: "HomeContent",
         query: { search: search },
       },
       "donations"

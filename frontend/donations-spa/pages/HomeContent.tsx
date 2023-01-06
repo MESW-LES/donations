@@ -217,6 +217,7 @@ const dataViewHeader = (
 
   return (
     <>
+    <AppMenuBar></AppMenuBar>
       <h1>
         Hello, <b>UserName</b>
       </h1>
