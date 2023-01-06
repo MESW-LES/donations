@@ -146,7 +146,7 @@ function MyDonations() {
               }`}
             />
             <Button
-              onClick={() => goToPage(`donation/${data.id}/index`)}
+              onClick={() => goToPage(`donation/${data.id}`)}
               icon="pi pi-info-circle"
               label="Donation process"
               className=" mb-2 p-button-sm bg-orange-300 border-orange-400 "
@@ -204,7 +204,7 @@ function MyDonations() {
                 }`}
               />
               <Button
-                onClick={() => goToPage(`donation/${data.id}/index`)}
+                onClick={() => goToPage(`donation/${data.id}`)}
                 icon="pi pi-info-circle"
                 disabled={data.donationProcess.status.toUpperCase() === "END"}
                 className=" bg-orange-300 border-orange-400 "

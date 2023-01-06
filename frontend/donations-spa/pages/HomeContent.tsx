@@ -166,7 +166,7 @@ const dataViewHeader = (
                 <i className="pi pi-calendar mr-2" />
                     <span className="font-semibold mb-2 align-self-center md:align-self-end">{data.createdDate}</span>
                     </div>
-                    <Button icon="pi pi-shopping-cart" label="Donation process" disabled={data.donationProcess.status.toUpperCase() === 'END'} className="mb-2 p-button-sm" onClick={() => goToPage(`donation/${data.id}/index`)}></Button>
+                    <Button icon="pi pi-shopping-cart" label="Donation process" disabled={data.donationProcess.status.toUpperCase() === 'END'} className="mb-2 p-button-sm" onClick={() => goToPage(`donation/${data.id}`)}></Button>
                 
                 </div>
             </div>
@@ -196,7 +196,7 @@ const dataViewHeader = (
                 <i className="pi pi-calendar mr-2" />
                     <span className="font-semibold">{data.createdDate.substring(0,10)}</span>
                     </div>
-                    <Button icon="pi pi-shopping-cart" label="Donation process" disabled={data.donationProcess.status.toUpperCase() === 'END'} onClick={() => goToPage(`donation/${data.id}/index`)} />
+                    <Button icon="pi pi-shopping-cart" label="Donation process" disabled={data.donationProcess.status.toUpperCase() === 'END'} onClick={() => goToPage(`donation/${data.id}`)} />
                 </div>
             </div>         
       </div>
