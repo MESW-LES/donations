@@ -7,7 +7,6 @@ import {
 } from "primereact/dataview";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
-import { ProductService } from "./api/ProductService";
 import { InputText } from "primereact/inputtext";
 import { useRouter } from "next/router";
 import axios from "axios";

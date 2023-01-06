@@ -1,4 +1,4 @@
-import AppMenuBar from "../../components/AppMenuBar";
+import AppMenuBar from "../../../components/AppMenuBar";
 import axios from "axios";
 import React, { useRef, useState, useEffect, useContext } from "react";
 //import { useRouter } from "next/router";
@@ -8,7 +8,7 @@ import { Splitter, SplitterPanel } from "primereact/splitter";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
-import { SessionContext } from "../../context/SessionContext";
+import { SessionContext } from "../../../context/SessionContext";
 
 function DetailDonation({ donation }: any) {
   // gets the user role in session

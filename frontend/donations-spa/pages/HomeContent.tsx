@@ -8,20 +8,10 @@ import {
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 import { Rating } from "primereact/rating";
-import { ProductService } from "./api/ProductService";
 import { InputText } from "primereact/inputtext";
 import { useRouter } from "next/router";
 
 function HomeContent() {
-  const [dataViewValue, setDataViewValue] = useState<any>(null);
-  const [globalFilterValue, setGlobalFilterValue] = useState("");
-  const [filteredValue, setFilteredValue] = useState(null);
-  const [layout, setLayout] = useState<DataViewLayoutType>("grid");
-  const [sortKey, setSortKey] = useState(null);
-  const [sortOrder, setSortOrder] = useState(null);
-  const [sortField, setSortField] = useState<any>(null);
-  //const contextPath = getConfig().publicRuntimeConfig.contextPath;
-
 const [dataViewValue, setDataViewValue] = useState<any>(null);
 const [globalFilterValue, setGlobalFilterValue] = useState('');
 const [filteredValue, setFilteredValue] = useState(null); 
@@ -72,19 +62,7 @@ const fetchCategories = async ()=>{
   const fetchActiveDonations = async () => {
     const requestOptions = {
       method: "GET",
-      headers: { "Content-Type": "application/json" },
-    };
-    const response = await fetch(
-      "http://localhost:8080/donations?status=1",
-      requestOptions
-    );
-    const data = await response.json();
-    if (data.code == 200) {
-      if (data.message) {
-        setDataViewValue(data.message.results);
-      }
-      //console.log(dataViewValue[0].donationImages[0])
-    }
+      headers: { "Content-Type": "application/json" }
   };
    const response = await fetch('http://localhost:8080/donations?status=1', requestOptions);
    const data = await response.json();
@@ -100,19 +78,7 @@ const fetchCategories = async ()=>{
 const fetchCategoryDonations = async (code:any)=>{
     const requestOptions = {
       method: "GET",
-      headers: { "Content-Type": "application/json" },
-    };
-    const response = await fetch(
-      "http://localhost:8080/donations?status=1",
-      requestOptions
-    );
-    const data = await response.json();
-    if (data.code == 200) {
-      if (data.message) {
-        setDataViewValue(data.message.results);
-      }
-      //console.log(dataViewValue[0].donationImages[0])
-    }
+      headers: { "Content-Type": "application/json" }
   };
    const response = await fetch(`http://localhost:8080/donations?status=1&category=${code}`, requestOptions);
    const data = await response.json();
@@ -200,27 +166,10 @@ const dataViewHeader = (
                 <i className="pi pi-calendar mr-2" />
                     <span className="font-semibold mb-2 align-self-center md:align-self-end">{data.createdDate}</span>
                     </div>
-                    <Button icon="pi pi-shopping-cart" label="Donation process" disabled={data.donationProcess.status.toUpperCase() === 'END'} className="mb-2 p-button-sm" onClick={() => goToPage(`donation/${data.id}`)}></Button>
+                    <Button icon="pi pi-shopping-cart" label="Donation process" disabled={data.donationProcess.status.toUpperCase() === 'END'} className="mb-2 p-button-sm" onClick={() => goToPage(`donation/${data.id}/index`)}></Button>
                 
                 </div>
             </div>
-          </div>
-          <div className="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
-            <div>
-              <i className="pi pi-calendar mr-2" />
-              <span className="font-semibold mb-2 align-self-center md:align-self-end">
-                {data.createdDate}
-              </span>
-            </div>
-            <Button
-              icon="pi pi-shopping-cart"
-              label="Add to Cart"
-              disabled={data.inventoryStatus === "OUTOFSTOCK"}
-              className="mb-2 p-button-sm"
-              onClick={() => goToPage("donation/" + data.id)}
-            ></Button>
-          </div>
-        </div>
       </div>
     );
   };
@@ -247,35 +196,9 @@ const dataViewHeader = (
                 <i className="pi pi-calendar mr-2" />
                     <span className="font-semibold">{data.createdDate.substring(0,10)}</span>
                     </div>
-                    <Button icon="pi pi-shopping-cart" label="Donation process" disabled={data.donationProcess.status.toUpperCase() === 'END'} onClick={() => goToPage(`donation/${data.id}`)} />
+                    <Button icon="pi pi-shopping-cart" label="Donation process" disabled={data.donationProcess.status.toUpperCase() === 'END'} onClick={() => goToPage(`donation/${data.id}/index`)} />
                 </div>
-            </div>
-          </div>
-          <div className="flex flex-column align-items-center text-center mb-3">
-            <img
-              src={`images/product/${data.image}`}
-              alt={data.title}
-              className="h-40 w-8 shadow-2 my-3 mx-0"
-            />
-            <div className="text-2xl font-bold">{data.title}</div>
-            <div className="mb-3">{data.description}</div>
-            <Rating value={data.rating} readOnly cancel={false} />
-          </div>
-          <div className="flex align-items-center justify-content-between">
-            <div>
-              <i className="pi pi-calendar mr-2" />
-              <span className="font-semibold">
-                {data.createdDate.substring(0, 10)}
-              </span>
-            </div>
-            <Button
-              icon="pi pi-shopping-cart"
-              label="Request"
-              disabled={data.inventoryStatus === "OUTOFSTOCK"}
-              onClick={() => goToPage("donation/" + data.id)}
-            />
-          </div>
-        </div>
+            </div>         
       </div>
     );
   };

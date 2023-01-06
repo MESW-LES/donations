@@ -7,7 +7,6 @@ import {
 } from "primereact/dataview";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
-import { ProductService } from "./api/ProductService";
 import { InputText } from "primereact/inputtext";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -147,7 +146,7 @@ function MyDonations() {
               }`}
             />
             <Button
-              onClick={() => goToPage(`donation/${data.id}`)}
+              onClick={() => goToPage(`donation/${data.id}/index`)}
               icon="pi pi-info-circle"
               label="Donation process"
               className=" mb-2 p-button-sm bg-orange-300 border-orange-400 "
@@ -205,7 +204,7 @@ function MyDonations() {
                 }`}
               />
               <Button
-                onClick={() => goToPage(`donation/${data.id}`)}
+                onClick={() => goToPage(`donation/${data.id}/index`)}
                 icon="pi pi-info-circle"
                 disabled={data.donationProcess.status.toUpperCase() === "END"}
                 className=" bg-orange-300 border-orange-400 "
