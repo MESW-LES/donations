@@ -238,7 +238,7 @@ function MyDonations() {
             <div className="flex justify-between">
               <h3 className="text-lime-600">Created Donations</h3>
               <Button
-                className=" flex bg-green-300 border-transparent font-semibold"
+                className=" flex bg-green-500 border-transparent font-semibold"
                 icon="pi pi-fw pi-box"
                 label="Add Donation"
                 onClick={() => goToPage("add_donation")}
